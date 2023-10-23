@@ -1,67 +1,86 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import React from "react";
-import * as z from "zod";
-
-import Layout from "@/components/layout";
-import { Input } from "@/components/input";
-import Button from "@/components/button";
-import { useToken } from "@/utils/states/contexts/token-context";
-import Swal from "@/utils/swal";
-import { login } from "@/utils/api/auth/api";
-
-const schema = z.object({
-  username: z.string().min(1, { message: "Username is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
-});
+import '@/styles/login.css'
+import LogoSkillbridge from "@/components/LogoSkillbridge";
+import { Button, Checkbox, Divider, Flex, Image, Link, Spacer, Text, VStack } from "@chakra-ui/react";
+import { FcGoogle } from 'react-icons/fc';
+import InputText from "@/components/InputText";
+import InputPassword from "@/components/InputPassword";
 
 export default function Login() {
-  const { changeToken } = useToken();
-
-  const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
-
-  async function handleLogin(data) {
-    try {
-      const result = await login(data);
-      changeToken(JSON.stringify(result));
-      navigate("/");
-    } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text: error.message,
-        showCancelButton: false,
-      });
-    }
-  }
-
   return (
-    <Layout>
-      <p>Login</p>
-      <form onSubmit={handleSubmit(handleLogin)}>
-        <Input
-          register={register}
-          name="username"
-          label="Username"
-          error={errors.username?.message}
-        />
-        <Input
-          register={register}
-          name="password"
-          label="Password"
-          type="password"
-          error={errors.password?.message}
-        />
-        <Button label="Submit" type="submit" />
-      </form>
-    </Layout>
-  );
+    <Flex>
+
+      <Flex flex={1} hideBelow={'md'}>
+        <VStack>
+          <LogoSkillbridge ml={-12} />
+
+          <Text fontSize='xl' as='b'>
+            Halo! Selamat Datang
+            <br />Kembali di SkillBridge</Text>
+
+          <Image src={'/src/assets/images/tijiko_3d.png'} alt='' height={'64vh'} />
+        </VStack>
+      </Flex>
+
+      <Flex flex={1} justifyContent={'center'}>
+        <VStack spacing={4}>
+          <Text fontSize="lg" fontWeight="bold" ml={-20}>
+            Masuk ke Skillbridge
+          </Text>
+
+          <Text fontSize="sm" fontWeight="bold" color="#545454">
+            Silakan masukkan informasi akun anda.
+          </Text>
+
+          <InputText
+            placeholder="Username/Email"
+          />
+          <InputPassword />
+
+          <Flex w="100%">
+            <Checkbox>
+              <Text fontSize="xs">Ingat Saya</Text>
+            </Checkbox>
+            <Spacer />
+
+            <Link color="#7091F5" fontWeight={600} fontSize="xs">
+              Lupa Password?
+            </Link>
+          </Flex>
+
+          <Button
+            colorScheme="blue"
+            bgColor="#7091F5"
+            textColor="white"
+            shadow="lg"
+            w="100%"
+          >
+            Masuk
+          </Button>
+
+          <Divider />
+
+          <Button
+            colorScheme="white"
+            textColor="#7091F5"
+            variant="outline"
+            leftIcon={<FcGoogle />}
+            w="100%"
+          >
+            Masuk dengan Google
+          </Button>
+
+          <Text fontSize="sm" fontWeight="semibold" mt={7}>
+            Belum memiliki akun?
+            <Link color="#7091F5"> Daftar Sekarang.</Link>
+          </Text>
+
+          <Text fontSize="sm" fontWeight="semibold">
+            Lupa password?
+            <Link color="#7091F5"> Reset Passwordmu disini.</Link>
+          </Text>
+        </VStack>
+      </Flex>
+
+    </Flex>
+  )
 }

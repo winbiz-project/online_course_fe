@@ -6,6 +6,7 @@ import {
 import { useEffect } from "react";
 
 import Index from "@/pages/home";
+import Login from "@/pages/auth/Login";
 
 
 export default function Router() {
@@ -14,6 +15,10 @@ export default function Router() {
     {
       path: "/",
       element: <Index />,
+    },
+    {
+      path: "/auth/login",
+      element: <Login />,
     },
   ]);
 
