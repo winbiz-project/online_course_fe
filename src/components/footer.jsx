@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel, Image, Input, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 import LogoSkillbridge from "@/assets/images/logo_SkillBridge.png";
@@ -17,7 +17,32 @@ const Footer = () => {
                     height={"40"}
                     width={"70%"}
                     borderRadius={"10px"}
-                ></Box>
+                >
+                    <Flex
+                        direction={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                        height={"100%"}
+                        paddingX={"10"}
+                    >
+                        <Box className="w-2/5">
+                            <Text fontSize={"xl"} fontWeight={"semibold"} color={"#FFC007"}>
+                                Programmer
+                            </Text>
+                            <Text fontSize={"4xl"} fontWeight={"bold"}>Our Newsletter</Text>
+                        </Box>
+                        <Box className="w-3/5">
+                            <FormControl width={"100%"}>
+                                <FormLabel>Enter your email</FormLabel>
+                                <Flex flexDirection={"row"} gap={"2"}>
+                                    <Input type='email' placeholder="irpanf@gmail.com" borderRadius={"20px"} bgColor={"#EDEDED"} />
+                                    <Button px={"10"} colorScheme={"blue"} bgColor={"#004BAD"} borderRadius={"20px"}>Mencoba</Button>
+                                </Flex>
+                            </FormControl>
+                        </Box>
+
+                    </Flex>
+                </Box>
             </Box>
             <Box as="footer" pt="40" bg="#9AC5F4" color="black">
                 <Flex

@@ -5,7 +5,7 @@ export default function Layout({ children }) {
   return (
     <div className="w-full h-screen bg-white text-neutral-800 overflow-auto">
       <Navbar />
-      <div className="w-full h-full">{children}</div>
+      <div>{children}</div>
       <Footer />
     </div>
   );
