@@ -1,10 +1,12 @@
+import Footer from "./footer";
 import Navbar from "./navbar";
 
 export default function Layout({ children }) {
   return (
-    <div className="w-full h-screen bg-white dark:bg-neutral-800 text-neutral-800 dark:text-white overflow-auto">
+    <div className="w-full h-screen bg-white text-neutral-800 overflow-auto">
       <Navbar />
-      <div className="w-full h-full py-4 px-8 flex flex-col">{children}</div>
+      <div className="w-full h-full">{children}</div>
+      <Footer />
     </div>
   );
 }
