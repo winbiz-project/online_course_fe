@@ -5,7 +5,7 @@ import { FaAngleRight } from "react-icons/fa6";
 const Hero = () => {
   return (
     <Box width={"100%"} height={"100%"} position="relative">
-      <Image src={bg_hero} width={"100%"} height={"100%"} objectFit="cover" />
+      <Image src={bg_hero} width={"100%"} height={"100%"} objectFit="cover" filter={"blur(5px)"} />
 
       <Flex
         position="absolute"
@@ -23,7 +23,7 @@ const Hero = () => {
           dari top companies.{" "}
         </Text>
         <Button mt={4} bgColor={"#1450A3"} color={"white"} size="lg" width={"fit-content"}>
-                  Lihat Ratusan Materi Tersedia <FaAngleRight className="ms-3" />
+          Lihat Ratusan Materi Tersedia <FaAngleRight className="ms-3" />
         </Button>
       </Flex>
     </Box>

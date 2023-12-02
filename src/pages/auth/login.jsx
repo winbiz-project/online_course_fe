@@ -1,4 +1,3 @@
-import '@/styles/login.css'
 import LogoSkillbridge from "@/components/LogoSkillbridge";
 import { Button, Checkbox, Divider, Flex, Image, Link, Spacer, Text, VStack } from "@chakra-ui/react";
 import { FcGoogle } from 'react-icons/fc';
@@ -7,7 +6,9 @@ import InputPassword from "@/components/InputPassword";
 
 export default function Login() {
   return (
-    <Flex>
+    <Flex
+      py={"2rem"}
+    >
 
       <Flex flex={1} hideBelow={'md'}>
         <VStack>
@@ -57,7 +58,7 @@ export default function Login() {
             Masuk
           </Button>
 
-          <Divider />
+          <Divider borderColor={"#108EE9"} />
 
           <Button
             colorScheme="white"
