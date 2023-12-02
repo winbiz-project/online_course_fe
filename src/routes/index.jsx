@@ -6,7 +6,7 @@ import {
 import { useEffect } from "react";
 
 import Index from "@/pages/home";
-import Login from "@/pages/auth/Login";
+import Login from "@/pages/auth/login";
 
 
 export default function Router() {

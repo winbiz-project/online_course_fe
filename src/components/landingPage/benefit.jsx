@@ -27,7 +27,7 @@ const Benefit = () => {
             px={"20"}
             py={"10"}
             bgColor={"#9AC5F4"}
-            height={"70vh"}
+            height={"fit-content"}
             gap={"5"}
         >
             <Box className="w-1/2">
