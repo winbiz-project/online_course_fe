@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
 
-import img_about from "@/assets/images/img_about_1.svg";
-import img_about_2 from "@/assets/images/img_about_2.svg";
+import img_about from "@/assets/images/about-us-1.png";
+import img_about_2 from "@/assets/images/about-us-2.png";
 const About = () => {
     return (
         <Flex
