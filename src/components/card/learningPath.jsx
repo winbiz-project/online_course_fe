@@ -9,7 +9,7 @@ const CardLearning = ({ learning }) => {
 
     return (
         <Card maxW='sm' borderRadius={"20px"} position={"relative"}>
-            <Box bgColor={"#337CCF"} borderBottomRadius={"50%"} borderTopRadius={"20px"} height={"250px"}  mb={"20"}/>
+            <Box bgColor={"#337CCF"} borderBottomRadius={"50%"} borderTopRadius={"20px"} height={"250px"} mb={"20"} />
             <Image
                 src={image}
                 alt={title}
@@ -21,15 +21,15 @@ const CardLearning = ({ learning }) => {
                 <Heading size='md' textAlign={"center"}>{title}</Heading>
                 <Stack mt='6' spacing='3'>
                     <Flex justifyContent='flex-start'>
-                        <Image src={journal} alt='star' me={"3"} />
-                        <Text fontSize='sm' fontWeight='bold'>
-                            {topic} Topik - {material} Materi
-                        </Text>
-                    </Flex>
-                    <Flex justifyContent='flex-start'>
                         <Image src={people} alt='star' me={"3"} />
                         <Text fontSize='sm' fontWeight='bold'>
                             {users}
+                        </Text>
+                    </Flex>
+                    <Flex justifyContent='flex-start'>
+                        <Image src={journal} alt='star' me={"3"} />
+                        <Text fontSize='sm' fontWeight='bold'>
+                            {topic} Topik - {material} Materi
                         </Text>
                     </Flex>
                     <Flex justifyContent='flex-start'>
