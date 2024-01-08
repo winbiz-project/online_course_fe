@@ -6,12 +6,12 @@ import quote from "@/assets/images/quote.svg";
 const CardNews = ({ news }) => {
     return (
         <Card maxW='sm' borderRadius={15}>
-            <CardHeader>
+            <CardHeader pb={"0"}>
                 <Flex justifyContent='flex-end'>
                     <Image src={LogoSkillbridge} alt="Brand Logo" objectFit="cover" width={"50px"} />
                 </Flex>
             </CardHeader>
-            <CardBody>
+            <CardBody pt={"0"}>
                 <Stack spacing='3'>
                     <Image src={quote} alt='quote' width={"50px"} />
                     <Heading size='md' color={"#108EE9"}>Jadi Copywriter & Content Creator karena Belajar di E-Learning SkillBridge</Heading>

@@ -2,27 +2,26 @@ import CardLearning from "@/components/card/learningPath";
 import CardNews from "@/components/card/news";
 import Layout from "@/components/layout";
 
-import learningImg from "@/assets/images/learning-path-1.png";
+import Hero from "@/components/eLearning/hero";
+import BenefitLearning from "@/components/eLearning/benefitLearning";
+import LearningSkill from "@/components/eLearning/learningSkill";
+import LearningPath from "@/components/eLearning/learningPath";
+import Mentor from "@/components/eLearning/mentorSection";
+import CTALearning from "@/components/eLearning/ctaLearning";
+import Portfolio from "@/components/eLearning/portfolio";
 
 const ELearning = () => {
-    const dataLearning = {
-        title: "Digital Marketing",
-        image: learningImg,
-        material: 109,
-        topic: 5,
-        users: 100,
-        rating: 4
-
-    }
-
-    return (
-        <Layout >
-            <div className="m-8 space-y-4">
-                <CardNews />
-                <CardLearning learning={dataLearning} />
-            </div>
-        </Layout>
-    );
+  return (
+    <Layout>
+      <Hero />
+      <BenefitLearning />
+      <LearningSkill />
+      <LearningPath />
+      <Mentor />
+      <Portfolio />
+      <CTALearning />
+    </Layout>
+  );
 };
 
 export default ELearning;
