@@ -1,5 +1,3 @@
-import CardLearning from "@/components/card/learningPath";
-import CardNews from "@/components/card/news";
 import Layout from "@/components/layout";
 
 import Hero from "@/components/eLearning/hero";
