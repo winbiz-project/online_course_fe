@@ -9,6 +9,7 @@ import Index from "@/pages/home";
 import Login from "@/pages/auth/login";
 import NotFound from "@/pages/notFound";
 import ELearning from "@/pages/eLearning";
+import CorporateService from "@/pages/corporateService";
 
 
 export default function Router() {
@@ -25,6 +26,10 @@ export default function Router() {
     {
       path: "/e-learning",
       element: <ELearning />,
+    },
+    {
+      path: "/corporate-service",
+      element: <CorporateService />,
     },
     {
       path: "*",
