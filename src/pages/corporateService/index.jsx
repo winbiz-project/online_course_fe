@@ -1,4 +1,5 @@
 import Business from "@/components/corporateService/business";
+import Contact from "@/components/corporateService/contact";
 import CTALearning from "@/components/corporateService/ctaLearning";
 import CTALearningRight from "@/components/corporateService/ctaLearningRight";
 import Hero from "@/components/corporateService/hero";
@@ -13,6 +14,7 @@ const CorporateService = () => {
       <CTALearning />
       <CTALearningRight />
       <Business />
+      <Contact />
     </Layout>
   );
 };
