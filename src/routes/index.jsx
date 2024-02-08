@@ -10,6 +10,7 @@ import Login from "@/pages/auth/login";
 import NotFound from "@/pages/notFound";
 import ELearning from "@/pages/eLearning";
 import CorporateService from "@/pages/corporateService";
+import Blog from "@/pages/blog";
 
 
 export default function Router() {
@@ -30,6 +31,10 @@ export default function Router() {
     {
       path: "/corporate-service",
       element: <CorporateService />,
+    },
+    {
+      path: "/blog",
+      element: <Blog />,
     },
     {
       path: "*",
