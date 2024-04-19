@@ -35,7 +35,7 @@ const Footer = () => {
                             <FormControl width={"100%"}>
                                 <FormLabel>Enter your email</FormLabel>
                                 <Flex flexDirection={"row"} gap={"2"}>
-                                    <Input type='email' placeholder="irpanf@gmail.com" borderRadius={"20px"} bgColor={"#EDEDED"} />
+                                    <Input type='email' placeholder="Skillbridge@gmail.com" borderRadius={"20px"} bgColor={"#EDEDED"} />
                                     <Button px={"10"} colorScheme={"blue"} bgColor={"#004BAD"} borderRadius={"20px"}>Mencoba</Button>
                                 </Flex>
                             </FormControl>
@@ -102,68 +102,9 @@ const Footer = () => {
                                 />
                             </Link>
                         </Flex>
-                        <Text fontSize="lg" fontWeight="bold" mb={"2"}>
-                            Metode Pembayaran
-                        </Text>
-                        <Flex direction="row" gap={4} mb={"30"}>
-                            <Text>
-                                <Image
-                                    src={mandiri}
-                                    alt="Brand Logo"
-                                    objectFit="cover"
-                                    width={"70px"}
-                                />
-                            </Text>
-                            <Text>
-                                <Image
-                                    src={mandiri}
-                                    alt="Brand Logo"
-                                    objectFit="cover"
-                                    width={"70px"}
-                                />
-                            </Text>
-                            <Text>
-                                <Image
-                                    src={mandiri}
-                                    alt="Brand Logo"
-                                    objectFit="cover"
-                                    width={"70px"}
-                                />
-                            </Text>
-                            <Text>
-                                <Image
-                                    src={mandiri}
-                                    alt="Brand Logo"
-                                    objectFit="cover"
-                                    width={"70px"}
-                                />
-                            </Text>
-                        </Flex>
                     </Box>
 
                     {/* Links */}
-                    <Box mb={{ base: "4", md: "0" }}>
-                        <Text fontSize="lg" fontWeight="bold">
-                            SkillBridge
-                        </Text>
-                        <Flex direction="column">
-                            <Link href="#">Tentang</Link>
-                            <Link href="#">Karir</Link>
-                            <Link href="#">Kerjasama</Link>
-                            <Link href="#">Blog</Link>
-                        </Flex>
-                    </Box>
-                    <Box mb={{ base: "4", md: "0" }}>
-                        <Text fontSize="lg" fontWeight="bold">
-                            SkillBridge
-                        </Text>
-                        <Flex direction="column">
-                            <Link href="#">Tentang</Link>
-                            <Link href="#">Karir</Link>
-                            <Link href="#">Kerjasama</Link>
-                            <Link href="#">Blog</Link>
-                        </Flex>
-                    </Box>
                     <Box mb={{ base: "4", md: "0" }}>
                         <Text fontSize="lg" fontWeight="bold">
                             SkillBridge
@@ -199,7 +140,7 @@ const Footer = () => {
                     justifyContent={"center"}
                 >
                     <Text color={"white"} fontWeight={"bold"}>
-                        &copy; 2023 - 2024 Your Company. All rights reserved.
+                        &copy; 2023 - 2024 Skillbridge. All rights reserved.
                     </Text>
                 </Flex>
             </Box>

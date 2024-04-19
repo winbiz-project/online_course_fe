@@ -27,7 +27,7 @@ const Course = () => {
                 Course Terbaru
             </Text>
             <Flex justifyContent={"center"} alignItems={"center"} width={"100%"}>
-                <Text className="whitespace-nowrap" fontSize={"2xl"} fontWeight={"bold"}>Javascript Programmer</Text>
+                {/* <Text className="whitespace-nowrap" fontSize={"2xl"} fontWeight={"bold"}>Javascript Programmer</Text> */}
                 <Divider borderColor={"#108EE9"} borderBottomWidth={"2px"} orientation="horizontal" width={"100%"} mx={4}/>
                 <Button
                     my={4}

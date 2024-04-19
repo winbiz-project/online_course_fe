@@ -35,9 +35,6 @@ const Testimony = () => {
             <Text fontSize={"3xl"} fontWeight={"bold"}>
                 Cerita Pengguna, Tutor, dan Mitra
             </Text>
-            <Text fontSize={"lg"} width={"50%"} textAlign={"center"}>
-                ke codywriter, tapi karena ikut Bootcamp Myskill
-            </Text>
             <Grid
                 templateColumns="repeat(2, 1fr)"
                 py={"10"}
