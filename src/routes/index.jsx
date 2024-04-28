@@ -6,6 +6,7 @@ import {
 import { useEffect } from "react";
 import PrivateRoute from "./privateroutes";
 import GoogleRoute from "./googleroutes";
+import SectionRoute from "./sectionroutes";
 
 import Index from "@/pages/home";
 import Login from "@/pages/auth/login";
@@ -47,20 +48,26 @@ export default function Router() {
       path: "/e-learning",
       element: <ELearning />,
     },
-    {
-      path: "/corporate-service",
-      element: <PrivateRoute />,
-      children: [
-        { path: "", element: <CorporateService /> },
-      ],
-    },
+    // {
+    //   path: "/corporate-service",
+    //   element: <PrivateRoute />,
+    //   children: [
+    //     { path: "", element: <CorporateService /> },
+    //   ],
+    // },
     {
       path: "/courses",
       element: <PrivateRoute />,
       children: [
         { path: "", element: <Courses /> },
         { path: ":courseId", element: <CourseDetailPage />},
-        { path: ":courseId/:courseSubsectionId", element: <CourseVideo />}
+        {
+          path: ":courseId/:courseSubsectionId",
+          element: <SectionRoute />,
+          children: [
+            { path: "", element: <CourseVideo />}
+          ]
+        }
       ],
     },
     {

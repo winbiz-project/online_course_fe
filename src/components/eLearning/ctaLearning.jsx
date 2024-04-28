@@ -44,7 +44,7 @@ const CTALearning = () => {
           className="drop-shadow-2xl"
           fontWeight={"700"}
         >
-          10.000+ Orang Berlangganan Tiap Bulan
+          Ratusan Orang Berlangganan Tiap Bulan
         </Text>
       </Box>
     </Flex>

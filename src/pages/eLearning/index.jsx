@@ -13,10 +13,10 @@ const ELearning = () => {
     <Layout>
       <Hero />
       <BenefitLearning />
-      <LearningSkill />
-      <LearningPath />
-      <Mentor />
-      <Portfolio />
+      {/* <LearningSkill /> */}
+      {/* <LearningPath /> */}
+      {/* <Mentor /> */}
+      {/* <Portfolio />  */}
       <CTALearning />
     </Layout>
   );

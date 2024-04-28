@@ -14,7 +14,7 @@ function Home() {
       <Hero />
       <About />
       <Benefit />
-      <Course />
+      {/* <Course /> */}
       <Divider borderColor={"#108EE9"} borderBottomWidth={"4px"} orientation="horizontal" width={"unset"} my={10} mx={"20"} />
       <Popular />
       <Testimony />

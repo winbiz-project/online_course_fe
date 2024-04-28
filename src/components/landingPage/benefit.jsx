@@ -7,6 +7,7 @@ import {
     Grid,
     GridItem,
 } from "@chakra-ui/react";
+import { useNavigate } from 'react-router-dom'
 
 import img_benefit from "@/assets/images/benefit_1.png";
 import img_benefit_2 from "@/assets/images/benefit_2.png";
@@ -19,6 +20,12 @@ import img_career from "@/assets/images/img_career.svg";
 import { FaAngleRight } from "react-icons/fa6";
 
 const Benefit = () => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/courses');
+    };
+
     return (
         <Flex
             direction="row"
@@ -84,6 +91,8 @@ const Benefit = () => {
                     color={"white"}
                     size="lg"
                     width={"fit-content"}
+                    onClick={handleClick}
+
                 >
                     Materi Tersedia <FaAngleRight className="ms-3" />
                 </Button>

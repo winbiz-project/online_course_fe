@@ -4,6 +4,7 @@ import splash from "@/assets/images/splash.png";
 import CardPopular from "../card/popular";
 
 const Popular = () => {
+    
     const Popular = {
         title: "Javascript",
         image: splash,
@@ -11,6 +12,7 @@ const Popular = () => {
         description: "Menjadi Copywritter di DBS bank ",
         rating: 4.5,
     };
+    
 
     return (
         <Flex

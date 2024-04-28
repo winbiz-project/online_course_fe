@@ -28,28 +28,39 @@ function CourseVideo() {
         getVideo();
       }, []);
 
-  return (
-    <Layout>
-        <div className='player-wrapper' style={{ position: 'relative', paddingTop: '56.25%'  }}>
+      return (
+        <Layout>
+          <div style={{
+            position: 'relative',
+            paddingTop: '40%',
+            backgroundColor: '#000',
+            borderRadius: '4px',
+            overflow: 'hidden',
+            boxShadow: '0 0 20px rgba(0,0,0,0.5)',
+          }}>
             <ReactPlayer
-                url={video}
-                className='react-player'
-                playing
-                width='100%'
-                height='75%'
-                style={{ position: 'absolute', top: '0', left: '0' }}
-                controls={true}
-                config={{
-                    file: {
-                        attributes: {
-                            onContextMenu: e => e.preventDefault()
-                        }
-                    }
-                }}
+              url={video}
+              style={{
+                position: 'absolute',
+                top: '0',
+                left: '0',
+              }}
+              playing
+              width='100%'
+              height='100%'
+              controls
+              config={{
+                file: {
+                  attributes: {
+                    onContextMenu: e => e.preventDefault(),
+                    controlsList: 'nodownload'  // this will hint the browser to disallow video downloads
+                  }
+                }
+              }}
             />
-        </div>
-    </Layout>
-  );
+          </div>
+        </Layout>
+      );
 }
 
 export default CourseVideo;

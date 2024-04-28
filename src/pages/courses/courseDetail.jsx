@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
-  VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Link, 
+  VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, 
   Spacer} from '@chakra-ui/react';
 import { StarIcon, LockIcon } from '@chakra-ui/icons';
-import { useParams } from 'react-router-dom';
+import { json, useParams, Link } from 'react-router-dom';
 import AuthContext from '@/routes/authcontext'
 import Layout from '@/components/layout';
 
@@ -41,8 +41,8 @@ const CourseDetailPage = () => {
     }
   };
 
-  const handlePurchase = async (e) => {
-    e.preventDefault()
+  const handlePurchase = async () => {
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:8000/transaction/make_transaction', {
         method: 'POST',
@@ -65,20 +65,20 @@ const CourseDetailPage = () => {
         },
         onPending: function(result) {
           console.log('Payment pending:', result);
-          // Handle pending payment scenarios
         },
         onError: function(result) {
           console.error('Payment error:', result);
-          // Handle errors appropriately
         },
         onClose: function() {
           console.log('User closed the payment popup');
-          // Possibly handle when user manually closes the popup
         }
       });
     }
     catch (error) {
       console.error('Error:', error);
+    }
+    finally{      
+      setLoading(false);
     }
   };
 
@@ -92,7 +92,7 @@ const CourseDetailPage = () => {
         body: JSON.stringify({
           email: user.email,
           courseid: courseId,
-          transaction_id: paymentResult.transaction_id,
+          transaction_id: paymentResult.order_id,
           message: 'Payment was successful'
         })
       });
@@ -200,7 +200,7 @@ const CourseDetailPage = () => {
                   {section.subsections.map((subsection) => (
                     <React.Fragment key={subsection.subsection_id}>
                       {isEnrolled ? (
-                        <Link color="teal.500">{subsection.subsection_name}</Link>
+                        <Link to={`/courses/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
                       ) : (
                         <Text color="gray.500">{subsection.subsection_name}</Text>
                       )}
