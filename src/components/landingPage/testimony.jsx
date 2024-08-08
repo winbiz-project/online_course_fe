@@ -25,7 +25,7 @@ const Testimony = () => {
             justifyContent="center"
             alignItems="center"
             px={"20"}
-            py={"10"}
+            pt={"10"}
             bgColor={"#9AC5F4"}
             height={"fit-content"}
         >

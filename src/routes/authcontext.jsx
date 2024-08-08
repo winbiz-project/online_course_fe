@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
     const loginUser = async (email, password, navigate) => {
         try{
-            const response = await axios.post('http://127.0.0.1:8000/login', {
+            const response = await axios.post('https://online-course-be.vercel.app/login', {
                 email, password
             });
             // console.log(response.data)
@@ -89,12 +89,12 @@ export const AuthProvider = ({ children }) => {
         try{
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
-            const response = await axios.post('http://127.0.0.1:8000/is_registered', {
+            const response = await axios.post('https://online-course-be.vercel.app/is_registered', {
                 email: result.user.email
             })
 
             if(response.status === 200){
-                const responseGoogle = await axios.post('http://127.0.0.1:8000/google_login', {
+                const responseGoogle = await axios.post('https://online-course-be.vercel.app/google_login', {
                     email: result.user.email,
                 });
                 setAuthTokens(responseGoogle.data.access_token)
@@ -141,7 +141,7 @@ export const AuthProvider = ({ children }) => {
 
         console.log(parsedRefreshToken)
 
-        const response = await axios.post('http://127.0.0.1:8000/logout', {
+        const response = await axios.post('https://online-course-be.vercel.app/logout', {
             refresh_token: parsedRefreshToken,
         });
     
@@ -215,7 +215,7 @@ export const AuthProvider = ({ children }) => {
 
 
 export const registerUser = async (name, email, password, verif_password, navigate) => {
-    const response = await axios.post('http://127.0.0.1:8000/register', {
+    const response = await axios.post('https://online-course-be.vercel.app/register', {
         name, email, password, verif_password
     });
 

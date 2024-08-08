@@ -30,9 +30,6 @@ const Popular = () => {
             <Text fontSize={"3xl"} fontWeight={"bold"}>
                 Popular Materials
             </Text>
-            <Text fontSize={"lg"} width={"50%"} textAlign={"center"}>
-                banget ilmu & praktik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill
-            </Text>
             <Flex
                 direction="row"
                 justifyContent="center"

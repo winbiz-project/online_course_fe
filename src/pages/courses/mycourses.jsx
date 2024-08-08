@@ -21,7 +21,7 @@ const MyCourses = () => {
     const navigate = useNavigate();
     const getAllCourses = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:8000/course/get_all_courses_by_user/'+user.email);
+            const response = await fetch('https://online-course-be.vercel.app/course/get_all_courses_by_user/'+user.email);
             if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -41,7 +41,7 @@ const MyCourses = () => {
     return (
         <div>
             <Layout>
-                <Container maxW="container.xl" mt={'10'}>
+                <Container maxW="container.xl" my={'20'}>
                     {courses.length > 0 ? (
                         <Box>
                             {courses.map((course) => (

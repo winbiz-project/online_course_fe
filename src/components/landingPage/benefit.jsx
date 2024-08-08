@@ -44,11 +44,6 @@ const Benefit = () => {
                 <Text fontSize={"4xl"} fontWeight={"bold"}>
                     Manfaat Yang Kalian Dapatkan
                 </Text>
-                <Text fontSize={"lg"}>
-                    Aku dapat banyak banget ilmu & praktik yang jumpstart karier, dari
-                    hukum ke codywriter, tapi karena ikut Bootcamp Myskill, aku menjadi
-                    Copywritter di DBS bank Aku dapat banyak.
-                </Text>
                 <Flex mt={"6"}>
                     <Image src={img_time} boxSize={"70px"} />
                     <Box ml={"5"} width={"60%"}>

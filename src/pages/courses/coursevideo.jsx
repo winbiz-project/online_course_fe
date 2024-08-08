@@ -12,7 +12,7 @@ function CourseVideo() {
 
   const getVideo = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/course/get_sub_section_video/'+courseSubsectionId);
+      const response = await fetch('https://online-course-be.vercel.app/course/get_sub_section_video/'+courseSubsectionId);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

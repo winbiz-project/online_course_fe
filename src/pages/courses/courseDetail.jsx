@@ -16,7 +16,7 @@ const CourseDetailPage = () => {
 
   const getCourseDetail = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/course/get_course_by_id/'+courseId);
+      const response = await fetch('https://online-course-be.vercel.app/course/get_course_by_id/'+courseId);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -29,7 +29,7 @@ const CourseDetailPage = () => {
 
   const checkEnrollment = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/course/check_user_enrolled/`+user.email+'/'+courseId);
+      const response = await fetch(`https://online-course-be.vercel.app/course/check_user_enrolled/`+user.email+'/'+courseId);
       if (!response.ok) {
         throw new Error('Failed to check enrollment status');
       }
@@ -44,7 +44,7 @@ const CourseDetailPage = () => {
   const handlePurchase = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/transaction/make_transaction', {
+      const response = await fetch('https://online-course-be.vercel.app/transaction/make_transaction', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const CourseDetailPage = () => {
 
   async function processPaymentSuccess(paymentResult) {
     try {
-      const response = await fetch('http://localhost:8000/transaction/successful_transaction', {
+      const response = await fetch('https://online-course-be.vercel.app/transaction/successful_transaction', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

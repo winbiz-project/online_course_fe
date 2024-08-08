@@ -9,6 +9,7 @@ export default function Layout({ children }) {
       <Box flex="1" overflowY="auto" bg="white" color="text-neutral-800">
         {children}
       </Box>
+      
       <Footer />
     </Flex>
   );

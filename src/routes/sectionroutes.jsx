@@ -11,7 +11,7 @@ const SectionRoute = ({}) => {
   useEffect(() => {
     const checkIfUserBoughtCourse = async (user, courseId) => {
       try{
-        const response = await fetch(`http://localhost:8000/course/check_user_enrolled/`+user.email+'/'+courseId);
+        const response = await fetch(`https://online-course-be.vercel.app/course/check_user_enrolled/`+user.email+'/'+courseId);
         if (!response.ok) {
           throw new Error('Failed to check enrollment status');
         }

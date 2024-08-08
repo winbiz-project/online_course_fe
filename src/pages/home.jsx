@@ -7,6 +7,7 @@ import { Divider } from '@chakra-ui/react'
 import Popular from '@/components/landingPage/popular'
 import Testimony from '@/components/landingPage/testimony'
 
+
 function Home() {
 
   return (
@@ -15,8 +16,8 @@ function Home() {
       <About />
       <Benefit />
       {/* <Course /> */}
-      <Divider borderColor={"#108EE9"} borderBottomWidth={"4px"} orientation="horizontal" width={"unset"} my={10} mx={"20"} />
-      <Popular />
+      {/* <Divider borderColor={"#108EE9"} borderBottomWidth={"4px"} orientation="horizontal" width={"unset"} my={10} mx={"20"} />
+      <Popular /> */}
       <Testimony />
     </Layout>
   )
