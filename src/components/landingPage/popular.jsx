@@ -4,6 +4,7 @@ import splash from "@/assets/images/splash.png";
 import CardPopular from "../card/popular";
 
 const Popular = () => {
+    
     const Popular = {
         title: "Javascript",
         image: splash,
@@ -11,6 +12,7 @@ const Popular = () => {
         description: "Menjadi Copywritter di DBS bank ",
         rating: 4.5,
     };
+    
 
     return (
         <Flex
@@ -27,9 +29,6 @@ const Popular = () => {
             </Text>
             <Text fontSize={"3xl"} fontWeight={"bold"}>
                 Popular Materials
-            </Text>
-            <Text fontSize={"lg"} width={"50%"} textAlign={"center"}>
-                banget ilmu & praktik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill
             </Text>
             <Flex
                 direction="row"

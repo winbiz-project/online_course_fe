@@ -2,9 +2,15 @@ import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
 
 import img_hero from "@/assets/images/imgHeroLearning.png";
 import { FaAngleRight } from "react-icons/fa6";
+import { useNavigate } from 'react-router-dom'
 import CardNews from "../card/news";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/courses');
+  };
   return (
     <>
       <Box
@@ -49,18 +55,9 @@ const Hero = () => {
                 size="lg"
                 width={"fit-content"}
                 borderRadius={"1rem"}
+                onClick={handleClick}
               >
                 Lihat Ratusan Materi Tersedia <FaAngleRight className="ms-3" />
-              </Button>
-              <Button
-                mt={4}
-                bgColor={"#FFC107"}
-                color={"black"}
-                size="lg"
-                width={"fit-content"}
-                borderRadius={"1rem"}
-              >
-                Materi <FaAngleRight className="ms-3" />
               </Button>
             </Flex>
             <Text
@@ -69,13 +66,13 @@ const Hero = () => {
               className="drop-shadow-2xl"
               fontWeight={"700"}
             >
-              10.000+ Orang Berlangganan Tiap Bulan
+              Ratusan Orang Berlangganan Tiap Bulan
             </Text>
           </Flex>
           <Image src={img_hero} height={"30rem"} />
         </Flex>
       </Box>
-      <Box position={"relative"} height={"25vh"}>
+      {/* <Box position={"relative"} height={"25vh"}>
         <Flex
           flexDirection={"row"}
           gap={"10"}
@@ -90,7 +87,7 @@ const Hero = () => {
           <CardNews />
           <CardNews />
         </Flex>
-      </Box>
+      </Box> */}
     </>
   );
 };

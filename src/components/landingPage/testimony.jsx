@@ -25,7 +25,7 @@ const Testimony = () => {
             justifyContent="center"
             alignItems="center"
             px={"20"}
-            py={"10"}
+            pt={"10"}
             bgColor={"#9AC5F4"}
             height={"fit-content"}
         >
@@ -34,9 +34,6 @@ const Testimony = () => {
             </Text>
             <Text fontSize={"3xl"} fontWeight={"bold"}>
                 Cerita Pengguna, Tutor, dan Mitra
-            </Text>
-            <Text fontSize={"lg"} width={"50%"} textAlign={"center"}>
-                ke codywriter, tapi karena ikut Bootcamp Myskill
             </Text>
             <Grid
                 templateColumns="repeat(2, 1fr)"

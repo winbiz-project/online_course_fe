@@ -1,8 +1,15 @@
 import { Box, Flex, Image, Text, Button } from "@chakra-ui/react";
 import bg_hero from "@/assets/images/bg-hero-2.png";
 import { FaAngleRight } from "react-icons/fa6";
+import { useNavigate } from 'react-router-dom'
 
 const Hero = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/courses');
+  };
+
   return (
     <Box width={"100%"} height={"100%"} position="relative">
       <Image
@@ -39,6 +46,7 @@ const Hero = () => {
           color={"white"}
           size="lg"
           width={"fit-content"}
+          onClick={handleClick}
         >
           Lihat Ratusan Materi Tersedia <FaAngleRight className="ms-3" />
         </Button>
