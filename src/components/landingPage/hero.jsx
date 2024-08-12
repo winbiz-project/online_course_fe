@@ -33,12 +33,12 @@ const Hero = () => {
           fontWeight={"semibold"}
           className="drop-shadow-lg"
         >
-          Belajar Fleksibel Ratusan Skill. Dapatkan Sertifikat.{" "}
+          Jadi Ahli di Bidang Anda. Belajar dari yang Terbaik.{" "}
         </Text>
         <Text fontSize="3xl" color={"white"} className="drop-shadow-2xl">
-          pilih skill apapun dan pelajari kapanpun. dapatkan video materi
-          terstruktur, modul praktik plus webinar series rancangan para expert
-          dari top companies.{" "}
+          Dapatkan akses ke ratusan kursus yang dikembangkan oleh
+          para profesional. Belajar kapan saja, di mana saja, dan dapatkan
+          dukungan langsung dari mentor.{" "}
         </Text>
         <Button
           mt={4}
