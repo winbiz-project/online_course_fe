@@ -151,33 +151,34 @@ const CourseDetailPage = () => {
     <Layout>
       <VStack spacing={4}>
         <Center>
-          <Box bg="#302c34" p={8} color="white">
+          <Box bg="#2D2F31" p={8} color="white">
             <HStack spacing={8} margin={'3%'} >
-              <Box width={["100%", "35%"]}>
+              <VStack spacing={3} >
+                <Heading as="h1" size={'2xl'} textAlign="left" alignSelf={"flex-start"}>{courseDetail.course_name}</Heading>
+                <HStack justify="center" alignSelf={"flex-start"}>
+                  <Text fontSize="lg">{courseDetail.course_rating}</Text>
+                  <StarIcon color="yellow.400" />
+                  <Text fontSize="lg">({courseDetail.rating_users_count} reviews)</Text>
+                </HStack>
+                <HStack justify="left" alignSelf={"flex-start"}>
+                  {courseDetail.course_categories && courseDetail.course_categories.map((category) => (
+                    <Badge key={category.category_id} bg={'#2ECC71'} textColor={'white'}>{category.category_name}</Badge>
+                  ))}
+                </HStack>
+                <Text fontSize="lg" textAlign="left">{courseDetail.course_desc}</Text>
+                
+                {!isEnrolled && (
+                  <><Text fontSize="2xl" fontWeight="bold" textAlign="left" alignSelf={"flex-start"}>Price: Rp{courseDetail.course_price.toLocaleString('id-ID')}</Text>
+                  <Button onClick={handlePurchase} bg={'#3498DB'} color='white' size="lg" alignSelf="flex-start">Enroll Now</Button></>
+                )}
+              </VStack>
+              <Box width={["100%", "65%"]}>
                 <Image
                   borderRadius="lg"
                   src={courseDetail.course_photo}
                   alt={courseDetail.course_name}
                 />
               </Box>
-              <VStack spacing={3} >
-                <Heading as="h1" textAlign="center">{courseDetail.course_name}</Heading>
-                <HStack justify="center">
-                  {courseDetail.course_categories && courseDetail.course_categories.map((category) => (
-                    <Badge key={category.category_id} bg={'#9fa3fc'}>{category.category_name}</Badge>
-                  ))}
-                </HStack>
-                <Text textAlign="center">{courseDetail.course_desc}</Text>
-                <HStack justify="center">
-                  <StarIcon color="yellow.400" />
-                  <Text>{courseDetail.course_rating} ({courseDetail.rating_users_count} reviews)</Text>
-                </HStack>
-                
-                {!isEnrolled && (
-                  <><Text fontSize="2xl" fontWeight="bold" textAlign="center">Price: Rp{courseDetail.course_price}</Text>
-                  <Button onClick={handlePurchase} bg={'#608ccc'} color='white' size="lg" alignSelf="center">Enroll Now</Button></>
-                )}
-              </VStack>
             </HStack>
           </Box>
 
@@ -186,8 +187,8 @@ const CourseDetailPage = () => {
         </Center>
 
         <Flex direction="column" align="center" w="full" p={8}>
-          <Heading size="lg" mb={4} textAlign="left" alignSelf="flex-start">Course Content</Heading>
-          <Accordion mt={'5'} allowMultiple w="55%">
+          <Heading size="lg" mb={4} textAlign="left" alignSelf="flex-start" textShadow="2px 2px 4px rgba(0, 0, 0, 0.25)">Course Content</Heading>
+          <Accordion mt={'5'} allowMultiple w="100%">
             {courseDetail.sections.map((section) => (
               <AccordionItem key={section.section_id}>
                 <AccordionButton>
@@ -212,16 +213,16 @@ const CourseDetailPage = () => {
             ))}
               <AccordionItem>
                 <AccordionButton>
-                  <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
+                  <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'2xl'}>
                     Review
                   </Box>
                   {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
                 </AccordionButton>
                 <AccordionPanel>
                   {isEnrolled ? (
-                    <Link color="teal.500">Review Course</Link>
+                    <Link color="teal.500" fontSize={'lg'}>Review Course</Link>
                   ) : (
-                    <Text color="gray.500">Review Course</Text>
+                    <Text color="gray.500" fontSize={'lg'}>Review Course</Text>
                   )}
                   
                 </AccordionPanel>
