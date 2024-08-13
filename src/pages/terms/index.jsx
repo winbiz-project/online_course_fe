@@ -5,7 +5,7 @@ import LogoWhatsapp from "@/assets/images/logo_whatsapp.png";
 const Terms = () => {
   return (
     <Layout>
-        <Box p={4} maxW="800px" mx="40">
+        <Box p={4} maxW="800px" mx="auto">
             <Heading as="h1" size="xl" mb={4}>
                 Syarat dan Ketentuan
             </Heading>
