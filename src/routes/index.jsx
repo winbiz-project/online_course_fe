@@ -20,7 +20,7 @@ import Courses from "@/pages/courses";
 import MyCourses from "@/pages/courses/mycourses";
 import CourseDetailPage from "@/pages/courses/courseDetail";
 import CourseVideo from "@/pages/courses/coursevideo";
-
+import Terms from "@/pages/terms"
 
 export default function Router() {
 
@@ -84,6 +84,10 @@ export default function Router() {
     {
       path: "*",
       element: <NotFound />,
+    },
+    {
+      path: "/terms",
+      element: <Terms />
     },
   ]);
 

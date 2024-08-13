@@ -338,7 +338,7 @@ const Footer = () => {
                         </Text>
                         <Flex direction="column">
                             <Link href="#">FAQ</Link>
-                            <Link href="#">Syarat dan Ketentuan</Link>
+                            <Link href="/terms">Syarat dan Ketentuan</Link>
                             <Link href="#">Ketentuan Privasi</Link>
                         </Flex>
                         </Box>
