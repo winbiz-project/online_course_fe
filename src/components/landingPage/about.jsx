@@ -19,8 +19,8 @@ const About = () => {
             </Box>
             <Box className="w-3/5" textAlign={"left"}>
                 <Text fontSize={"3xl"} fontWeight={"bold"} color={"#FFC007"}>About Us</Text>
-                <Text fontSize={"4xl"} fontWeight={"bold"}>Belajar Fleksibel Ratusan Skill. Dapatkan Sertifikat. </Text>
-                <Text fontSize={"2xl"}>pilih skill apapun dan pelajari kapanpun. dapatkan video materi terstruktur, modul praktik plus webinar series rancangan para expert dari top companies. </Text>
+                <Text fontSize={"4xl"} fontWeight={"bold"}>Bridging Talents Building Futures </Text>
+                <Text fontSize={"2xl"}>Skillbridge merupakan platform pembelajaran online yang berfokus pada penyediaan kursus berkualitas tinggi untuk siapa saja yang ingin mengembangkan keterampilan baru atau meningkatkan pengetahuan mereka. Kami memiliki misi untuk memberikan akses pelatihan keterampilan yang mudah dan terjangkau bagi semua orang, dimanapun mereka berada. </Text>
             </Box>
         </Flex>
     )
