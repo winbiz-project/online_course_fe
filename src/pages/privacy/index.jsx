@@ -5,9 +5,9 @@ import LogoWhatsapp from "@/assets/images/logo_whatsapp.png";
 const Privacy = () => {
   return (
     <Layout>
-        <Box p={4} maxW="800px" mx="40">
+        <Box p={4} maxW="800px" mx="auto">
             <Heading as="h1" size="xl" mb={4}>
-                Kebijakan Privacy
+                Kebijakan Privasi
             </Heading>
             <Text fontSize="lg" mb={4}>
                 PT D&W Internasional ( <Text as={'span'} fontWeight={'bold'}>"kami"</Text> atau <Text as={'span'} fontWeight={'bold'}> "Skillbridge"</Text>) berkomitmen untuk melindungi dan menghormati privasi Anda. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda ketika Anda mengakses dan menggunakan situs web Skillbridge.

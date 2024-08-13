@@ -339,7 +339,7 @@ const Footer = () => {
                         <Flex direction="column">
                             <Link href="#">FAQ</Link>
                             <Link href="/terms">Syarat dan Ketentuan</Link>
-                            <Link href="/privacy">Ketentuan Privasi</Link>
+                            <Link href="/privacy">Kebijakan Privasi</Link>
                         </Flex>
                         </Box>
 
