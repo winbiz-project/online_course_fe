@@ -43,8 +43,8 @@ const Navbar = () => {
                     <Button as={Link} to="/" colorScheme="white" variant="link" mx={2} isActive={() => location.pathname === '/'}>
                         Home
                     </Button>
-                    <Button as={Link} to="/courses" colorScheme="white" variant="link" mx={2} isActive={() => location.pathname === '/e-learning'}>
-                        Courses
+                    <Button as={Link} to="/e-learning" colorScheme="white" variant="link" mx={2} isActive={() => location.pathname === '/e-learning'}>
+                        E-learning
                     </Button>
                     {/* <Button as={Link} to="/corporate-service" colorScheme="white" variant="link" mx={2} isActive={() => location.pathname === '/corporate-service'}>
                         Corporate Service
