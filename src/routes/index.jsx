@@ -20,7 +20,8 @@ import Courses from "@/pages/courses";
 import MyCourses from "@/pages/courses/mycourses";
 import CourseDetailPage from "@/pages/courses/courseDetail";
 import CourseVideo from "@/pages/courses/coursevideo";
-
+import Terms from "@/pages/terms";
+import Privacy from "@/pages/privacy";
 
 export default function Router() {
 
@@ -44,10 +45,6 @@ export default function Router() {
       path: "/auth/register",
       element: <Register />,
     },
-    {
-      path: "/e-learning",
-      element: <ELearning />,
-    },
     // {
     //   path: "/corporate-service",
     //   element: <PrivateRoute />,
@@ -56,7 +53,7 @@ export default function Router() {
     //   ],
     // },
     {
-      path: "/courses",
+      path: "/e-learning",
       element: <PrivateRoute />,
       children: [
         { path: "", element: <Courses /> },
@@ -84,6 +81,14 @@ export default function Router() {
     {
       path: "*",
       element: <NotFound />,
+    },
+    {
+      path: "/terms",
+      element: <Terms />
+    },
+    {
+      path: "/privacy",
+      element: <Privacy />
     },
   ]);
 

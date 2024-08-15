@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }) => {
             const response = await axios.post('https://online-course-be.vercel.app/login', {
                 email, password
             });
-            // console.log(response.data)
     
             if(response.status === 200){
                 setAuthTokens(response.data.access_token)

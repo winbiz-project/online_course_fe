@@ -48,11 +48,11 @@ const Benefit = () => {
                     <Image src={img_time} boxSize={"70px"} />
                     <Box ml={"5"} width={"60%"}>
                         <Text fontSize={"md"} fontWeight={"semibold"}>
-                            Fleksibilitas Waktu
+                            Fleksibilitas Belajar
                         </Text>
                         <Text fontSize={"sm"}>
-                            Belajar sesuai dengan jadwal yang kalian tentukan sendiri. Sangat
-                            berguna bagi kalian yang memiliki rutinitas yang padat.
+                            Pelajari kursus kapan saja, di mana saja, dengan akses penuh ke
+                            semua materi.
                         </Text>
                     </Box>
                 </Flex>
@@ -60,11 +60,11 @@ const Benefit = () => {
                     <Image src={img_study} boxSize={"70px"} />
                     <Box ml={"5"} width={"60%"}>
                         <Text fontSize={"md"} fontWeight={"semibold"}>
-                            Beragam Materi
+                            Kualitas Terjamin
                         </Text>
                         <Text fontSize={"sm"}>
-                            kalian bisa mengikuti kursus dengan berbagai topik sesuai dengan
-                            minat dan tujuan karir.
+                            Setiap kursus dikembangkan oleh instruktur berpengalaman dengan
+                            pendekatan pembelajaran yang efektif.
                         </Text>
                     </Box>
                 </Flex>
