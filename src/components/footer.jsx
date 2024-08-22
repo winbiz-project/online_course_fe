@@ -438,7 +438,7 @@ const Footer = () => {
                     height={"fit-content"}
                     width={{ base: "90%", md: "70%" }}
                     borderRadius={"10px"}
-                    p={4}
+                    p={{base: 4, md: 6, lg: 8}}
                     mt={{base: 5, md: 0}}
                 >
                     <Flex
@@ -472,18 +472,19 @@ const Footer = () => {
                     mx="auto"
                     direction={{ base: "column", md: "row" }}
                     justify="space-between"
-                    align="flex-start"
+                    align={{base: 'center', md: "flex-start"}}
+                    textAlign={{ base: 'center', md: 'left' }}
                     pb={10}
                     gap={10}
                 >
                     {/* Brand Logo and Payment Methods */}
-                    <Box mb={{ base: "4", md: "0" }} display="flex" flexDirection="column" alignItems="start" pl={{ base: "5", md: "5", lg: "0" }}>
+                    <Box mb={{ base: "4", md: "0" }} display="flex" flexDirection="column" alignItems={{ base: "center", md: "start" }} pl={{ base: "0", md: "5", lg: "0" }}>
                         <Image src={LogoSkillbridge} alt="Brand Logo" objectFit="cover" />
                         <Text fontSize="lg" fontWeight="medium">
                             Rintis Karir Impian Bersama SkillBridge
                         </Text>
                         {/* Social Media */}
-                        <Flex direction="row" gap={4} my={"15"}>
+                        <Flex direction="row" gap={4} my={"15"} justifyContent={{ base: 'center', md: 'flex-start' }}>
                             <Link href="https://www.instagram.com/skillbridge.id/" target="_blank">
                                 <Image src={LogoInstagram} alt="Logo Instagram" boxSize={"25px"} />
                             </Link>
@@ -504,6 +505,7 @@ const Footer = () => {
                             gap={4} 
                             mb={4} 
                             width="100%"
+                            justifyItems="center"
                         >
                             <Box
                                 borderWidth="1px"
@@ -642,6 +644,8 @@ const Footer = () => {
                                 alignItems="center"
                                 bg="white"
                                 p={2}
+                                gridColumn={{ base: "span 3", md: "auto" }}
+                                justifySelf="center"
                             >
                                 <Image src={LogoQris} alt="Logo QRIS" />
                             </Box>
@@ -650,10 +654,9 @@ const Footer = () => {
 
                     <Flex
                         direction="column"
-                        alignItems="flex-start"
-                        textAlign="left"
+                        alignItems={{ base: 'center', md: 'flex-start' }}
+                        textAlign={{ base: 'center', md: 'left' }}
                         mb={{ base: "2", md: "0" }}
-                        pl={{ base: "5", md: "0" }}
                         pt={{ base: "0", md: "5rem"}}
                     >
                         <Text fontSize="lg" fontWeight="bold">
@@ -675,10 +678,9 @@ const Footer = () => {
 
                     <Flex
                         direction="column"
-                        alignItems="flex-start"
-                        textAlign="left"
+                        alignItems={{ base: 'center', md: 'flex-start' }}
+                        textAlign={{ base: 'center', md: 'left' }}
                         mb={{ base: "2", md: "0" }}
-                        pl={{ base: "5", md: "0" }}
                         pt={{ base: "0", md: "5rem"}}
                     >
                         <Text fontSize="lg" fontWeight="bold">
@@ -697,9 +699,8 @@ const Footer = () => {
 
                     <Flex
                         direction="column"
-                        alignItems="flex-start"
-                        textAlign="left"
-                        pl={{ base: "5", md: "0" }}
+                        alignItems={{ base: 'center', md: 'flex-start' }}
+                        textAlign={{ base: 'center', md: 'left' }}
                         pt={{ base: "0", md: "5rem"}}
                     >
                         <Text fontSize="lg" fontWeight="bold">
