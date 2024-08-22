@@ -46,7 +46,7 @@ const CardTestimony = ({ testimony }) => {
     const { title, description, material, image } = testimony;
     return (
         <Card
-            direction={{ base: "column", md: "row" }}
+            direction={{ base: "column", md: "column", lg: "row" }}
             overflow="hidden"
             variant="outline"
             borderRadius="15px"
@@ -60,7 +60,7 @@ const CardTestimony = ({ testimony }) => {
                 height={{ base: "250px", md: "100%" }}
                 borderRadius="15px"
             />
-            <Stack spacing={4} mt={{ base: "4", md: "0" }} ml={{ md: "4" }}>
+            <Stack spacing={4} mt={{ base: "4", md: "0" }}>
                 <CardBody>
                     <Heading size="md">{title}</Heading>
                     <Text py="2">

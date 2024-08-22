@@ -36,14 +36,14 @@ const About = () => {
 
   return (
     <Flex
-      direction={{ base: "column", md: "row" }}
+      direction={{ base: "column", md: "column", lg: "row" }}
       justifyContent="space-between"
       alignItems="center"
-      my={20}
-      p={{ base: 5, md: 20 }} // Padding yang berbeda untuk mobile dan desktop
+      my={{  base: 15, md: 15, lg: 20 }}
+      p={{ base: 5, md: 10, lg: 20 }} // Padding yang berbeda untuk mobile dan desktop
       gap={10}
     >
-      <Box flex="1" position="relative" textAlign="center" mb={{ base: 4, md: 0 }}display="flex" justifyContent="center" alignItems="center" ml={{base: -50, md:0}}>
+      <Box flex="1" position="relative" textAlign="center" mb={{ base: 4, md: 8, lg: 0 }}display="flex" justifyContent="center" alignItems="center" ml={{base: -50, md:0}}>
         <Box position="relative" width="fit-content" textAlign={"center"}>
             {/* <Image src={img_about} height={"350px"} borderRadius={"3xl"} />
             <Image position={"absolute"} bottom={"-15%"} right={"25%"} src={img_about_2} height={"350px"} borderRadius={"3xl"} /> */}
