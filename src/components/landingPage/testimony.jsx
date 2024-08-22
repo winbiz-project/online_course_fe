@@ -58,6 +58,15 @@ import LogoBCA from "@/assets/images/logo_bca.png";
 import React, { useState } from 'react';
 import { Box, IconButton } from '@chakra-ui/react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
+
+import SwiperCore from "swiper";
+
+SwiperCore.use([Navigation, Pagination]);
 
 const testimonys = [
   {
@@ -70,7 +79,19 @@ const testimonys = [
     title: "Jumpstart Karier, dari Hukum ke Codywriter (2)",
     description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
     material: "React Native",
-    image: LogoBCA, // replace with actual image
+    image: unsplash, // replace with actual image
+  },
+  {
+    title: "Jumpstart Karier, dari Hukum ke Codywriter (3)",
+    description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
+    material: "React Native",
+    image: unsplash, // replace with actual image
+  },
+  {
+    title: "Jumpstart Karier, dari Hukum ke Codywriter (4)",
+    description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
+    material: "React Native",
+    image: unsplash, // replace with actual image
   },
 
 ]
@@ -114,18 +135,43 @@ const Testimony = () => {
         gap={5}
         py={10}
       >
-        <CardTestimony colspan={1} testimony={testimony} />
-        <CardTestimony colspan={1} testimony={testimony} />
-        <CardTestimony colspan={1} testimony={testimony} />
-        <CardTestimony colspan={1} testimony={testimony} />
+        <CardTestimony colspan={1} testimony={testimonys[0]} />
+        <CardTestimony colspan={1} testimony={testimonys[1]} />
+        <CardTestimony colspan={1} testimony={testimonys[2]} />
+        <CardTestimony colspan={1} testimony={testimonys[3]} />
       </Grid>
-      <Flex direction="column" alignItems="center" display={{base: 'block', md: 'none'}}>
+      <Box w='100%' display={{base: 'block', md: "none"}} mt='5'>
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          navigation
+          breakpoints={{
+            640: {
+              slidesPerView: 1,
+            },
+            768: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 2,
+            },
+          }}
+        >
+          {testimonys.map((testimony, index) => (
+            <SwiperSlide key={index}>
+              <CardTestimony testimony={testimony} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </Box>
+      {/* <Flex direction="column" alignItems="center" display={{base: 'block', md: 'none'}}>
         <CardTestimony colspan={1} testimony={testimonys[currentIndex]} />
         <Flex mt={4}>
           <IconButton icon={<ArrowLeftIcon />} onClick={prevSlide} />
           <IconButton icon={<ArrowRightIcon />} onClick={nextSlide} ml={2} />
         </Flex>
-    </Flex>
+      </Flex> */}
     </Flex>
   );
 };
