@@ -201,7 +201,7 @@ const CourseDetailPage = () => {
                   {section.subsections.map((subsection) => (
                     <React.Fragment key={subsection.subsection_id}>
                       {isEnrolled ? (
-                        <Link to={`/courses/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
+                        <Link to={`/e-learning/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
                       ) : (
                         <Text color="gray.500">{subsection.subsection_name}</Text>
                       )}
