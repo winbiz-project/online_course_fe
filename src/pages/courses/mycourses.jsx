@@ -59,7 +59,7 @@ const MyCourses = () => {
                                                         <Stars value={course.course_rating} count={5} color="#2596be" size={20} edit={false} />
                                                         <Text fontSize="sm" color="gray.500" ml={2}>({course.course_rating})</Text>
                                                     </Flex>
-                                                    <Button onClick={() => navigate(`/courses/${course.course_id}`)} mt={4} w="100%" colorScheme="blue">Go to course</Button>
+                                                    <Button onClick={() => navigate(`/e-learning/${course.course_id}`)} mt={4} w="100%" colorScheme="blue">Go to course</Button>
                                                 </Box>
                                             </Box>
                                         </Flex>
