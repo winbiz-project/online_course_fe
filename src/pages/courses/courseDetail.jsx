@@ -44,7 +44,7 @@ const CourseDetailPage = () => {
   const handlePurchase = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://online-course-be.vercel.app/transaction/make_transaction', {
+      const response = await fetch('https://online-course-be.vercel.app/transaction/create_xendit_invoice', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,20 +59,12 @@ const CourseDetailPage = () => {
       }
 
       const data = await response.json();
-      window.snap.pay(data.token, {
-        onSuccess: function(result) {
-          processPaymentSuccess(result)
-        },
-        onPending: function(result) {
-          console.log('Payment pending:', result);
-        },
-        onError: function(result) {
-          console.error('Payment error:', result);
-        },
-        onClose: function() {
-          console.log('User closed the payment popup');
-        }
-      });
+      
+      if (data.invoice && data.invoice.invoice_url) {
+        window.location.href = data.invoice.invoice_url;
+      } else {
+        throw new Error('Invoice URL not found');
+      }
     }
     catch (error) {
       console.error('Error:', error);
@@ -81,51 +73,6 @@ const CourseDetailPage = () => {
       setLoading(false);
     }
   };
-
-  async function processPaymentSuccess(paymentResult) {
-    try {
-      const response = await fetch('https://online-course-be.vercel.app/transaction/successful_transaction', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: user.email,
-          courseid: courseId,
-          transaction_id: paymentResult.order_id,
-          message: 'Payment was successful'
-        })
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to update backend after successful payment');
-      }
-  
-      const backendResult = await response.json();
-      console.log('Backend updated successfully:', backendResult);
-    } catch (error) {
-      console.error('Error updating backend:', error);
-    }
-  }
-
-  useEffect(() => {
-    const snapScript = 'https://app.sandbox.midtrans.com/snap/snap.js';
-    const clientKey = 'SB-Mid-client-x09fbBq81vYMIdE6';
-    const script = document.createElement('script');
-    script.src = snapScript;
-    script.setAttribute('data-client-key', clientKey);
-    script.async = true; 
-
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      console.log("Snap.js loaded successfully!");
-    };
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   const fetchData = async () => {
     await Promise.all([
