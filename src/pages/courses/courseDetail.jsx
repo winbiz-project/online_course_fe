@@ -3,7 +3,7 @@ import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, S
   VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, 
   Spacer} from '@chakra-ui/react';
 import { StarIcon, LockIcon } from '@chakra-ui/icons';
-import { json, useParams, Link } from 'react-router-dom';
+import { json, useParams, Link, useNavigate } from 'react-router-dom';
 import AuthContext from '@/routes/authcontext'
 import Layout from '@/components/layout';
 
@@ -13,6 +13,7 @@ const CourseDetailPage = () => {
   const [ loading, setLoading ] = useState(true);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [courseDetail, setCourseDetail] = useState({});
+  const navigate = useNavigate();
 
   const getCourseDetail = async () => {
     try {
@@ -22,6 +23,7 @@ const CourseDetailPage = () => {
       }
       const data = await response.json();
       setCourseDetail(data.response);
+      console.log(data.response);
     } catch (error) {
       console.error(`Could not get courses: ${error}`);
     }
@@ -198,10 +200,26 @@ const CourseDetailPage = () => {
                   {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
                 </AccordionButton>
                 <AccordionPanel>
-                  {section.subsections.map((subsection) => (
+                  {section.subsections.map((subsection, index) => (
                     <React.Fragment key={subsection.subsection_id}>
                       {isEnrolled ? (
-                        <Link to={`/e-learning/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
+                        // <Link to={`/e-learning/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
+                        <Text
+                          as="button"
+                          color="teal"
+                          onClick={() =>
+                            navigate(`/e-learning/${courseId}/${subsection.subsection_id}`, {
+                              state: { 
+                                subsectionName: subsection.subsection_name,
+                                sectionName: section.section_name,
+                                sectionId: section.section_id,
+                                courseDetail: courseDetail,
+                              },
+                            })
+                          }
+                        >
+                          {subsection.subsection_name}
+                        </Text>
                       ) : (
                         <Text color="gray.500">{subsection.subsection_name}</Text>
                       )}
