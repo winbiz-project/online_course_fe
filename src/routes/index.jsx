@@ -46,13 +46,6 @@ export default function Router() {
       path: "/auth/register",
       element: <Register />,
     },
-    // {
-    //   path: "/corporate-service",
-    //   element: <PrivateRoute />,
-    //   children: [
-    //     { path: "", element: <CorporateService /> },
-    //   ],
-    // },
     {
       path: "/e-learning",
       element: <PrivateRoute />,
@@ -75,10 +68,6 @@ export default function Router() {
       children: [
         { path: "", element: <MyCourses />}
       ]
-    },
-    {
-      path: "/blog",
-      element: <Blog />,
     },
     {
       path: "*",

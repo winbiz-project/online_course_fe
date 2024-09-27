@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Stars from 'react-stars';
 import axios from 'axios';
 import {
-  Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, Wrap, WrapItem,
+  Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, Wrap, WrapItem, Spinner,
   Flex, Text, Image, Button, Container, Divider, InputGroup, InputRightElement, IconButton, Menu, MenuButton, MenuList, MenuItem
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from '@chakra-ui/icons'
@@ -15,29 +15,23 @@ const Courses = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [filterCourses, setFilterCourses] = useState(courses);
+  const [loading, setLoading ] = useState(true);
 
   const navigate = useNavigate();
-  const getAllCourses = async () => {
+  const getAllCoursesAndCategories = async () => {
     try {
-      const response = await fetch('https://online-course-be.vercel.app/course/get_all_published_course');
+      const response = await fetch('https://online-course-be.vercel.app/course/get_published_courses_and_categories');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setCourses(data);
-      setFilterCourses(data);
-      // console.log(data)
+      console.log(data.courses)
+      setCourses(data.courses);
+      setFilterCourses(data.courses);
+      setCategories(data.categories);
+      setLoading(false);
     } catch (error) {
       console.error(`Could not get courses: ${error}`);
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get('https://online-course-be.vercel.app/course/get_all_categories');
-      setCategories(response.data.response);
-    } catch (error) {
-      console.error('Error fetching categories', error);
     }
   };
 
@@ -74,8 +68,7 @@ const Courses = () => {
   };
 
   useEffect(() => {
-    getAllCourses();
-    fetchCategories();
+    getAllCoursesAndCategories();
   }
   , []);
 
@@ -84,7 +77,6 @@ const Courses = () => {
   };
   
   const [searchTerm, setSearchTerm] = useState("");
-  // const [sortOption, setSortOption] = useState('none');
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -135,6 +127,14 @@ const Courses = () => {
     }
     setFilterCourses(sortedCourses);
   };
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <Spinner size="xl" />
+      </Box>
+    );
+  }
 
   return (
     <Layout>

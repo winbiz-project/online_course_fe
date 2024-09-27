@@ -171,11 +171,11 @@ const Navbar = () => {
                                 </Link>
                             </Box>
                             <Box fontSize={'xl'} mb={3}>
-                                <Link to="/blog" isActive={location.pathname === '/blog'} onClick={onClose}>
+                                <a href="https://kursuseksporonline.id/blog/" target="_blank" rel="noopener noreferrer" onClick={onClose}>
                                     <Text fontFamily='Montserrat, sans-serif'>
                                         Blog
                                     </Text>
-                                </Link>
+                                </a>
                             </Box>
                             {!user && (
                                 <>
@@ -247,7 +247,7 @@ const Navbar = () => {
                     <Button as={Link} to="/e-learning" colorScheme="white" variant="link" mx={2} isActive={location.pathname === '/e-learning'}>
                         E-learning
                     </Button>
-                    <Button as={Link} to="/blog" colorScheme="white" variant="link" mx={2} isActive={location.pathname === '/blog'}>
+                    <Button as='a' href="https://kursuseksporonline.id/blog/" colorScheme="white" target="_blank" rel="noopener noreferrer" variant="link" mx={2}>
                         Blog
                     </Button>
                 </Box>
