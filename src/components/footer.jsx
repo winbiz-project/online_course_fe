@@ -459,7 +459,7 @@ const Footer = () => {
                                 <Flex flexDirection={{ base: "column", md: "row" }} gap={2}>
                                     <Input type='email' placeholder="Skillbridge@gmail.com" borderRadius={"20px"} bgColor={"#EDEDED"} 
                                         value={subscribeEmail} onChange={(e) => setSubscribeEmail(e.target.value)}/>
-                                    <Button colorScheme={"blue"} bgColor={"#004BAD"} borderRadius={"20px"} type="submit" onClick={handleSubscribe}>Mencoba</Button>
+                                    <Button colorScheme={"blue"} bgColor={"#004BAD"} borderRadius={"20px"} type="submit" onClick={handleSubscribe}>Subscribe</Button>
                                 </Flex>
                             </FormControl>
                         </Box>
@@ -671,7 +671,7 @@ const Footer = () => {
                         <Link href="#" my={1}>
                             Kerjasama
                         </Link>
-                        <Link href="#" my={1}>
+                        <Link href="https://kursuseksporonline.id/blog/" my={1} target="_blank" rel="noopener noreferrer">
                             Blog
                         </Link>
                     </Flex>
@@ -686,7 +686,7 @@ const Footer = () => {
                         <Text fontSize="lg" fontWeight="bold">
                             Lainnya
                         </Text>
-                        <Link href="#" my={1}>
+                        <Link href="https://docs.google.com/document/d/1sHQrMUHjp9Tguzfvwk1_hJNIBJiD1pKMVDpKRjvBkxQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer" my={1}>
                             FAQ
                         </Link>
                         <Link href="/terms" my={1}>

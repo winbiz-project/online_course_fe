@@ -68,10 +68,6 @@ export default function Router() {
       ]
     },
     {
-      path: "/blog",
-      element: <Blog />,
-    },
-    {
       path: "*",
       element: <NotFound />,
     },
