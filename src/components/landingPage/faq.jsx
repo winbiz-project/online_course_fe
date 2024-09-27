@@ -1,65 +1,4 @@
-// import { Box, Flex, Image, Text, Button, Accordion, AccordionButton, AccordionItem, AccordionIcon, AccordionPanel } from "@chakra-ui/react";
-// import FaqItem from "./faqItem";
-
-
-// const Faq = () => {
-//     return (
-//         <Flex
-//             direction="column"
-//             justifyContent="center"
-//             alignItems="center"
-//             p={"20"}
-//             pb={"5"}
-//             bgColor={'white'}
-//         >
-// {/* 
-//             <Flex
-//                 direction="column"
-//                 w={'100%'}
-//                 justifyContent="center"
-//                 alignItems="center"
-//                 bgColor={'white'}
-//                 mt={-10}
-//                 borderRadius={"10px"}
-//             > */}
-//             <Text fontSize={'2xl'} fontWeight={'bold'} mb={10} mt={-10}>Pertanyaan yang Sering Diajukan</Text>
-//             <Accordion defaultIndex={[0]} allowMultiple w='78%'>
-//                 <FaqItem 
-//                     question={"Apa itu Skillbridge?"}
-//                     answer={"SkillBridge merupakan platform kursus online yang menawarkan berbagai pelatihan keterampilan dalam berbagai bidang seperti ________, ______, _______, dan banyak lagi. Kami bertujuan untuk membantu individu meningkatkan keterampilan mereka melalui konten berkualitas tinggi dan instruktur ahli."}
-//                 />
-
-//                 <FaqItem 
-//                     question={"Metode pembayaran apa saja yang digunakan pada Skillbridge?"}
-//                     answer={"Pembayaran dapat dilakukan melalui berbagai metode, termasuk e-wallet, QRIS, transfer bank, serta pembayaran di swalayan terdekat."}
-//                 />
-
-//                 <FaqItem 
-//                     question={"Ke mana saya dapat menghubungi untuk informasi kerjasama atau jika mengalami kendala?"}
-//                     answer={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
-//                 />
-
-//                 <FaqItem 
-//                     question={"Section 2 title"}
-//                     answer={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
-//                 />
-
-//                 <FaqItem 
-//                     question={"Section 2 title"}
-//                     answer={"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
-//                 />
-
-        
-//             </Accordion>
-//             {/* </Flex> */}
-            
-//         </Flex>
-//     )
-// }
-
-// export default Faq
-
-import { Flex, Text, Accordion } from "@chakra-ui/react";
+import { Flex, Text, Accordion,Link } from "@chakra-ui/react";
 import FaqItem from "./faqItem";
 
 const Faq = () => {
@@ -75,9 +14,13 @@ const Faq = () => {
         Pertanyaan yang Sering Diajukan
       </Text>
       <Accordion defaultIndex={[0]} allowMultiple w={{ base: "100%", md: "78%" }}>
-        <FaqItem 
+      <FaqItem 
           question="Apa itu Skillbridge?"
-          answer="SkillBridge merupakan platform kursus online yang menawarkan berbagai pelatihan keterampilan dalam berbagai bidang seperti ________, ______, _______, dan banyak lagi. Kami bertujuan untuk membantu individu meningkatkan keterampilan mereka melalui konten berkualitas tinggi dan instruktur ahli."
+          answer={
+            <>
+              SkillBridge merupakan platform kursus online yang menawarkan berbagai pelatihan keterampilan dalam berbagai bidang seperti <Text as="i">export business</Text>, <Text as="i">work in Japan</Text>, <Text as="i">study abroad</Text>, <Text as="i">marketing</Text>, <Text as="i">finance & accounting</Text>, <Text as="i">office productivity</Text>, <Text as="i">personal development</Text> dan banyak lagi. Kami bertujuan untuk membantu individu meningkatkan keterampilan mereka melalui konten berkualitas tinggi dan instruktur ahli.
+            </>
+          }
         />
         <FaqItem 
           question="Metode pembayaran apa saja yang digunakan pada Skillbridge?"
@@ -85,15 +28,26 @@ const Faq = () => {
         />
         <FaqItem 
           question="Ke mana saya dapat menghubungi untuk informasi kerjasama atau jika mengalami kendala?"
-          answer="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          answer={
+            <>
+              Anda dapat menghubungi Skillbridge melalui WhatsApp{" "}
+              <Link href="https://wa.me/62811201218" isExternal color="#1155CC">
+                wa.me/62811201218
+              </Link>{" "} 
+              atau Anda bisa email ke{" "}
+              <Link href="mailto:mei.annisa@skillbridge.id" color="#1155CC">
+                mei.annisa@skillbridge.id
+              </Link>.
+            </>
+          }
         />
         <FaqItem 
-          question="Section 2 title"
-          answer="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          question="Apakah saya mendapatkan sertifikat setelah menyelesaikan kursus?"
+          answer="Ya, Anda akan mendapatkan sertifikat setelah menyelesaikan semua materi kursus dan lulus dari tes yang disediakan."
         />
-        <FaqItem                      
-          question="Section 2 title"
-          answer="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        <FaqItem
+          question="Berapa lama saya bisa mengakses kursus setelah membelinya?"
+          answer="Anda bisa mengakses kursus yang sudah dibeli tanpa batas waktu (lifetime access) dan dapat kembali kapan saja untuk menonton ulang materi kursus."
         />
       </Accordion>
     </Flex>
