@@ -22,6 +22,7 @@ import CourseDetailPage from "@/pages/courses/courseDetail";
 import CourseVideo from "@/pages/courses/coursevideo";
 import Terms from "@/pages/terms";
 import Privacy from "@/pages/privacy";
+import CourseQuiz from "@/pages/courses/coursequiz";
 
 export default function Router() {
 
@@ -57,7 +58,8 @@ export default function Router() {
           children: [
             { path: "", element: <CourseVideo />}
           ]
-        }
+        },
+        { path: "quiz/:quizId", element: <CourseQuiz />  }
       ],
     },
     {
@@ -66,10 +68,6 @@ export default function Router() {
       children: [
         { path: "", element: <MyCourses />}
       ]
-    },
-    {
-      path: "/blog",
-      element: <Blog />,
     },
     {
       path: "*",
