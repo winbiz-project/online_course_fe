@@ -53,7 +53,7 @@ export default function Router() {
         { path: "", element: <Courses /> },
         { path: ":courseId", element: <CourseDetailPage />},
         {
-          path: ":courseId/:courseSubsectionId",
+          path: ":courseId/:subsectionId",
           element: <SectionRoute />,
           children: [
             { path: "", element: <CourseVideo />}
