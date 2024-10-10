@@ -79,6 +79,17 @@ const Hero = () => {
         filter="blur(5px)"
       />
 
+      {/* Overlay Box */}
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        width="100%"
+        height="100%"
+        bg="rgba(9, 8, 15, 0.5)"
+        zIndex="0"
+      />
+
       <Flex
         position="absolute"
         top="50%"

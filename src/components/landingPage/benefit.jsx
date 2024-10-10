@@ -180,7 +180,7 @@ const Benefit = () => {
             gap={"5"}
         >
             <Box flex="1" textAlign={{ base: "center", md: "left" }}>
-                <Text fontSize={"xl"} fontWeight={"bold"} color={"#FFC007"}>
+                <Text fontSize={"xl"} fontWeight={"bold"} color={"#E5AD06"}>
                     WHAT WE GIVE
                 </Text>
                 <Text fontSize={"4xl"} fontWeight={"bold"}>
