@@ -70,7 +70,7 @@ const Testimony = () => {
       py={10}
       bgColor="#9AC5F4"
     >
-      <Text fontSize="xl" fontWeight="bold" color="#FFC007">
+      <Text fontSize="xl" fontWeight="bold" color="#1450A3">
         TESTIMONI
       </Text>
       <Text fontSize="3xl" fontWeight="bold">

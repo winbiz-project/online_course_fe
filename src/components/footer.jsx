@@ -69,8 +69,8 @@ const Footer = () => {
                         gap={4}
                     >
                         <Box width={{ base: "100%", md: "40%" }} textAlign={{ base: "center", md: "left" }}>
-                            <Text fontSize={"xl"} fontWeight={"semibold"} color={"#FFC007"}>
-                                Programmer
+                            <Text fontSize={"xl"} fontWeight={"semibold"} color={"#1450A3"}>
+                                Subscribe to
                             </Text>
                             <Text fontSize={"4xl"} fontWeight={"bold"}>Our Newsletter</Text>
                         </Box>

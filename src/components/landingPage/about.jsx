@@ -36,7 +36,7 @@ const About = () => {
         </Box>
       </Box>
       <Box flex="1" textAlign="left">
-        <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold" color="#FFC007">
+        <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold" color="#1450A3">
           About Us
         </Text>
         <Text fontSize={{ base: "xl", md: "4xl" }} fontWeight="bold">
