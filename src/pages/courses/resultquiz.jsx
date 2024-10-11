@@ -71,7 +71,7 @@ const ResultQuiz = () => {
                                     color='white'  
                                     h={8}
                                     onClick={() =>
-                                        navigate(`/e-learning/quiz/${quizList[quizIndex+1]}`, {
+                                        navigate(`/e-learning/quiz/${quizList[quizIndex+1].quiz_id}`, {
                                         state: {
                                             sectionName: sectionName,
                                             sectionIndex: sectionIndex,
