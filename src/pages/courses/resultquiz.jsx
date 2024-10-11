@@ -16,6 +16,7 @@ const ResultQuiz = () => {
     const navigate = useNavigate();
     const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList, quizScore } = location.state || {};
     const { quizId } = useParams();
+    const roundedScore = Math.round(quizScore);
 
     return (
         <Layout>
@@ -33,7 +34,7 @@ const ResultQuiz = () => {
                     >
                         <Text as={'b'} fontSize={'3xl'}>{'[Quiz]'} {quizList[quizIndex].quiz_title}</Text>
                         <Text as={'i'} fontSize={'md'} pb={'50px'}>Section: {sectionName}</Text>
-                        <Text pb={'10px'}>Nilai Anda: {quizScore}</Text>
+                        <Text pb={'10px'}>Nilai Anda: {roundedScore}</Text>
                         <Flex>
                             <Box 
                                 as='button' 
