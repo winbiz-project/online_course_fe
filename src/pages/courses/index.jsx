@@ -211,7 +211,7 @@ const Courses = () => {
         <Box>
           {filterCourses.map((course) => (
             <React.Fragment key={course.course_id}>
-              <Box mb={5} borderRadius={8} alignItems="center">
+              <Box mb={courses.length == 1? 20 : 5} borderRadius={8} alignItems="center">
                 <Flex direction="row" justify="space-between" alignItems="center" wrap="wrap">
                   <Box width={["100%", "35%"]}>
                     {/* Ensure you provide a valid image source */}

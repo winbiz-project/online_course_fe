@@ -23,7 +23,7 @@ const Benefit = () => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/courses');
+        navigate('/e-learning');
     };
 
     return (
