@@ -186,7 +186,7 @@ const CourseDetailPage = () => {
                               as="button"
                               color="teal"
                               onClick={() =>
-                                navigate(`/e-learning/quiz/${quiz.quiz_id}`, {
+                                navigate(`/e-learning/quiz/${quiz.quiz_id}/start`, {
                                   state: { 
                                     sectionName: section.section_name,
                                     sectionIndex: idxSection,

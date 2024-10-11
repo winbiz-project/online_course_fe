@@ -1,8 +1,10 @@
 import Layout from '@/components/layout';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
     RadioGroup, Stack, Radio, Accordion, AccordionItem, AccordionIcon, AccordionButton, AccordionPanel,
     Breadcrumb, BreadcrumbItem, BreadcrumbLink, VStack, IconButton } from '@chakra-ui/react';
+
+import { useDisclosure, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
 import { useParams } from "react-router-dom";
 import ReactPlayer from 'react-player';
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
@@ -15,7 +17,6 @@ function CourseQuiz() {
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList } = location.state || {};
-//   const subsectionLength = subsectionList.length;
   const { quizId } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -27,6 +28,8 @@ function CourseQuiz() {
   const [questionIdList, setQuestionIdList] = useState([]);
   const [currentQuestionId, setCurrentQuestionId] = useState('');
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
 
   const getQuiz = async () => {
     setLoading(true);
@@ -41,8 +44,9 @@ function CourseQuiz() {
                 }),
         });
         if (!response.ok) {
+            setLoading(false);
             throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        } 
         const data = await response.json();
         setQuizData(data.Quiz);
         setQuestionIdList(Object.keys(data.Quiz.details));
@@ -78,6 +82,9 @@ function CourseQuiz() {
   };
 
   const handleSubmit = async () => {
+    onClose();
+    setLoading(true);
+
     var total_correct = 0;
     var total_question = Object.keys(answers).length;
 
@@ -86,11 +93,6 @@ function CourseQuiz() {
             total_correct += 1;
         }
     }
-
-    console.log("User ID: ",user.user_id);
-    console.log("Course ID: ",courseDetail.course_id);
-    console.log("Total Correct: ",total_correct);
-    console.log("Total Question: ",total_question);
 
 
     try {
@@ -111,11 +113,23 @@ function CourseQuiz() {
         }
 
         if(response.ok) {
-            console.log("berhasil");
-            console.log(response.json);
+            const data = await response.json();
+            navigate(`/e-learning/quiz/${quizId}/result`, {
+                state: {
+                  sectionName: sectionName,
+                  sectionIndex: sectionIndex,
+                  courseDetail: courseDetail,
+                  subsectionList: subsectionList,
+                  quizIndex: quizIndex,
+                  quizList: quizList,
+                  quizScore: data['Score']
+                },
+              })
         }
     } catch (error) {
         console.error(`Could not submit quiz: ${error}`);
+    } finally {
+        setLoading(false);
     }
   }
 
@@ -275,7 +289,7 @@ return (
                             {currentQuestion === questionIdList.length - 1 ? (
                             <Button
                                 rightIcon={<ChevronRightIcon />}
-                                onClick={handleSubmit}
+                                onClick={onOpen}
                                 ml={40}
                             >
                                 Submit
@@ -459,6 +473,34 @@ return (
                     </Box>
                     
                 </Flex>
+
+                {/* AlertDialog for confirmation */}
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        Confirm Submission
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                        Are you sure you want to submit the quiz?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme="blue" bgColor={'#004BAD'} onClick={handleSubmit} ml={3}>
+                            Submit
+                        </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
             </Box>
         )
     }
