@@ -10,10 +10,12 @@ import ReactPlayer from 'react-player';
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from '@/routes/authcontext';
+import config from '@/config';
 
 
 
 function CourseQuiz() {
+  const baseUrl = config.apiBaseUrl;
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList } = location.state || {};
@@ -34,7 +36,7 @@ function CourseQuiz() {
   const getQuiz = async () => {
     setLoading(true);
     try {
-        const response = await fetch('https://online-course-be.vercel.app/quiz/get_quiz_on_enrolled_course/'+quizId,{
+        const response = await fetch(`${baseUrl}/quiz/get_quiz_on_enrolled_course/${quizId}`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +98,7 @@ function CourseQuiz() {
 
 
     try {
-        const response = await fetch('https://online-course-be.vercel.app/quiz/submit_quiz/'+quizId,{
+        const response = await fetch(`${baseUrl}/quiz/submit_quiz/${quizId}`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

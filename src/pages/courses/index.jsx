@@ -8,8 +8,10 @@ import {
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
+import config from "@/config";
 
 const Courses = () => {
+  const baseUrl = config.apiBaseUrl;
   const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -20,7 +22,7 @@ const Courses = () => {
   const navigate = useNavigate();
   const getAllCoursesAndCategories = async () => {
     try {
-      const response = await fetch('https://online-course-be.vercel.app/course/get_published_courses_and_categories');
+      const response = await fetch(`${baseUrl}/course/get_published_courses_and_categories`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

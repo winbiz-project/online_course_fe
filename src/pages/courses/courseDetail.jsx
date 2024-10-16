@@ -6,8 +6,10 @@ import { StarIcon, LockIcon } from '@chakra-ui/icons';
 import { json, useParams, Link, useNavigate } from 'react-router-dom';
 import AuthContext from '@/routes/authcontext'
 import Layout from '@/components/layout';
+import config from '@/config';
 
 const CourseDetailPage = () => {
+  const baseUrl = config.apiBaseUrl;
   const { courseId } = useParams();
   const { user } = useContext(AuthContext);
   const [ loading, setLoading ] = useState(true);
@@ -17,7 +19,7 @@ const CourseDetailPage = () => {
 
   const getCourseDetail = async () => {
     try {
-      const response = await fetch('https://online-course-be.vercel.app/course/get_course_by_id/'+courseId);
+      const response = await fetch(`${baseUrl}/course/get_course_by_id/${courseId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -30,7 +32,7 @@ const CourseDetailPage = () => {
 
   const checkEnrollment = async () => {
     try {
-      const response = await fetch(`https://online-course-be.vercel.app/course/check_user_enrolled/`+user.email+'/'+courseId);
+      const response = await fetch(`${baseUrl}/course/check_user_enrolled/${user.email}/${courseId}`);
       if (!response.ok) {
         throw new Error('Failed to check enrollment status');
       }
@@ -45,7 +47,7 @@ const CourseDetailPage = () => {
   const handlePurchase = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://online-course-be.vercel.app/transaction/create_xendit_invoice', {
+      const response = await fetch(`${baseUrl}/transaction/create_xendit_invoice`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

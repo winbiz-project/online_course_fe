@@ -7,8 +7,10 @@ import { useParams } from "react-router-dom";
 import ReactPlayer from 'react-player';
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { useLocation, useNavigate } from "react-router-dom";
+import config from '@/config';
 
 function CourseVideo() {
+  const baseUrl = config.apiBaseUrl;
   const location = useLocation();
   const { sectionName, sectionIndex, courseDetail, subsectionList, subsectionIndex, subsectionName, quizList } = location.state || {};
   const { courseId, subsectionId } = useParams(); 
@@ -22,12 +24,11 @@ function CourseVideo() {
   const getVideo = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://online-course-be.vercel.app/course/get_sub_section_details/'+subsectionId);
+      const response = await fetch(`${baseUrl}/course/get_sub_section_details/${subsectionId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        // setVideo(data.response)
         setSubsectionVid(data);
     }
     catch (error) {
@@ -71,7 +72,7 @@ function CourseVideo() {
           as="button"
           display="flex"
           alignItems="center"
-          onClick={() => navigate(`/e-learning/quiz/${quizList[0].quiz_id}`, {
+          onClick={() => navigate(`/e-learning/quiz/${quizList[0].quiz_id}/start`, {
             state: {
               sectionName: sectionName,
               sectionIndex: sectionIndex,
