@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - production
+      - staging
   pull_request:
     branches:
-      - production
+      - staging
 
 jobs:
   dockerize:
