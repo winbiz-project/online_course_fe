@@ -47,7 +47,7 @@ jobs:
         port: ${{ secrets.SERVER_SSH_PORT }}
         script: |
           docker pull ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:dev
-          docker stop stonedepot || true
-          docker rm stonedepot || true
-          docker run -d -p 8304:8304 --name stonedepot ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:dev
+          docker stop client_dev || true
+          docker rm client_dev || true
+          docker run -d -p 8304:8304 --name client_dev ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:dev
           docker image prune -f || true
