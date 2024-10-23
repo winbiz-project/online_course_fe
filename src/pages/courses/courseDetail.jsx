@@ -156,17 +156,7 @@ const CourseDetailPage = () => {
                           as="button"
                           color="teal"
                           onClick={() =>
-                            navigate(`/e-learning/${courseId}/${subsection.subsection_id}`, {
-                              state: { 
-                                sectionName: section.section_name,
-                                sectionIndex: idxSection,
-                                courseDetail: courseDetail,
-                                subsectionList: section.subsections,
-                                subsectionIndex: index,
-                                subsectionName: subsection.subsection_name,
-                                quizList: section.quizzes,
-                              },
-                            })
+                            navigate(`/e-learning/${courseId}/${subsection.subsection_id}?section=${idxSection}`)
                           }
                         >
                           {subsection.subsection_name}
@@ -188,16 +178,7 @@ const CourseDetailPage = () => {
                               as="button"
                               color="teal"
                               onClick={() =>
-                                navigate(`/e-learning/quiz/${quiz.quiz_id}/start`, {
-                                  state: { 
-                                    sectionName: section.section_name,
-                                    sectionIndex: idxSection,
-                                    courseDetail: courseDetail,
-                                    subsectionList: section.subsections,
-                                    quizIndex: index,
-                                    quizList: section.quizzes,
-                                  },
-                                })
+                                navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
                               }
                             >
                               {'[Quiz]'} {quiz.quiz_title}

@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
     VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Link, 
     Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, IconButton } from '@chakra-ui/react';
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ReactPlayer from 'react-player';
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,15 +11,50 @@ import config from '@/config';
 
 function CourseVideo() {
   const baseUrl = config.apiBaseUrl;
+  const [searchParams] = useSearchParams();
+  const sectionIndex = searchParams.get('section');
   const location = useLocation();
-  const { sectionName, sectionIndex, courseDetail, subsectionList, subsectionIndex, subsectionName, quizList } = location.state || {};
+  // const { sectionName, sectionIndex, courseDetail, subsectionList,   , subsectionName, quizList } = location.state || {};
+  const [courseDetail, setCourseDetail] = useState({});
+  const [sectionName, setSectionName] = useState('');
+  const [sectionList, setSectionList] = useState([]);
+  const [subsectionList, setSubsectionList] = useState([]);
+  const [subsectionIdx, setSubsectionIdx] = useState(0);
+  const [subsectionName, setSubsectionName] = useState('');
+  const [quizList, setQuizList] = useState([]);
   const { courseId, subsectionId } = useParams(); 
   const [subsectionVid, setSubsectionVid] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [courseAvail, setCourseAvail] = useState(false)
   const navigate = useNavigate();
 
+  const getCourseDetail = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/course/get_course_by_id/${courseId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setCourseDetail(data.response);
+      setSectionList(data.response.sections);
+      setSectionName(data.response.sections[sectionIndex].section_name);
+      setSubsectionList(data.response.sections[sectionIndex].subsections);
+      setQuizList(data.response.sections[sectionIndex].quizzes)
+
+      let idx = 0;
+      data.response.sections[sectionIndex].subsections.forEach((subsection, i) => {
+        if (subsection.subsection_id === parseInt(subsectionId)) {
+          setSubsectionIdx(idx);
+        }
+        idx += 1;
+      });
+      setCourseAvail(true);
+    } catch (error) {
+      console.error(`Could not get courses: ${error}`);
+    }
+  };
 
   const getVideo = async () => {
     setLoading(true);
@@ -30,34 +65,23 @@ function CourseVideo() {
         }
         const data = await response.json();
         setSubsectionVid(data);
+        setSubsectionName(data.sub_section_title);
+        setLoading(false);
     }
     catch (error) {
         console.error(`Could not get courses: ${error}`);
-    } finally {
-      setLoading(false);
     }
-
   }
 
   const renderNextButton = () => {
     // Jika belum di subseksi terakhir, lanjutkan ke subseksi berikutnya
-    if (subsectionIndex < subsectionList.length - 1) {
+    if (subsectionIdx < subsectionList.length - 1) {
       return (
         <Box
           as="button"
           display="flex"
           alignItems="center"
-          onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIndex + 1].subsection_id}`, {
-            state: {
-              sectionName: sectionName,
-              sectionIndex: sectionIndex,
-              courseDetail: courseDetail,
-              subsectionList: subsectionList,
-              subsectionIndex: subsectionIndex + 1,
-              subsectionName: subsectionList[subsectionIndex + 1].subsection_name,
-              quizList: quizList,
-            },
-          })}
+          onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx + 1].subsection_id}?section=${sectionIndex}`)}
         >
           <Text fontWeight="bold">Berikutnya</Text>
           <ChevronRightIcon boxSize={5} />
@@ -72,16 +96,7 @@ function CourseVideo() {
           as="button"
           display="flex"
           alignItems="center"
-          onClick={() => navigate(`/e-learning/quiz/${quizList[0].quiz_id}/start`, {
-            state: {
-              sectionName: sectionName,
-              sectionIndex: sectionIndex,
-              courseDetail: courseDetail,
-              subsectionList: subsectionList,
-              quizIndex: 0,
-              quizList: quizList,
-            },
-          })}
+          onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[0].quiz_id}/start?section=${sectionIndex}`)}
         >
           <Text fontWeight="bold">Berikutnya</Text>
           <ChevronRightIcon boxSize={5} />
@@ -89,38 +104,45 @@ function CourseVideo() {
       );
     }
 
-    // Jika tidak ada kuis, dan sudah di subsection terakhir pada section
-    return (
-      <Box
-          as="button"
-          display="flex"
-          alignItems="center"
-          onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIndex + 1].subsection_id}`, {
-            state: {
-              sectionName: sectionName,
-              sectionIndex: sectionIndex,
-              courseDetail: courseDetail,
-              subsectionList: subsectionList,
-              subsectionIndex: subsectionIndex + 1,
-              subsectionName: subsectionList[subsectionIndex + 1].subsection_name,
-              quizList: quizList,
-            },
-          })}
-        >
-          <Text fontWeight="bold">Berikutnya</Text>
-          <ChevronRightIcon boxSize={5} />
-        </Box>
-    );
+    // Jika tidak ada kuis, dan sudah di subsection terakhir pada section dan masih ada section selanjutnya
+    if (parseInt(sectionIndex) !== sectionList.length-1){
+      return (
+        <Box
+            as="button"
+            display="flex"
+            alignItems="center"
+            onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx + 1].subsection_id}?section=${sectionIndex+1}`)}
+          >
+            <Text fontWeight="bold">Berikutnya</Text>
+            <ChevronRightIcon boxSize={5} />
+          </Box>
+      );
+      
+    }
+
+    // Jika tidak ada kuis, dan sudah di subsection terakhir pada section dan tidak ada section selanjutnya
+    return(
+      <Box as='span'>
+      </Box>
+    )
   };
 
   useEffect(() => {
+      getCourseDetail();
       getVideo();
+
     }, [subsectionId]);
 
 
 return (
   <Layout>
-    {location.state ? (
+    { loading && !courseAvail &&
+      <Flex justify="center" align="center" height={{ base: "200px", md: "900px" }}>
+        <Spinner size="xl" />
+      </Flex>
+    }
+    
+    {!loading && courseAvail &&
       <Box position="relative" height="auto" pb={5}>
         <Flex direction="row" justifyContent="space-between" height={{ base:"auto", md: "120vh" }} overflow="hidden">
           <Flex direction="column" width={sidebarOpen ? {base: "100%", md: '75%'} : "100%"} transition="width 0.3s ease">          
@@ -146,7 +168,7 @@ return (
               </Breadcrumb>
 
               <Flex alignItems="center" justifyContent="space-between" mb={4} width={{ base: "150px", md: "250px" }}>
-                {subsectionIndex == 0 ? (
+                {subsectionIdx == 0 ? (
                   <Box as='span'>
                   </Box>
                 ) : (
@@ -154,17 +176,7 @@ return (
                     as="button"
                     display="flex"
                     alignItems="center"
-                    onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIndex-1].subsection_id}`, {
-                      state: {
-                        sectionName:sectionName,
-                        sectionIndex: sectionIndex,
-                        courseDetail: courseDetail,
-                        subsectionList: subsectionList,
-                        subsectionIndex: subsectionIndex-1,
-                        subsectionName: subsectionList[subsectionIndex-1].subsection_name,
-                        quizList: section.quizzes,
-                      },
-                    })}
+                    onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx-1].subsection_id}?section=${sectionIndex}`)}
                   >
                     <ChevronLeftIcon boxSize={5}/>
                     <Text fontSize={{base: 'xs', md: 'md'}} fontWeight="bold">Sebelumnya</Text>
@@ -322,17 +334,7 @@ return (
                                 p={2}
                                 backgroundColor={'#EBEBEB'}
                                 onClick={() =>
-                                  navigate(`/e-learning/${courseId}/${subsection.subsection_id}`, {
-                                    state: { 
-                                      sectionName: section.section_name,
-                                      sectionIndex: idxSection,
-                                      courseDetail: courseDetail,
-                                      subsectionList: section.subsections,
-                                      subsectionIndex: index,
-                                      subsectionName: subsection.subsection_name,
-                                      quizList: section.quizzes,
-                                    },
-                                  })
+                                  navigate(`/e-learning/${courseId}/${subsection.subsection_id}?section=${idxSection}`)
                                 }
                                 _hover={{ bg: "#EBEBEB" }}
                                 textAlign="left"
@@ -350,17 +352,7 @@ return (
                                 width="100%"
                                 p={2}
                                 onClick={() =>
-                                  navigate(`/e-learning/${courseId}/${subsection.subsection_id}`, {
-                                    state: { 
-                                      sectionName: section.section_name,
-                                      sectionIndex: idxSection,
-                                      courseDetail: courseDetail,
-                                      subsectionList: section.subsections,
-                                      subsectionIndex: index,
-                                      subsectionName: subsection.subsection_name,
-                                      quizList: section.quizzes,
-                                    },
-                                  })
+                                  navigate(`/e-learning/${courseId}/${subsection.subsection_id}?section=${idxSection}`)
                                 }
                                 _hover={{ bg: "#EBEBEB" }}
                                 textAlign="left"
@@ -384,16 +376,7 @@ return (
                                     width="100%"
                                     p={2}
                                     onClick={() =>
-                                      navigate(`/e-learning/quiz/${quiz.quiz_id}`, {
-                                        state: { 
-                                          sectionName: section.section_name,
-                                          sectionIndex: idxSection,
-                                          courseDetail: courseDetail,
-                                          subsectionList: section.subsections,
-                                          quizIndex: index,
-                                          quizList: section.quizzes,
-                                        },
-                                      })
+                                      navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
                                     }
                                     _hover={{ bg: "#EBEBEB" }}
                                     textAlign="left"
@@ -445,9 +428,7 @@ return (
           )}
         </Box>
       </Box>
-    ):(
-      <Text>Error</Text>
-    )}
+    }
 
   </Layout>
 );
