@@ -5,36 +5,76 @@ import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, S
     Breadcrumb, BreadcrumbItem, BreadcrumbLink, VStack, IconButton } from '@chakra-ui/react';
 
 import { useDisclosure, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
-import { useParams } from "react-router-dom";
-import ReactPlayer from 'react-player';
+import { useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from '@/routes/authcontext';
+import config from '@/config';
 
 
 
 function CourseQuiz() {
+  const baseUrl = config.apiBaseUrl;
   const location = useLocation();
   const { user } = useContext(AuthContext);
-  const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList } = location.state || {};
-  const { quizId } = useParams();
+  const navigate = useNavigate();
+//   const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList } = location.state || {};
+  const [searchParams] = useSearchParams();
+  const sectionIndex = searchParams.get('section');
+  const [courseDetail, setCourseDetail] = useState({});
+  const [sectionName, setSectionName] = useState('');
+  const [sectionList, setSectionList] = useState([]);
+  const [subsectionList, setSubsectionList] = useState([]);
+  const [subsectionIdx, setSubsectionIdx] = useState(0);
+  const [subsectionName, setSubsectionName] = useState('');
+  const [quizList, setQuizList] = useState([]);
+  const { quizId, courseId } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [quizData, setQuizData] = useState({});
+  
+  const [courseAvail, setCourseAvail] = useState(false);
+  const [quizAvail, setQuizAvail] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const [quizIndex, setQuizIndex] = useState(0);
   const [questionIdList, setQuestionIdList] = useState([]);
   const [currentQuestionId, setCurrentQuestionId] = useState('');
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef();
+  
+  const getCourseDetail = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/course/get_course_by_id/${courseId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setCourseDetail(data.response);
+      setSectionList(data.response.sections);
+      setSectionName(data.response.sections[sectionIndex].section_name);
+      setSubsectionList(data.response.sections[sectionIndex].subsections);
+
+      data.response.sections[sectionIndex].quizzes.forEach((quiz, i) => {
+        if (quiz.quiz_id === parseInt(quizId)) {
+          setQuizIndex(i);
+        }
+      });
+
+      setQuizList(data.response.sections[sectionIndex].quizzes);
+      setCourseAvail(true);
+    } catch (error) {
+      console.error(`Could not get courses: ${error}`);
+    }
+  };
 
   const getQuiz = async () => {
     setLoading(true);
     try {
-        const response = await fetch('https://online-course-be.vercel.app/quiz/get_quiz_on_enrolled_course/'+quizId,{
+        const response = await fetch(`${baseUrl}/quiz/get_quiz_on_enrolled_course/${quizId}`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,8 +91,8 @@ function CourseQuiz() {
         setQuizData(data.Quiz);
         setQuestionIdList(Object.keys(data.Quiz.details));
         setCurrentQuestionId(Object.keys(data.Quiz.details)[0]);
+        setQuizAvail(true);
         setLoading(false);
-
     } catch (error) {
         console.error(`Could not get quiz: ${error}`);
     }
@@ -96,7 +136,7 @@ function CourseQuiz() {
 
 
     try {
-        const response = await fetch('https://online-course-be.vercel.app/quiz/submit_quiz/'+quizId,{
+        const response = await fetch(`${baseUrl}/quiz/submit_quiz/${quizId}`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -113,40 +153,67 @@ function CourseQuiz() {
         }
 
         if(response.ok) {
+            setLoading(false);
             const data = await response.json();
-            navigate(`/e-learning/quiz/${quizId}/result`, {
+            navigate(`/e-learning/${courseId}/quiz/${quizId}/result?section=${sectionIndex}`, {
                 state: {
-                  sectionName: sectionName,
-                  sectionIndex: sectionIndex,
-                  courseDetail: courseDetail,
-                  subsectionList: subsectionList,
-                  quizIndex: quizIndex,
-                  quizList: quizList,
-                  quizScore: data['Score']
-                },
-              })
+                    quizScore: data['Score'],
+
+                }
+            })
         }
     } catch (error) {
         console.error(`Could not submit quiz: ${error}`);
-    } finally {
-        setLoading(false);
     }
   }
 
-  useEffect(() => {
-      getQuiz()
-    }, [quizId]);
+  const renderNextButton = () => {
+    // Mengecek Apakah ada quiz selanjutnya atau tidak
+    if (quizIndex < quizList.length -1) {
+      return (
+        <Box
+          as="button"
+          display="flex"
+          alignItems="center"
+          onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)}
+        >
+          <Text fontWeight="bold">Berikutnya</Text>
+          <ChevronRightIcon boxSize={5} />
+        </Box>
+      );
+    }
 
+    // Jika sudah di quiz terakhir pada section dan masih ada section selanjutnya
+    if (parseInt(sectionIndex) !== sectionList.length-1){
+      return (
+        <Box
+            as="button"
+            display="flex"
+            alignItems="center"
+            onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[0].subsection_id}?section=${sectionIndex+1}`)}
+          >
+            <Text fontWeight="bold">Berikutnya</Text>
+            <ChevronRightIcon boxSize={5} />
+          </Box>
+      );
+      
+    }
+
+    // Jika tidak ada kuis, dan sudah di subsection terakhir pada section dan tidak ada section selanjutnya
+    return(
+      <Box as='span'>
+      </Box>
+    )
+  };
+
+  useEffect(() => {
+      getCourseDetail();
+      getQuiz();
+    }, [quizId]);
 
 return (
   <Layout>
-    { loading ?
-        (
-            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                <Spinner size="xl" />
-            </Box>
-        )
-    : 
+    { quizAvail && courseAvail && !loading ?
         (
             <Box position="relative" height="auto" pb={5}>
                 <Flex direction="row" justifyContent="space-between" height={"60vh"} overflow="hidden">
@@ -176,17 +243,7 @@ return (
                                     as="button"
                                     display="flex"
                                     alignItems="center"
-                                    onClick={() => navigate(`/e-learning/${courseDetail.course_id}/${subsectionList[subsectionList.length-1].subsection_id}`, {
-                                        state: {
-                                            sectionName:sectionName,
-                                            sectionIndex: sectionIndex,
-                                            courseDetail: courseDetail,
-                                            subsectionList: subsectionList,
-                                            subsectionIndex: subsectionList.length-1,
-                                            subsectionName: subsectionList[subsectionList.length-1].subsection_name,
-                                            quizList: quizList,
-                                        },
-                                    })}
+                                    onClick={() => navigate(`/e-learning/${courseDetail.course_id}/${subsectionList[subsectionList.length-1].subsection_id}?section=${sectionIndex}`)}
                                     >
                                     <ChevronLeftIcon boxSize={5}/>
                                     <Text fontWeight="bold">Sebelumnya</Text>
@@ -196,22 +253,14 @@ return (
                                 as="button"
                                 display="flex"
                                 alignItems="center"
-                                onClick={() => navigate(`/e-learning/quiz/${quizList[quizIndex-1].quiz_id}`, {
-                                    state: {
-                                        sectionName: sectionName,
-                                        sectionIndex: sectionIndex,
-                                        courseDetail: courseDetail,
-                                        subsectionList: subsectionList,
-                                        quizIndex: quizIndex-1,
-                                        quizList: quizList,
-                                    },
-                                })}
+                                onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex-1].quiz_id}/start?section=${sectionIndex}`)}
                                 >
                                 <ChevronLeftIcon boxSize={5}/>
                                 <Text fontWeight="bold">Sebelumnya</Text>
                                 </Box>
                             )}
-                            {quizIndex == quizList.length -1? (
+                            {renderNextButton()}
+                            {/* {quizIndex == quizList.length -1? (
                                 <Box as='span'>
                                 </Box>
                             ) : (
@@ -219,21 +268,12 @@ return (
                                 as="button"
                                 display="flex"
                                 alignItems="center"
-                                onClick={() => navigate(`/e-learning/quiz/${quizList[quizIndex+1].quiz_id}`, {
-                                    state: {
-                                        sectionName: sectionName,
-                                        sectionIndex: sectionIndex,
-                                        courseDetail: courseDetail,
-                                        subsectionList: subsectionList,
-                                        quizIndex: quizIndex+1,
-                                        quizList: quizList,
-                                    },
-                                })}
+                                onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)}
                                 >
                                 <Text fontWeight="bold">Berikutnya</Text>
                                 <ChevronRightIcon boxSize={5} />
                                 </Box>
-                            )}
+                            )} */}
                         </Flex>
                     </Flex>
                     <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} just>
@@ -251,7 +291,7 @@ return (
                                                         </Box>
                                                     )}
                                                 </Flex>
-                                                <Text>{quizData.details[currentQuestionId].question_text}</Text>
+                                                <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
                                             </>
                                         )
                                         :
@@ -332,7 +372,7 @@ return (
                             </Flex>
                             {/* Isi konten sidebar */}
                             <Accordion allowMultiple w="100%">
-                            {courseDetail.sections.map((section) => (
+                            {courseDetail.sections.map((section, idxSection) => (
                             <AccordionItem key={section.section_id}>
                                 <AccordionButton>
                                 <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
@@ -350,16 +390,7 @@ return (
                                                 width="100%"
                                                 p={2}
                                                 onClick={() =>
-                                                navigate(`/e-learning/${courseDetail.course_id}/${subsection.subsection_id}`, {
-                                                    state: { 
-                                                    sectionName: section.section_name,
-                                                    courseDetail: courseDetail,
-                                                    subsectionList: section.subsections,
-                                                    subsectionIndex: index,
-                                                    subsectionName: subsection.subsection_name,
-                                                    quizList: section.quizzes,
-                                                    },
-                                                })
+                                                    navigate(`/e-learning/${courseDetail.course_id}/${subsection.subsection_id}?section=${idxSection}`)
                                                 }
                                                 _hover={{ bg: "#EBEBEB" }}
                                                 textAlign="left"
@@ -383,17 +414,7 @@ return (
                                                         p={2}
                                                         backgroundColor={'#EBEBEB'}
                                                         onClick={() =>
-                                                        navigate(`/e-learning/quiz/${quiz.quiz_id}`, {
-                                                            state: { 
-                                                            sectionName: section.section_name,
-                                                            courseDetail: courseDetail,
-                                                            subsectionList: section.subsections,
-                                                            subsectionIndex: section.subsections.length-1,
-                                                            subsectionName: section.subsections[section.subsections.length-1],
-                                                            quizIndex: index,
-                                                            quizList: section.quizzes,
-                                                            },
-                                                        })
+                                                        navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
                                                         }
                                                         _hover={{ bg: "#EBEBEB" }}
                                                         textAlign="left"
@@ -409,17 +430,7 @@ return (
                                                         width="100%"
                                                         p={2}
                                                         onClick={() =>
-                                                        navigate(`/e-learning/quiz/${quiz.quiz_id}`, {
-                                                            state: { 
-                                                            sectionName: section.section_name,
-                                                            courseDetail: courseDetail,
-                                                            subsectionList: section.subsections,
-                                                            subsectionIndex: section.subsections.length-1,
-                                                            subsectionName: section.subsections[section.subsections.length-1],
-                                                            quizIndex: index,
-                                                            quizList: section.quizzes,
-                                                            },
-                                                        })
+                                                        navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
                                                         }
                                                         _hover={{ bg: "#EBEBEB" }}
                                                         textAlign="left"
@@ -501,6 +512,12 @@ return (
                     </AlertDialogContent>
                     </AlertDialogOverlay>
                 </AlertDialog>
+            </Box>
+        )
+    : 
+        (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <Spinner size="xl" />
             </Box>
         )
     }
