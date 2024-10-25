@@ -4,13 +4,12 @@ import AuthContext from "./authcontext";
 import swal from 'sweetalert2';
 import config from "@/config";
 
-const SectionRoute = ({}) => {
+const QuizRoute = ({}) => {
   const { user } = useContext(AuthContext);
   const baseUrl = config.apiBaseUrl;
-  const { courseId, subsectionId } = useParams();
+  const { courseId, quizId } = useParams();
   const [hasAccess, setHasAccess] = useState(null);
   const [isValid, setIsValid] = useState(null);
-  
 
   useEffect(() => {
     const checkIfUserBoughtCourse = async (user, courseId) => {
@@ -30,18 +29,27 @@ const SectionRoute = ({}) => {
   }, [user, courseId]);
 
   useEffect(() => {
-    const checkValidationCourseAndSection = async (courseId, subsectionId) => {
+    const checkValidationCourseAndQuiz = async (user, courseId, quizId) => {
       try{
-        const response = await fetch(`${baseUrl}/course/get_sub_section_details/${subsectionId}`);
+        const response = await fetch(`${baseUrl}/quiz/get_quiz_on_enrolled_course/${quizId}`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: user.email,
+                }),
+        });
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+            setLoading(false);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } 
         const data = await response.json();
 
-        if(data.course_origin_id === parseInt(courseId)){
+        if(data.Quiz.quiz_course_origin_id === parseInt(courseId)){
           setIsValid(true);
         } else {
+          console.log("masuk");
           setIsValid(false);
         }
 
@@ -50,8 +58,8 @@ const SectionRoute = ({}) => {
       }
     };
 
-    checkValidationCourseAndSection(courseId, subsectionId)
-  }, [courseId, subsectionId]);
+    checkValidationCourseAndQuiz(user, courseId, quizId)
+  }, [user, courseId, quizId]);
 
   if (hasAccess === false) {
     swal.fire({
@@ -67,12 +75,12 @@ const SectionRoute = ({}) => {
   }
 
   if (hasAccess === null) {
-    <Navigate to={`/e-learning/${courseId}`} replace />;
+    <Navigate to={`/courses/${courseId}`} replace />;
   }
 
   if (isValid === false) {
     swal.fire({
-      title: "Course Video Doesn't Exist",
+      title: "Course Quiz Doesn't Exist",
       icon: "error",
       toast: true,
       timer: 6000,
@@ -86,4 +94,4 @@ const SectionRoute = ({}) => {
   return <Outlet />;
 };
 
-export default SectionRoute;
+export default QuizRoute;

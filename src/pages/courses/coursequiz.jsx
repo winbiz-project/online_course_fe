@@ -1,43 +1,98 @@
 import Layout from '@/components/layout';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
-    RadioGroup, Stack, Radio, Code,
-    Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, IconButton } from '@chakra-ui/react';
-import { useParams } from "react-router-dom";
-import ReactPlayer from 'react-player';
+    RadioGroup, Stack, Radio, Accordion, AccordionItem, AccordionIcon, AccordionButton, AccordionPanel,
+    Breadcrumb, BreadcrumbItem, BreadcrumbLink, VStack, IconButton } from '@chakra-ui/react';
+
+import { useDisclosure, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
+import { useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { useLocation, useNavigate } from "react-router-dom";
+import AuthContext from '@/routes/authcontext';
+import config from '@/config';
 
 
 
 function CourseQuiz() {
+  const baseUrl = config.apiBaseUrl;
   const location = useLocation();
-//   const { subsectionName, sectionName, courseDetail, subsectionIndex, subsectionList } = location.state || {};
-//   const subsectionLength = subsectionList.length;
-  const { courseId, quizId } = useParams();
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+//   const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList } = location.state || {};
+  const [searchParams] = useSearchParams();
+  const sectionIndex = searchParams.get('section');
+  const [courseDetail, setCourseDetail] = useState({});
+  const [sectionName, setSectionName] = useState('');
+  const [sectionList, setSectionList] = useState([]);
+  const [subsectionList, setSubsectionList] = useState([]);
+  const [subsectionIdx, setSubsectionIdx] = useState(0);
+  const [subsectionName, setSubsectionName] = useState('');
+  const [quizList, setQuizList] = useState([]);
+  const { quizId, courseId } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [quizData, setQuizData] = useState({});
+  
+  const [courseAvail, setCourseAvail] = useState(false);
+  const [quizAvail, setQuizAvail] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const [quizIndex, setQuizIndex] = useState(0);
   const [questionIdList, setQuestionIdList] = useState([]);
   const [currentQuestionId, setCurrentQuestionId] = useState('');
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+  
+  const getCourseDetail = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/course/get_course_by_id/${courseId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setCourseDetail(data.response);
+      setSectionList(data.response.sections);
+      setSectionName(data.response.sections[sectionIndex].section_name);
+      setSubsectionList(data.response.sections[sectionIndex].subsections);
+
+      data.response.sections[sectionIndex].quizzes.forEach((quiz, i) => {
+        if (quiz.quiz_id === parseInt(quizId)) {
+          setQuizIndex(i);
+        }
+      });
+
+      setQuizList(data.response.sections[sectionIndex].quizzes);
+      setCourseAvail(true);
+    } catch (error) {
+      console.error(`Could not get courses: ${error}`);
+    }
+  };
 
   const getQuiz = async () => {
+    setLoading(true);
     try {
-        const response = await fetch('https://online-course-be.vercel.app/quiz/get_quiz_by_id/'+quizId);
+        const response = await fetch(`${baseUrl}/quiz/get_quiz_on_enrolled_course/${quizId}`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: user.email,
+                }),
+        });
         if (!response.ok) {
+            setLoading(false);
             throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        } 
         const data = await response.json();
         setQuizData(data.Quiz);
         setQuestionIdList(Object.keys(data.Quiz.details));
         setCurrentQuestionId(Object.keys(data.Quiz.details)[0]);
+        setQuizAvail(true);
         setLoading(false);
-
     } catch (error) {
         console.error(`Could not get quiz: ${error}`);
     }
@@ -55,33 +110,114 @@ function CourseQuiz() {
 
 
   const handleAnswerChange = (questionId, value) => {
+    const selectedAnswer = quizData.details[currentQuestionId].answers[value];
+
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: value,
+      [questionId]: {
+        selected: value,  // Store the ID for selection purposes
+        answer: selectedAnswer,
+      },
     }));
   };
 
-  const handleSubmit = () => {
-    console.log(answers)
+  const handleSubmit = async () => {
+    onClose();
+    setLoading(true);
+
+    var total_correct = 0;
+    var total_question = Object.keys(answers).length;
+
+    for(let idQuestion in answers){
+        if(answers[idQuestion].answer.is_correct){
+            total_correct += 1;
+        }
+    }
+
+
+    try {
+        const response = await fetch(`${baseUrl}/quiz/submit_quiz/${quizId}`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_email: user.email,
+                courseid: courseDetail.course_id,
+                correct: total_correct,
+                total: total_question
+                }),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        if(response.ok) {
+            setLoading(false);
+            const data = await response.json();
+            navigate(`/e-learning/${courseId}/quiz/${quizId}/result?section=${sectionIndex}`, {
+                state: {
+                    quizScore: data['Score'],
+
+                }
+            })
+        }
+    } catch (error) {
+        console.error(`Could not submit quiz: ${error}`);
+    }
   }
 
-  useEffect(() => {
-      getQuiz()
-    }, [quizId]);
+  const renderNextButton = () => {
+    // Mengecek Apakah ada quiz selanjutnya atau tidak
+    if (quizIndex < quizList.length -1) {
+      return (
+        <Box
+          as="button"
+          display="flex"
+          alignItems="center"
+          onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)}
+        >
+          <Text fontWeight="bold">Berikutnya</Text>
+          <ChevronRightIcon boxSize={5} />
+        </Box>
+      );
+    }
 
+    // Jika sudah di quiz terakhir pada section dan masih ada section selanjutnya
+    if (parseInt(sectionIndex) !== sectionList.length-1){
+      return (
+        <Box
+            as="button"
+            display="flex"
+            alignItems="center"
+            onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[0].subsection_id}?section=${sectionIndex+1}`)}
+          >
+            <Text fontWeight="bold">Berikutnya</Text>
+            <ChevronRightIcon boxSize={5} />
+          </Box>
+      );
+      
+    }
+
+    // Jika tidak ada kuis, dan sudah di subsection terakhir pada section dan tidak ada section selanjutnya
+    return(
+      <Box as='span'>
+      </Box>
+    )
+  };
+
+  useEffect(() => {
+      getCourseDetail();
+      getQuiz();
+    }, [quizId]);
 
 return (
   <Layout>
-    { loading ?
-        (
-            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                <Spinner size="xl" />
-            </Box>
-        )
-    : 
+    { quizAvail && courseAvail && !loading ?
         (
             <Box position="relative" height="auto" pb={5}>
-                <Flex direction="column">
+                <Flex direction="row" justifyContent="space-between" height={"60vh"} overflow="hidden">
+                    <Flex direction="column" width={sidebarOpen ? "75%" : "100%"} transition="width 0.3s ease">
                     <Flex
                         justifyContent="space-between"
                         p={5}
@@ -94,37 +230,37 @@ return (
                             </BreadcrumbItem>
 
                             <BreadcrumbItem>
-                                <BreadcrumbLink href={`/e-learning/${courseId}`}>{quizData.quiz_section_origin}</BreadcrumbLink>
+                                <BreadcrumbLink href={`/e-learning/${courseDetail.course_id}`}>{quizData.quiz_section_origin}</BreadcrumbLink>
                             </BreadcrumbItem>
 
                             <BreadcrumbItem>
                                 <Text>{quizData.quiz_title}</Text>
                             </BreadcrumbItem>
                         </Breadcrumb>
-                        {/* <Flex alignItems="center" justifyContent="space-between" mb={4} width={"250px"}>
-                            {subsectionIndex == 0 ? (
-                                <Box as='span'>
+                        <Flex alignItems="center" justifyContent="space-between" mb={4} width={"250px"}>
+                            {quizIndex == 0 ? (
+                                <Box
+                                    as="button"
+                                    display="flex"
+                                    alignItems="center"
+                                    onClick={() => navigate(`/e-learning/${courseDetail.course_id}/${subsectionList[subsectionList.length-1].subsection_id}?section=${sectionIndex}`)}
+                                    >
+                                    <ChevronLeftIcon boxSize={5}/>
+                                    <Text fontWeight="bold">Sebelumnya</Text>
                                 </Box>
                             ) : (
                                 <Box
                                 as="button"
                                 display="flex"
                                 alignItems="center"
-                                onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIndex-1].subsection_id}`, {
-                                    state: {
-                                    subsectionName: subsectionList[subsectionIndex-1].subsection_name,
-                                    sectionName:sectionName,
-                                    courseDetail: courseDetail,
-                                    subsectionIndex: subsectionIndex-1,
-                                    subsectionList: subsectionList
-                                    },
-                                })}
+                                onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex-1].quiz_id}/start?section=${sectionIndex}`)}
                                 >
                                 <ChevronLeftIcon boxSize={5}/>
                                 <Text fontWeight="bold">Sebelumnya</Text>
                                 </Box>
                             )}
-                            {subsectionIndex == subsectionLength-1? (
+                            {renderNextButton()}
+                            {/* {quizIndex == quizList.length -1? (
                                 <Box as='span'>
                                 </Box>
                             ) : (
@@ -132,21 +268,13 @@ return (
                                 as="button"
                                 display="flex"
                                 alignItems="center"
-                                onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIndex+1].subsection_id}`, {
-                                    state: {
-                                    subsectionName: subsectionList[subsectionIndex+1].subsection_name,
-                                    sectionName:sectionName,
-                                    courseDetail: courseDetail,
-                                    subsectionIndex: subsectionIndex+1,
-                                    subsectionList: subsectionList
-                                    },
-                                })}
+                                onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)}
                                 >
                                 <Text fontWeight="bold">Berikutnya</Text>
                                 <ChevronRightIcon boxSize={5} />
                                 </Box>
-                            )}
-                        </Flex> */}
+                            )} */}
+                        </Flex>
                     </Flex>
                     <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} just>
                         <Text fontSize="2xl" fontWeight="bold" pr={210}>Quiz {quizData.quiz_title}</Text>
@@ -163,7 +291,7 @@ return (
                                                         </Box>
                                                     )}
                                                 </Flex>
-                                                <Text>{quizData.details[currentQuestionId].question_text}</Text>
+                                                <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
                                             </>
                                         )
                                         :
@@ -173,22 +301,8 @@ return (
                                             </>
                                         )
                                     }
-                                    {/* <Flex>
-                                        <Text>{currentQuestion + 1}.</Text>
-                                        {quizData.details[currentQuestionId].question_img && (
-                                            <Box boxSize='sm'>
-                                                <Image src={quizData.details[currentQuestionId].question_img} alt={`Image for question ${currentQuestionId + 1}`} />
-                                            </Box>
-                                        )}
-                                    </Flex>
-                                    <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text> */}
-                                    {/* {quizData.details[currentQuestionId].question_img && (
-                                        <Code display="block" whiteSpace={'pre'} >
-                                            {quizData.questions[currentQuestion].codeSnippet}
-                                        </Code>
-                                    )} */}
                                     <RadioGroup
-                                        value={answers[currentQuestionId] || ""} 
+                                        value={answers[currentQuestionId]?.selected || ""} 
                                         onChange={(value) => handleAnswerChange(currentQuestionId, value)}
                                     >
                                         <Stack direction="column" pt={2}>
@@ -215,7 +329,7 @@ return (
                             {currentQuestion === questionIdList.length - 1 ? (
                             <Button
                                 rightIcon={<ChevronRightIcon />}
-                                onClick={handleSubmit}
+                                onClick={onOpen}
                                 ml={40}
                             >
                                 Submit
@@ -231,8 +345,179 @@ return (
                             )}
                         </Flex>
                     </Box>
+                    </Flex>
+                    {/* Sidebar */}
+                    {sidebarOpen && (
+                        <Box
+                        position="absolute"
+                        top={0}
+                        right={0}
+                        width={{ base: "50%", md: "25%" }}
+                        height="100%"
+                        bg="#F5F5F5"
+                        boxShadow="xl"
+                        zIndex="99"
+                        overflowY="auto"
+                        >
+                        <VStack align="stretch" spacing={2} w={"100%"}>
+                            <Flex direction="row" justifyContent="space-between">
+                            <Text fontSize="lg" p={4} fontWeight="bold">Course Content</Text>
+                            <IconButton
+                                icon={<CloseIcon/>}
+                                size="md"
+                                m={2}
+                                backgroundColor={'#F5F5F5'}
+                                onClick={() => setSidebarOpen(!sidebarOpen)}
+                            />
+                            </Flex>
+                            {/* Isi konten sidebar */}
+                            <Accordion allowMultiple w="100%">
+                            {courseDetail.sections.map((section, idxSection) => (
+                            <AccordionItem key={section.section_id}>
+                                <AccordionButton>
+                                <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
+                                    {section.section_name}
+                                </Box>
+                                <AccordionIcon />
+                                </AccordionButton>
+                                <AccordionPanel>
+                                <Divider/>
+                                {section.subsections.map((subsection, index) => (
+                                    <React.Fragment key={subsection.subsection_id}>
+                                        <Box>
+                                            <Box
+                                                as="button"
+                                                width="100%"
+                                                p={2}
+                                                onClick={() =>
+                                                    navigate(`/e-learning/${courseDetail.course_id}/${subsection.subsection_id}?section=${idxSection}`)
+                                                }
+                                                _hover={{ bg: "#EBEBEB" }}
+                                                textAlign="left"
+                                            >
+                                                <Text color="black">{subsection.subsection_name}</Text>
+                                            </Box>
+                                            <Divider mt={'0'} />
+                                        </Box>                                   
+                                    </React.Fragment>
+                                ))}
+
+                                {section.quizzes && section.quizzes.length > 0 && (
+                                    <>
+                                    {section.quizzes.map((quiz, index) => (
+                                        <React.Fragment key={quiz.quiz_id}>
+                                            {quiz.quiz_title == quizData.quiz_title ? (
+                                                <Box>
+                                                    <Box
+                                                        as="button"
+                                                        width="100%"
+                                                        p={2}
+                                                        backgroundColor={'#EBEBEB'}
+                                                        onClick={() =>
+                                                        navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
+                                                        }
+                                                        _hover={{ bg: "#EBEBEB" }}
+                                                        textAlign="left"
+                                                    >
+                                                        <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
+                                                    </Box>
+                                                    <Divider mt={'0'} />
+                                                </Box>
+                                            ):(
+                                                <Box>
+                                                    <Box
+                                                        as="button"
+                                                        width="100%"
+                                                        p={2}
+                                                        onClick={() =>
+                                                        navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
+                                                        }
+                                                        _hover={{ bg: "#EBEBEB" }}
+                                                        textAlign="left"
+                                                    >
+                                                        <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
+                                                    </Box>
+                                                    <Divider mt={'0'} />
+                                                </Box>
+                                            )}
+                                            
+                                        </React.Fragment>
+                                    ))}
+                                    </>
+                                )}
+                                </AccordionPanel>
+                            </AccordionItem>
+                            ))}
+                            </Accordion>
+                        </VStack>
+                        </Box>
+                    )}
+
+                    {/* Button Sidebar */}
+                    <Box
+                        position="absolute"
+                        top="20%"
+                        right={sidebarOpen? {base: "50%", md: "25%"}: "0"}
+                        height={10}
+                        transform="translateY(-50%)"
+                        zIndex="1000"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                        display="flex"
+                        alignItems="center"
+                        bg="gray.700"
+                        color="white"
+                        borderRadius="md"
+                        p={isHovered ? "0 12px" : "0"}
+                        transition="width 0.3s ease, padding 0.3s ease"
+                        width={sidebarOpen ? "30px" : isHovered ? "160px" : "30px"}
+                        cursor="pointer"
+                        justifyContent={sidebarOpen ? 'center' : isHovered ? '' : 'center'}
+                    >
+                    {sidebarOpen? (<ChevronRightIcon />):(<ChevronLeftIcon />)}
+                    {isHovered && !sidebarOpen && (
+                        <Text ml={2} fontSize="md" whiteSpace="nowrap">
+                        Course Content
+                        </Text>
+                    )}
+                    </Box>
                     
                 </Flex>
+
+                {/* AlertDialog for confirmation */}
+                <AlertDialog
+                    isOpen={isOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={onClose}
+                >
+                    <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        Confirm Submission
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                        Are you sure you want to submit the quiz?
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme="blue" bgColor={'#004BAD'} onClick={handleSubmit} ml={3}>
+                            Submit
+                        </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                    </AlertDialogOverlay>
+                </AlertDialog>
+            </Box>
+        )
+    : 
+        (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <Spinner size="xl" />
             </Box>
         )
     }
