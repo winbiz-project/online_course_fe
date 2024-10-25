@@ -26,6 +26,8 @@ import Privacy from "@/pages/privacy";
 import CourseQuiz from "@/pages/courses/coursequiz";
 import StartQuiz from "@/pages/courses/startquiz";
 import ResultQuiz from "@/pages/courses/resultquiz";
+import ForgetPassword from "@/pages/auth/forgetpassword";
+import ResetPassword from "@/pages/auth/resetpassword";
 
 
 export default function Router() {
@@ -38,6 +40,14 @@ export default function Router() {
     {
       path: "/auth/login",
       element: <Login />,
+    },
+    {
+      path:"/auth/forgetpassword",
+      element: <ForgetPassword />
+    },
+    {
+      path:"/auth/resetpassword",
+      element: <ResetPassword />
     },
     {
       path: "/auth/registergoogle",
