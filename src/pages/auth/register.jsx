@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom';
 import React, { useState, useContext } from 'react';
 import swal from 'sweetalert2';
 import { registerUser } from "@/routes/authcontext";
-
+import AuthContext from "@/routes/authcontext";
 
 export default function Register() {
     const [show1, setShow1] = useState(false)
@@ -22,8 +22,19 @@ export default function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [loading, setLoading] = useState(false);
+    const {loginUser, GoogleLogin} = useContext(AuthContext)
     const navigate = useNavigate();
 
+    const handleGoogleLogin = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      try{
+        GoogleLogin (navigate);
+      }finally{
+        setLoading(false);
+      }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -115,7 +126,7 @@ export default function Register() {
               Daftar
             </Button>
             <Divider borderColor={"#108EE9"} />
-            <Button bg="white" color="#7091F5" border="2px solid" borderColor="#7091F5" borderRadius="2xl" height="7vh" _hover={{ bg: "gray.200" }} leftIcon={<FcGoogle size="24px" />}>Masuk Dengan Google
+            <Button onClick={handleGoogleLogin} bg="white" color="#7091F5" border="2px solid" borderColor="#7091F5" borderRadius="2xl" height="7vh" _hover={{ bg: "gray.200" }} leftIcon={<FcGoogle size="24px" />}>Masuk Dengan Google
             </Button>
           </Stack>
         </Center>
