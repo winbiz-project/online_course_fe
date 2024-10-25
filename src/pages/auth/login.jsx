@@ -89,7 +89,7 @@ export default function Login() {
               </InputRightElement>
           </InputGroup>
             <Flex justifyContent="flex-end">
-              <Link color="#7091F5" fontWeight={600} fontSize="20px">
+              <Link color="#7091F5" fontWeight={600} fontSize="20px" href="/auth/forgetpassword">
                 Lupa Password?
               </Link>
             </Flex>

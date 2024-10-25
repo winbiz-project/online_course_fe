@@ -14,9 +14,10 @@ import {
 import { SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import AuthContext from '@/routes/authcontext'
+import config from "@/config";
 
 const MyCourses = () => {
-
+    const baseUrl = config.apiBaseUrl;
     const [courses, setCourses] = useState([]);
     const { user } = useContext(AuthContext);
     const [ loading, setLoading ] = useState(true);
@@ -24,7 +25,7 @@ const MyCourses = () => {
     const navigate = useNavigate();
     const getAllCourses = async () => {
         try {
-            const response = await fetch('https://online-course-be.vercel.app/course/get_all_courses_by_user/'+user.email);
+            const response = await fetch(`${baseUrl}/course/get_all_courses_by_user/${user.email}`);
             if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
             }

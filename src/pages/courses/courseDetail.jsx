@@ -6,8 +6,10 @@ import { StarIcon, LockIcon } from '@chakra-ui/icons';
 import { json, useParams, Link, useNavigate } from 'react-router-dom';
 import AuthContext from '@/routes/authcontext'
 import Layout from '@/components/layout';
+import config from '@/config';
 
 const CourseDetailPage = () => {
+  const baseUrl = config.apiBaseUrl;
   const { courseId } = useParams();
   const { user } = useContext(AuthContext);
   const [ loading, setLoading ] = useState(true);
@@ -17,13 +19,12 @@ const CourseDetailPage = () => {
 
   const getCourseDetail = async () => {
     try {
-      const response = await fetch('https://online-course-be.vercel.app/course/get_course_by_id/'+courseId);
+      const response = await fetch(`${baseUrl}/course/get_course_by_id/${courseId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
       setCourseDetail(data.response);
-      console.log(data.response);
     } catch (error) {
       console.error(`Could not get courses: ${error}`);
     }
@@ -31,7 +32,7 @@ const CourseDetailPage = () => {
 
   const checkEnrollment = async () => {
     try {
-      const response = await fetch(`https://online-course-be.vercel.app/course/check_user_enrolled/`+user.email+'/'+courseId);
+      const response = await fetch(`${baseUrl}/course/check_user_enrolled/${user.email}/${courseId}`);
       if (!response.ok) {
         throw new Error('Failed to check enrollment status');
       }
@@ -46,7 +47,7 @@ const CourseDetailPage = () => {
   const handlePurchase = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://online-course-be.vercel.app/transaction/create_xendit_invoice', {
+      const response = await fetch(`${baseUrl}/transaction/create_xendit_invoice`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +139,7 @@ const CourseDetailPage = () => {
         <Flex direction="column" align="center" w="full" p={8}>
           <Heading size="lg" mb={4} textAlign="left" alignSelf="flex-start" textShadow="2px 2px 4px rgba(0, 0, 0, 0.25)">Course Content</Heading>
           <Accordion mt={'5'} allowMultiple w="100%">
-            {courseDetail.sections.map((section) => (
+            {courseDetail.sections.map((section, idxSection) => (
               <AccordionItem key={section.section_id}>
                 <AccordionButton>
                   <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
@@ -155,14 +156,7 @@ const CourseDetailPage = () => {
                           as="button"
                           color="teal"
                           onClick={() =>
-                            navigate(`/e-learning/${courseId}/${subsection.subsection_id}`, {
-                              state: { 
-                                subsectionName: subsection.subsection_name,
-                                sectionName: section.section_name,
-                                sectionId: section.section_id,
-                                courseDetail: courseDetail,
-                              },
-                            })
+                            navigate(`/e-learning/${courseId}/${subsection.subsection_id}?section=${idxSection}`)
                           }
                         >
                           {subsection.subsection_name}
@@ -173,6 +167,30 @@ const CourseDetailPage = () => {
                       <Divider mt={'2'} />
                     </React.Fragment>
                   ))}
+
+                  {section.quizzes && section.quizzes.length > 0 && (
+                    <>
+                      {section.quizzes.map((quiz, index) => (
+                        <React.Fragment key={quiz.quiz_id}>
+                          {isEnrolled ? (
+                            // <Link to={`/e-learning/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
+                            <Text
+                              as="button"
+                              color="teal"
+                              onClick={() =>
+                                navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
+                              }
+                            >
+                              {'[Quiz]'} {quiz.quiz_title}
+                            </Text>
+                          ) : (
+                            <Text color="gray.500">{'[Quiz]'} {quiz.quiz_title}</Text>
+                          )}
+                          <Divider mt={'2'} />
+                        </React.Fragment>
+                      ))}
+                    </>
+                  )}
                 </AccordionPanel>
               </AccordionItem>
             ))}

@@ -4,8 +4,10 @@ import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged} from 
 import { auth } from '@/utils/api/auth/firebase';
 import axios from "axios";
 import swal from 'sweetalert2';
+import config from "@/config";
 
 const AuthContext = createContext();
+const baseUrl = config.apiBaseUrl;
 
 export const AuthProvider = ({ children }) => {
     const [authTokens, setAuthTokens] = useState(() =>
@@ -34,7 +36,7 @@ export const AuthProvider = ({ children }) => {
 
     const loginUser = async (email, password, navigate) => {
         try{
-            const response = await axios.post('https://online-course-be.vercel.app/login', {
+            const response = await axios.post(`${baseUrl}/login`, {
                 email, password
             });
     
@@ -88,12 +90,12 @@ export const AuthProvider = ({ children }) => {
         try{
             const provider = new GoogleAuthProvider();
             const result = await signInWithPopup(auth, provider);
-            const response = await axios.post('https://online-course-be.vercel.app/is_registered', {
+            const response = await axios.post(`${baseUrl}/is_registered`, {
                 email: result.user.email
             })
 
             if(response.status === 200){
-                const responseGoogle = await axios.post('https://online-course-be.vercel.app/google_login', {
+                const responseGoogle = await axios.post(`${baseUrl}/google_login`, {
                     email: result.user.email,
                 });
                 setAuthTokens(responseGoogle.data.access_token)
@@ -140,7 +142,7 @@ export const AuthProvider = ({ children }) => {
 
         console.log(parsedRefreshToken)
 
-        const response = await axios.post('https://online-course-be.vercel.app/logout', {
+        const response = await axios.post(`${baseUrl}/logout`, {
             refresh_token: parsedRefreshToken,
         });
     
@@ -214,7 +216,7 @@ export const AuthProvider = ({ children }) => {
 
 
 export const registerUser = async (name, email, password, verif_password, navigate) => {
-    const response = await axios.post('https://online-course-be.vercel.app/register', {
+    const response = await axios.post(`${baseUrl}/register`, {
         name, email, password, verif_password
     });
 
