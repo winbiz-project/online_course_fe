@@ -18,4 +18,4 @@ COPY --from=build /app/dist ./dist
 EXPOSE 8302
 EXPOSE 8304
 
-CMD ["serve", "-s", "dist", "-l", "8304"]
+CMD ["serve", "-s", "dist", "-l", "8302"]

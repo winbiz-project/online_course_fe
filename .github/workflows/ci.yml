@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - dev
+      - staging
   pull_request:
     branches:
-      - dev
+      - staging
 
 jobs:
   dockerize:
@@ -31,23 +31,5 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:dev .
-        docker push ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:dev
-
-  deploy-container:
-    runs-on: ubuntu-latest
-    needs: dockerize
-    steps:
-    - name: Update Container in the Server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_IP_ADDRESS }}
-        username: ${{ secrets.SERVER_DEPLOYMENT_USER }}
-        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SERVER_SSH_PORT }}
-        script: |
-          docker pull ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:dev
-          docker stop client_dev || true
-          docker rm client_dev || true
-          docker run -d -p 8304:8304 --name client_dev ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:dev
-          docker image prune -f || true
+        docker build -t ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest .
+        docker push ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:latest
