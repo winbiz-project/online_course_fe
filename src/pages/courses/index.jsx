@@ -9,6 +9,7 @@ import {
 import { SearchIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import config from "@/config";
+import generateSlug from "@/routes/generateslug";
 
 const Courses = () => {
   const baseUrl = config.apiBaseUrl;
@@ -211,12 +212,13 @@ const Courses = () => {
           </Modal>
         </Flex>
         <Box>
-          {filterCourses.map((course) => (
+          {filterCourses.map((course) => {
+            const courseSlug = generateSlug(course.course_name);
+            return(
             <React.Fragment key={course.course_id}>
               <Box mb={courses.length == 1? 20 : 5} borderRadius={8} alignItems="center">
                 <Flex direction="row" justify="space-between" alignItems="center" wrap="wrap">
                   <Box width={["100%", "35%"]}>
-                    {/* Ensure you provide a valid image source */}
                     <Image src={getDefaultImage(course.course_photo)} alt={course.course_name} w="100%" h={64} objectFit='fill' borderRadius={8} />
                   </Box>
                   <Box width={["100%", "60%"]}>
@@ -228,14 +230,14 @@ const Courses = () => {
                         <Stars value={course.course_rating} count={5} color="#2596be" size={20} edit={false} />
                         <Text fontSize="sm" color="gray.500" ml={2}>({course.course_rating})</Text>
                       </Flex>
-                      <Button onClick={() => navigate(`/e-learning/${course.course_id}`)} mt={4} w="100%" colorScheme="blue">Go to course</Button>
+                      <Button onClick={() => navigate(`/e-learning/${courseSlug}`, { state: { courseId: course.course_id } })} mt={4} w="100%" colorScheme="blue">Go to course</Button>
                     </Box>
                   </Box>
                 </Flex>
               </Box>
               <Divider borderColor={"#108EE9"} mb={5} />
             </React.Fragment>
-          ))}
+          )})}
         </Box>
       </Container>
     </Layout>

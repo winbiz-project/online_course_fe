@@ -8,6 +8,7 @@ import PrivateRoute from "./privateroutes";
 import GoogleRoute from "./googleroutes";
 import SectionRoute from "./sectionroutes";
 import QuizRoute from "./quizroutes";
+import generateSlug from "./generateslug";
 
 import Index from "@/pages/home";
 import Login from "@/pages/auth/login";
@@ -62,27 +63,34 @@ export default function Router() {
     },
     {
       path: "/e-learning",
-      element: <PrivateRoute />,
       children: [
         { path: "", element: <Courses /> },
-        { path: ":courseId", element: <CourseDetailPage />},
         {
-          path: ":courseId/:subsectionId",
-          element: <SectionRoute />,
+          path: ":courseSlug",
+          element: <PrivateRoute />,
           children: [
-            { path: "", element: <CourseVideo />}
-          ]
-        },
-        { path: ":courseId/quiz/:quizId", 
-          element: <QuizRoute />,
-          children: [
-            { path: "", element: <CourseQuiz />},
-            { path: "start", element: <StartQuiz />},
-            { path: "result", element: <ResultQuiz />},
+            { path: "", element: <CourseDetailPage /> },
+            {
+              path: ":subsectionSlug",
+              element: <SectionRoute />,
+              children: [
+                { path: "", element: <CourseVideo /> }
+              ]
+            },
+            { 
+              path: "quiz/:quizId", 
+              element: <QuizRoute />,
+              children: [
+                { path: "", element: <CourseQuiz /> },
+                { path: "start", element: <StartQuiz /> },
+                { path: "result", element: <ResultQuiz /> }
+              ]
+            },
           ]
         },
       ],
     },
+    
     {
       path: "/mycourses",
       element: <PrivateRoute />,
