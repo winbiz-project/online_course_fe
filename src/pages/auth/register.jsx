@@ -8,6 +8,7 @@ import swal from 'sweetalert2';
 import { registerUser } from "@/routes/authcontext";
 import { useBreakpointValue } from "@chakra-ui/react";
 
+import AuthContext from "@/routes/authcontext";
 
 export default function Register() {
     const [show1, setShow1] = useState(false)
@@ -23,10 +24,21 @@ export default function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [loading, setLoading] = useState(false);
+    const {loginUser, GoogleLogin} = useContext(AuthContext)
     const navigate = useNavigate();
 
     const inputWidth = useBreakpointValue({ base: "90vw", md: "65vh" });
 
+    const handleGoogleLogin = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      try{
+        GoogleLogin (navigate);
+      }finally{
+        setLoading(false);
+      }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -247,6 +259,7 @@ return (
             shadow="lg"
             _hover={{ bg: "gray.200" }}
             leftIcon={<FcGoogle size="24px" />}
+            onClick={handleGoogleLogin}
           >
             Masuk Dengan Google
           </Button>
