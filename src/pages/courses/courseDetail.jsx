@@ -3,18 +3,21 @@ import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, S
   VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, 
   Spacer} from '@chakra-ui/react';
 import { StarIcon, LockIcon } from '@chakra-ui/icons';
-import { json, useParams, Link, useNavigate } from 'react-router-dom';
+import { json, useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '@/routes/authcontext'
 import Layout from '@/components/layout';
 import config from '@/config';
+import generateSlug from '@/routes/generateslug';
 
 const CourseDetailPage = () => {
   const baseUrl = config.apiBaseUrl;
-  const { courseId } = useParams();
+  const { courseSlug } = useParams();
   const { user } = useContext(AuthContext);
   const [ loading, setLoading ] = useState(true);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [courseDetail, setCourseDetail] = useState({});
+  const location = useLocation();
+  const courseId = location.state?.courseId;
   const navigate = useNavigate();
 
   const getCourseDetail = async () => {
@@ -148,25 +151,31 @@ const CourseDetailPage = () => {
                   {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
                 </AccordionButton>
                 <AccordionPanel>
-                  {section.subsections.map((subsection, index) => (
-                    <React.Fragment key={subsection.subsection_id}>
-                      {isEnrolled ? (
-                        // <Link to={`/e-learning/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
-                        <Text
-                          as="button"
-                          color="teal"
-                          onClick={() =>
-                            navigate(`/e-learning/${courseId}/${subsection.subsection_id}?section=${idxSection}`)
-                          }
-                        >
-                          {subsection.subsection_name}
-                        </Text>
-                      ) : (
-                        <Text color="gray.500">{subsection.subsection_name}</Text>
-                      )}
-                      <Divider mt={'2'} />
-                    </React.Fragment>
-                  ))}
+                  {section.subsections.map((subsection, index) => {
+                    const courseslug = generateSlug(courseDetail.course_name);
+                    const subsectionslug = generateSlug(subsection.subsection_name);  
+                    
+                    return(
+                      <React.Fragment key={subsection.subsection_id}>
+                        {isEnrolled ? (
+                          <Text
+                            as="button"
+                            color="teal"
+                            onClick={() =>
+                              navigate(`/e-learning/${courseslug}/${subsectionslug}?section=${idxSection}`, { 
+                                state: { courseId: courseDetail.course_id, subsectionId: subsection.subsection_id } 
+                              })
+                            }
+                          >
+                            {subsection.subsection_name}
+                          </Text>
+                        ) : (
+                          <Text color="gray.500">{subsection.subsection_name}</Text>
+                        )}
+                        <Divider mt={'2'} />
+                      </React.Fragment>
+                    )
+                  })}
 
                   {section.quizzes && section.quizzes.length > 0 && (
                     <>

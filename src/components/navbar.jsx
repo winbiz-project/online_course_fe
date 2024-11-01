@@ -208,30 +208,6 @@ const Navbar = () => {
                 <LogoSkillbridge />
             </Flex>
 
-            {/* <Menu>
-                <MenuButton
-                    as={IconButton}
-                    icon={<Center><FaUserCircle /></Center>}
-                    variant="ghost"
-                    display={{ base: 'flex', md: 'none' }}
-                    aria-label="User Menu"
-                />
-                <MenuList color={'black'}>
-                    {user && (
-                        <>
-                            <MenuItem as={Link} to="/mycourses">My Courses</MenuItem>
-                            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                        </>
-                    )}
-                    {!user && (
-                        <>
-                            <MenuItem as={Link} to="/auth/login">Masuk</MenuItem>
-                            <MenuItem as={Link} to="/auth/register">Daftar</MenuItem>
-                        </>
-                    )}
-                </MenuList>
-            </Menu> */}
-
             {/*Bagian PC/Tablet*/}
             <Box
                 display={{ base: 'none', md: 'flex' }}
