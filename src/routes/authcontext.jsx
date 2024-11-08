@@ -216,36 +216,62 @@ export const AuthProvider = ({ children }) => {
 
 
 export const registerUser = async (name, email, password, verif_password, navigate) => {
-    const response = await axios.post(`${baseUrl}/register`, {
-        name, email, password, verif_password
-    });
+    try {
+        const response = await axios.post(`${baseUrl}/register`, {
+            name, email, password, verif_password
+        });
 
-    if(response.status === 201){
-        if (sessionStorage.getItem("googleAccount")) {
-            sessionStorage.removeItem("googleAccount");
+        if (response.status === 201) {
+            if (sessionStorage.getItem("googleAccount")) {
+                sessionStorage.removeItem("googleAccount");
+            }
+            navigate("/auth/login");
+            swal.fire({
+                title: "Registration Successful, Login Now",
+                icon: "success",
+                toast: true,
+                timer: 6000,
+                position: 'top-right',
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
         }
-        navigate("/auth/login")
-        swal.fire({
-            title: "Registration Successful, Login Now",
-            icon: "success",
+    } catch (error) {
+        const message = error.response.data.message;
+
+        if (!name || !email || !password || !verif_password) {
+            swal.fire({
+            title: "Please fill all the fields",
+            icon: "warning",
             toast: true,
             timer: 6000,
             position: 'top-right',
             timerProgressBar: true,
             showConfirmButton: false,
-        })
-    } else {
-        console.log(response.status);
-        console.log("there was a server issue");
-        swal.fire({
-            title: "An Error Occured " + response.status,
-            icon: "error",
-            toast: true,
-            timer: 6000,
-            position: 'top-right',
-            timerProgressBar: true,
-            showConfirmButton: false,
-        })
+            });
+        }else if (message === 'Email already exists') {
+            swal.fire({
+                title: "Email Already Taken",
+                text: "Please use a different email address.",
+                icon: "warning",
+                toast: true,
+                timer: 6000,
+                position: 'top-right',
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
+        } else {
+            swal.fire({
+                title: "An Error Occurred",
+                text: "There was a server issue. Please try again later.",
+                icon: "error",
+                toast: true,
+                timer: 6000,
+                position: 'top-right',
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
+        }
     }
 }
 
