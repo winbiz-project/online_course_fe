@@ -3,18 +3,21 @@ import React, {useState, useEffect} from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
     VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Link, 
     Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, IconButton } from '@chakra-ui/react';
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, useLocation, useNavigate  } from "react-router-dom";
 import ReactPlayer from 'react-player';
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
-import { useLocation, useNavigate } from "react-router-dom";
 import config from '@/config';
 
 function CourseVideo() {
   const baseUrl = config.apiBaseUrl;
   const [searchParams] = useSearchParams();
   const sectionIndex = searchParams.get('section');
+
   const location = useLocation();
-  // const { sectionName, sectionIndex, courseDetail, subsectionList,   , subsectionName, quizList } = location.state || {};
+  const { courseSlug, subsectionSlug } = useParams();
+  const courseId = location.state?.courseId;
+  const subsectionId = location.state?.subsectionId;
+
   const [courseDetail, setCourseDetail] = useState({});
   const [sectionName, setSectionName] = useState('');
   const [sectionList, setSectionList] = useState([]);
@@ -22,7 +25,6 @@ function CourseVideo() {
   const [subsectionIdx, setSubsectionIdx] = useState(0);
   const [subsectionName, setSubsectionName] = useState('');
   const [quizList, setQuizList] = useState([]);
-  const { courseId, subsectionId } = useParams(); 
   const [subsectionVid, setSubsectionVid] = useState({});
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
