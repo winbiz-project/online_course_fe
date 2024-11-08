@@ -1,12 +1,13 @@
 import LogoSkillbridge from "@/components/LogoSkillbridge";
+import LogoLogin from "@/assets/images/tijiko_3d.png";
 import { Button, Checkbox, Divider, Flex, Image, Link, Spacer, Text, Stack, Box, SimpleGrid , Center, InputGroup, InputRightElement, IconButton} from "@chakra-ui/react";
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom'
+import { useBreakpointValue } from "@chakra-ui/react";
 import React, {useState, useContext} from 'react';
 import InputText from "@/components/InputText";
 import AuthContext from "@/routes/authcontext";
-import { useBreakpointValue } from "@chakra-ui/react";
 
 
 export default function Login() {
@@ -122,7 +123,7 @@ return (
       </Text>
 
       <Center display={{ base: "none", md: "block" }} p={0} m={0} width="100%">
-        <Image src={'/src/assets/images/tijiko_3d.png'} alt='' height="100%" width="100%" objectFit="cover" />
+        <Image src={LogoLogin} alt='' height="100%" width="100%" objectFit="cover" />
       </Center>
     </Stack>
 

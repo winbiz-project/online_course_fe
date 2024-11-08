@@ -1,9 +1,10 @@
 import { Link, Image } from "@chakra-ui/react";
+import mainLogo from '@/assets/images/logo_SkillBridge.png';
 
 const LogoSkillbridge = (props) => {
   return (
     <Link href="/" _hover={{ textDecoration: "none" }}>
-      <Image src={'/src/assets/images/logo_SkillBridge.png'} alt='' {...props} />
+      <Image src={mainLogo} alt='' {...props} />
     </Link>
   );
 };
