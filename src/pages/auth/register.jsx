@@ -1,4 +1,5 @@
 import LogoSkillbridge from "@/components/LogoSkillbridge";
+import LogoRegister from "@/assets/images/BookBridge.png";
 import { Button, Checkbox, Divider, Flex, Image, Link, Spacer, Text, Stack, IconButton, SimpleGrid, Center, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from 'react-icons/fc';
@@ -150,7 +151,7 @@ return (
       </Text>
 
       <Center width="100%" ml={{base: 6, md:0}}>
-        <Image src={'/src/assets/images/BookBridge.png'} alt='' width={useBreakpointValue({ base: "80%", md: "50vh" })} height="auto" />
+        <Image src={LogoRegister} alt='' width={useBreakpointValue({ base: "80%", md: "50vh" })} height="auto" />
       </Center>
     </Stack>
 

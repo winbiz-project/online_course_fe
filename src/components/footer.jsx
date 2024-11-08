@@ -1,6 +1,5 @@
 import { Box, Flex, Image, Text, Button, FormControl, FormLabel, Input, Link } from "@chakra-ui/react";
 import React, { useState } from 'react';
-import axios from "axios";
 import swal from 'sweetalert2';
 
 import LogoSkillbridge from "@/assets/images/logo_SkillBridge.png";
@@ -17,32 +16,54 @@ import LogoMasterCard from "@/assets/images/logo_mastercard.png";
 import LogoSupermarket from "@/assets/images/logo_supermarket.png";
 import LogoGopay from "@/assets/images/logo_gopay.png";
 import LogoQris from "@/assets/images/logo_qris.png";
+import config from '@/config';
 import linkedIn from "@/assets/linkedIn.svg";
 
 const Footer = () => {
     const [subscribeEmail, setSubscribeEmail] = useState('');
+    const baseUrl = config.apiBaseUrl;
 
     const handleSubscribe = async (event) => {
+        
         event.preventDefault();
-        swal.fire({
-            title: 'Thank You!',
-            text: 'You have successfully subscribed to our newsletter. We appreciate your interest and will keep you updated with the latest news.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
-        setSubscribeEmail('');
+        if (!subscribeEmail) {
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please enter a valid email address!',
+            });
+            return;
+        }
 
         try {
-            await axios.post('https://online-course-be.vercel.app/email/subscribe', {
-                subscriber_email: subscribeEmail,
+            const response = await fetch(`${baseUrl}/email/subscribe`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ subscriber_email : subscribeEmail }),
             });
+
+            if (response.ok) {
+                swal.fire({
+                    icon: 'success',
+                    title: 'Subscribed!',
+                    text: 'You have successfully subscribed to our newsletter. We appreciate your interest and will keep you updated with the latest news.',
+                });
+                setSubscribeEmail('');
+            } else {
+                const errorData = await response.json();
+                swal.fire({
+                    icon: 'error',
+                    title: 'Subscription failed',
+                    text: errorData.message || 'Something went wrong. Please try again later.',
+                });
+            }
         } catch (error) {
-            console.error('There was an error!', error);
             swal.fire({
-                title: 'Error',
-                text: 'There was an error with the subscription. Please check your email and try again.',
                 icon: 'error',
-                confirmButtonText: 'OK'
+                title: 'Error',
+                text: 'An error occurred. Please try again later.',
             });
         }
     };
@@ -286,7 +307,7 @@ const Footer = () => {
                         <Link href="#" my={1}>
                             Tentang
                         </Link>
-                        <Link href="#" my={1}>
+                        <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeJiWiYl8GX3r5uw-oaoYRTpjk9tT_aJn65XYvuZXm8FppQtg/viewform" my={1} target="_blank" rel="noopener noreferrer">
                             Karir
                         </Link>
                         <Link href="#" my={1}>
