@@ -299,7 +299,7 @@ return (
               height="100%"
               bg="#F5F5F5"
               boxShadow="xl"
-              zIndex="99"
+              zIndex={10}
               overflowY="auto"
             >
               <VStack align="stretch" spacing={2} w={"100%"}>

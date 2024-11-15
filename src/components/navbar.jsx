@@ -232,7 +232,7 @@ const Navbar = () => {
                         <MenuButton as={Button} colorScheme="white" variant="outline" rightIcon={<TriangleDownIcon />} mx={2}>
                             Hello, {user.name}
                         </MenuButton>
-                        <MenuList minW="120px">
+                        <MenuList minW="120px" zIndex={20}>
                             <MenuItem color={'black'} as={Link} to="/mycourses">My Courses</MenuItem>
                             <MenuItem color={'black'} onClick={handleLogout}>Logout</MenuItem>
                         </MenuList>

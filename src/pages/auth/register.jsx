@@ -150,7 +150,7 @@ return (
         <br />SkillBridge
       </Text>
 
-      <Center width="100%" ml={{base: 6, md:0}}>
+      <Center width="100%" ml={{base: 6, md:0}} display={{ base: "none", md: "block" }}>
         <Image src={LogoRegister} alt='' width={useBreakpointValue({ base: "80%", md: "50vh" })} height="auto" />
       </Center>
     </Stack>
