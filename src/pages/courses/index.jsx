@@ -146,6 +146,11 @@ const Courses = () => {
     );
   }
 
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+  };
+  
+
   return (
     <Layout>
       <Container maxW="container.xl" mt={'10'}>
@@ -231,7 +236,7 @@ const Courses = () => {
                   <Box width={["100%", "60%"]}>
                     <Box mt={4}>
                       <Text fontWeight="bold" fontSize="lg">{course.course_name}</Text>
-                      <Text fontWeight="bold" fontSize="sm" mt={2}>Price: Rp.{course.course_price}</Text>
+                      <Text fontWeight="bold" fontSize="sm" mt={2}>Price: {formatRupiah(course.course_price)}</Text>
                       <Text fontSize="md" color="gray.500" mt={2}>{course.course_desc}</Text>
                       <Flex align="center" mt={2} display={course.course_rating === 0 ? "none" : "flex"}>
                         <Stars value={course.course_rating} count={5} color="#2596be" size={20} edit={false} />
