@@ -76,7 +76,7 @@ function CourseVideo() {
   }
 
   const renderNextButton = () => {
-    // Jika belum di subseksi terakhir, lanjutkan ke subseksi berikutnya
+    // Jika belum di subseksi terakhir, lanjutkan ke subseksi Next
     if (subsectionIdx < subsectionList.length - 1) {
       return (
         <Box
@@ -85,7 +85,7 @@ function CourseVideo() {
           alignItems="center"
           onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx + 1].subsection_id}?section=${sectionIndex}`)}
         >
-          <Text fontWeight="bold">Berikutnya</Text>
+          <Text fontWeight="bold">Next</Text>
           <ChevronRightIcon boxSize={5} />
         </Box>
       );
@@ -100,7 +100,7 @@ function CourseVideo() {
           alignItems="center"
           onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[0].quiz_id}/start?section=${sectionIndex}`)}
         >
-          <Text fontWeight="bold">Berikutnya</Text>
+          <Text fontWeight="bold">Next</Text>
           <ChevronRightIcon boxSize={5} />
         </Box>
       );
@@ -115,7 +115,7 @@ function CourseVideo() {
             alignItems="center"
             onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx + 1].subsection_id}?section=${sectionIndex+1}`)}
           >
-            <Text fontWeight="bold">Berikutnya</Text>
+            <Text fontWeight="bold">Next</Text>
             <ChevronRightIcon boxSize={5} />
           </Box>
       );
@@ -181,11 +181,11 @@ return (
                     onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx-1].subsection_id}?section=${sectionIndex}`)}
                   >
                     <ChevronLeftIcon boxSize={5}/>
-                    <Text fontSize={{base: 'xs', md: 'md'}} fontWeight="bold">Sebelumnya</Text>
+                    <Text fontSize={{base: 'xs', md: 'md'}} fontWeight="bold">Previous</Text>
                   </Box>
                 )}
 
-                {/* Tombol Berikutnya */}
+                {/* Tombol Next */}
                 {renderNextButton()}
                 {/* {subsectionIndex < subsectionList.length-1? (
                   <Box
@@ -203,7 +203,7 @@ return (
                       },
                     })}
                   >
-                    <Text fontWeight="bold">Berikutnya</Text>
+                    <Text fontWeight="bold">Next</Text>
                     <ChevronRightIcon boxSize={5} />
                   </Box>
                 ) : (
@@ -222,7 +222,7 @@ return (
                         },
                       })}
                     >
-                      <Text fontSize={{base: 'xs', md: 'md'}}  fontWeight="bold">Berikutnya</Text>
+                      <Text fontSize={{base: 'xs', md: 'md'}}  fontWeight="bold">Next</Text>
                       <ChevronRightIcon boxSize={5} />
                     </Box>
                   ) : (
@@ -240,7 +240,7 @@ return (
                         },
                       })}
                     >
-                      <Text fontSize={{base: 'xs', md: 'md'}}  fontWeight="bold">Berikutnya</Text>
+                      <Text fontSize={{base: 'xs', md: 'md'}}  fontWeight="bold">Next</Text>
                       <ChevronRightIcon boxSize={5} />
                     </Box>
                   )
@@ -282,7 +282,7 @@ return (
 
             {/* Container Deskripsi */}
             <Box mt={4} p={5} bg="white">
-              <Text fontSize={'xl'} as={'b'}>Deskripsi Video</Text>
+              <Text fontSize={'xl'} as={'b'}>Video Description</Text>
               <Text mt={4}>
                 {subsectionVid.sub_section_desc}
               </Text>
