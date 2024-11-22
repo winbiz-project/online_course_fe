@@ -42,17 +42,17 @@ const Benefit = () => {
                     WHAT WE GIVE
                 </Text>
                 <Text fontSize={"4xl"} fontWeight={"bold"}>
-                    Manfaat Yang Kalian Dapatkan
+                    Benefits You Will Get
                 </Text>
                 <Flex direction="column" mt={"6"} textAlign={'left'}>
                     <Flex mt={"6"} alignItems="center">
                         <Image src={img_time} boxSize={"50px"} />
                         <Box ml={"5"} width={{ base: "100%", md: "60%" }}>
                             <Text fontSize={"md"} fontWeight={"semibold"}>
-                                Fleksibilitas Belajar
+                                Learning Flexibility
                             </Text>
                             <Text fontSize={"sm"}>
-                                Pelajari kursus kapan saja, di mana saja, dengan akses penuh ke semua materi.
+                                Study the course anytime, anywhere, with full access to all materials.
                             </Text>
                         </Box>
                     </Flex>
@@ -60,10 +60,10 @@ const Benefit = () => {
                         <Image src={img_study} boxSize={"50px"} />
                         <Box ml={"5"} width={{ base: "100%", md: "60%" }}>
                             <Text fontSize={"md"} fontWeight={"semibold"}>
-                                Kualitas Terjamin
+                                Quality Guaranteed
                             </Text>
                             <Text fontSize={"sm"}>
-                                Setiap kursus dikembangkan oleh instruktur berpengalaman dengan pendekatan pembelajaran yang efektif.
+                                Each course is developed by experienced instructors with effective learning approaches.
                             </Text>
                         </Box>
                     </Flex>
@@ -71,10 +71,10 @@ const Benefit = () => {
                         <Image src={img_career} boxSize={"50px"} />
                         <Box ml={"5"} width={{ base: "100%", md: "60%" }}>
                             <Text fontSize={"md"} fontWeight={"semibold"}>
-                                Peningkatan Karir
+                                Career Enhancement
                             </Text>
                             <Text fontSize={"sm"}>
-                                kalian akan mendapatkan sertifikat dan keterampilan khusus yang dapat meningkatkan prospek karir dan peluang pekerjaan.
+                                You will gain specialized certificates and skills that can enhance your career prospects and job opportunities.
                             </Text>
                         </Box>
                     </Flex>
@@ -88,7 +88,7 @@ const Benefit = () => {
                     onClick={handleClick}
                     alignSelf={{ base: "center", md: "flex-start" }}
                 >
-                    Materi Tersedia <FaAngleRight className="ms-3" />
+                    Available Materials <FaAngleRight className="ms-3" />
                 </Button>
             </Box>
             <Box flex="1" mt={{ base: "8", md: "0" }}>

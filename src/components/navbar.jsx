@@ -240,10 +240,10 @@ const Navbar = () => {
                 ) : (
                     <Box>
                         <Button as={Link} to="/auth/login" colorScheme="white" variant="outline" mx={2}>
-                            Masuk
+                            Login
                         </Button>
                         <Button as={Link} to="/auth/register" colorScheme='blue' bg="#1450A3" mx={2} boxShadow="md">
-                            Daftar
+                            Register
                         </Button>
                     </Box>
                 )}
