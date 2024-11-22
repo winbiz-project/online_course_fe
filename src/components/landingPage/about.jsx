@@ -43,7 +43,7 @@ const About = () => {
           Bridging Talents, Building Futures
         </Text>
         <Text fontSize={{ base: "md", md: "xl" }}>
-          Skillbridge merupakan platform pembelajaran online yang berfokus pada penyediaan kursus berkualitas tinggi untuk siapa saja yang ingin mengembangkan keterampilan baru atau meningkatkan pengetahuan mereka.
+        Skillbridge is an online learning platform that focuses on providing high-quality courses for anyone who wants to develop new skills or improve their knowledge.
         </Text>
       </Box>
     </Flex>

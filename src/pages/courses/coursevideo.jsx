@@ -83,7 +83,7 @@ function CourseVideo() {
   }
 
   const renderNextButton = () => {
-    // Jika belum di subseksi terakhir, lanjutkan ke subseksi berikutnya
+    // Jika belum di subseksi terakhir, lanjutkan ke subseksi Next
     if (subsectionIdx < subsectionList.length - 1) {
       const nextSubsectionSlug = generateSlug(subsectionList[subsectionIdx + 1].subsection_name);
       return (
@@ -98,7 +98,7 @@ function CourseVideo() {
         }
           })}
         >
-          <Text fontWeight="bold">Berikutnya</Text>
+          <Text fontWeight="bold">Next</Text>
           <ChevronRightIcon boxSize={5} />
         </Box>
       );
@@ -113,7 +113,7 @@ function CourseVideo() {
           alignItems="center"
           onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[0].quiz_id}/start?section=${sectionIndex}`)}
         >
-          <Text fontWeight="bold">Berikutnya</Text>
+          <Text fontWeight="bold">Next</Text>
           <ChevronRightIcon boxSize={5} />
         </Box>
       );
@@ -128,7 +128,7 @@ function CourseVideo() {
             alignItems="center"
             onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx + 1].subsection_id}?section=${sectionIndex+1}`)}
           >
-            <Text fontWeight="bold">Berikutnya</Text>
+            <Text fontWeight="bold">Next</Text>
             <ChevronRightIcon boxSize={5} />
           </Box>
       );
@@ -293,8 +293,8 @@ return (
                     subsectionId: subsectionList[subsectionIdx-1].subsection_id,
                   })}
                   >
-                  <ChevronLeftIcon boxSize={5}/>
-                  <Text fontSize={{base: 'xs', md: 'md'}} fontWeight="bold">Sebelumnya</Text>
+                    <ChevronLeftIcon boxSize={5}/>
+                    <Text fontSize={{base: 'xs', md: 'md'}} fontWeight="bold">Previous</Text>
                   </Box>
                 )} */}
 
@@ -336,7 +336,7 @@ return (
 
             {/* Container Deskripsi */}
             <Box mt={4} p={5} bg="white">
-              <Text fontSize={'xl'} as={'b'}>Deskripsi Video</Text>
+              <Text fontSize={'xl'} as={'b'}>Video Description</Text>
               <Text mt={4}>
                 {subsectionVid.sub_section_desc}
               </Text>
@@ -353,7 +353,7 @@ return (
               height="100%"
               bg="#F5F5F5"
               boxShadow="xl"
-              zIndex="99"
+              zIndex={10}
               overflowY="auto"
             >
               <VStack align="stretch" spacing={2} w={"100%"}>

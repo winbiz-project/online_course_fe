@@ -146,29 +146,29 @@ return (
       <LogoSkillbridge width={useBreakpointValue({ base: "20vh", md: "30vh" })} ml={{ base: 0, md: 12 }} />
 
       <Text fontSize={{ base: "2xl", md: "4xl" }} as="b" ml={{ base: 0, md: 12 }} textAlign="left">
-        Ayo Bergabung dengan
-        <br />SkillBridge
+        Come and Join
+        <br />SkillBridge!
       </Text>
 
-      <Center width="100%" ml={{base: 6, md:0}}>
+      <Center width="100%" ml={{base: 6, md:0}} display={{ base: "none", md: "block" }}>
         <Image src={LogoRegister} alt='' width={useBreakpointValue({ base: "80%", md: "50vh" })} height="auto" />
       </Center>
     </Stack>
 
     <Stack spacing={4} width="100%" mr={{ base: 0, md: 10 }} mt={{ base: 6, md: 0 }} ml={{ base: 0, md:40 }}>
       <Text fontSize={{ base: "lg", md: "2xl" }} as="b" textAlign="end" mr={{ base: 2, md: 12 }} mt={{ base: 2, md: '1vh' }}>
-        Sudah punya akun?{' '}
+        Already have an account?{' '}
         <Link color="#7091f5" href="/auth/login">
-          Masuk disini
+          Log in here
         </Link>
       </Text>
       
       <Text fontSize={{ base: "xl", md: "3xl" }} fontWeight="bold" mt={{ base: 2, md: '5vh' }}>
-        Daftar ke Skillbridge
+        Register to Skillbridge
       </Text>
       
       <Text fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold" color="#545454" mt={{ base: -1, md: -4 }}>
-        Silakan masukkan informasi akun anda.
+        Please enter your account information.
       </Text>
 
       <Center mt={6}>
@@ -245,7 +245,7 @@ return (
             fontSize="20px"
             onClick={handleSubmit}
           >
-            Daftar
+            Register
           </Button>
           <Divider borderColor={"#108EE9"} width={inputWidth} />
           <Button
@@ -262,7 +262,7 @@ return (
             leftIcon={<FcGoogle size="24px" />}
             onClick={handleGoogleLogin}
           >
-            Masuk Dengan Google
+            Login with Google
           </Button>
         </Stack>
       </Center>

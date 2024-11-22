@@ -71,10 +71,10 @@ const Testimony = () => {
       bgColor="#9AC5F4"
     >
       <Text fontSize="xl" fontWeight="bold" color="#1450A3">
-        TESTIMONI
+        TESTIMONY
       </Text>
       <Text fontSize="3xl" fontWeight="bold">
-        Cerita Pengguna, Tutor, dan Mitra
+        User, Tutor, and Partner Stories
       </Text>
       <Grid
         templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
