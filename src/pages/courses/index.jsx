@@ -117,7 +117,7 @@ const Courses = () => {
     let sortedCourses = [...filterCourses];
     if (option === 'latestCreated') {
       sortedCourses.sort((a, b) => new Date(b.course_created) - new Date(a.course_created));
-    } else if (option === 'newestCreated') {
+    } else if (option === 'earliestCreated') {
       sortedCourses.sort((a, b) => new Date(a.course_created) - new Date(b.course_created));
     } else if (option === 'titleAsc') {
       sortedCourses.sort((a, b) => a.course_name.localeCompare(b.course_name));
@@ -169,7 +169,7 @@ const Courses = () => {
             </MenuButton>
             <MenuList>
               <MenuItem onClick={() => handleSortChange('latestCreated')}>Latest Created</MenuItem>
-              <MenuItem onClick={() => handleSortChange('newestCreated')}>Newest Created</MenuItem>
+              <MenuItem onClick={() => handleSortChange('earliestCreated')}>Earliest Created</MenuItem>
               <MenuItem onClick={() => handleSortChange('titleAsc')}>Title Ascending</MenuItem>
               <MenuItem onClick={() => handleSortChange('titleDesc')}>Title Descending</MenuItem>
               <MenuItem onClick={() => handleSortChange('highestRating')}>Highest Rating</MenuItem>
