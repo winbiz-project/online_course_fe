@@ -46,11 +46,11 @@ const Hero = () => {
           color="white"
           fontWeight="semibold"
         >
-          Jadi Ahli di Bidang Anda. Belajar dari yang Terbaik.
+          Become an Expert in Your Field. Learn from the Best.
         </Text>
         <Text fontSize={{ base: "sm", md: "lg", lg: "3xl" }} color="white" mt={4}>
-          Dapatkan akses ke ratusan kursus yang dikembangkan oleh para profesional.
-          Belajar kapan saja, di mana saja, dan dapatkan dukungan langsung dari mentor.
+          Get access to hundreds of courses developed by professionals.
+          Learn anytime, anywhere, and get live support from mentors.
         </Text>
         <Button
           mt={6}
@@ -60,7 +60,7 @@ const Hero = () => {
           width="fit-content"
           onClick={handleClick}
         >
-          Lihat Ratusan Materi Tersedia <FaAngleRight className="ms-3" />
+          View Hundreds of Materials Available <FaAngleRight className="ms-3" />
         </Button>
       </Flex>
     </Box>

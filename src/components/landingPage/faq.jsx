@@ -11,30 +11,30 @@ const Faq = () => {
       bgColor="white"
     >
       <Text fontSize="2xl" fontWeight="bold" mb={10}>
-        Pertanyaan yang Sering Diajukan
+        Frequently Asked Questions
       </Text>
       <Accordion defaultIndex={[0]} allowMultiple w={{ base: "100%", md: "78%" }}>
       <FaqItem 
-          question="Apa itu Skillbridge?"
+          question="What is SkillBridge?"
           answer={
             <>
-              SkillBridge merupakan platform kursus online yang menawarkan berbagai pelatihan keterampilan dalam berbagai bidang seperti <Text as="i">export business</Text>, <Text as="i">work in Japan</Text>, <Text as="i">study abroad</Text>, <Text as="i">marketing</Text>, <Text as="i">finance & accounting</Text>, <Text as="i">office productivity</Text>, <Text as="i">personal development</Text> dan banyak lagi. Kami bertujuan untuk membantu individu meningkatkan keterampilan mereka melalui konten berkualitas tinggi dan instruktur ahli.
+              “SkillBridge is an online course platform that offers a variety of skills training in areas such as <Text as="b">export business</Text>, <Text as="b">work in Japan</Text>, <Text as="b">study abroad</Text>, <Text as="b">marketing</Text>, <Text as="b">finance & accounting</Text>, <Text as="b">office productivity</Text>, <Text as="b">personal development</Text> and more. We aim to help individuals improve their skills through high-quality content and expert instructors.
             </>
           }
         />
         <FaqItem 
-          question="Metode pembayaran apa saja yang digunakan pada Skillbridge?"
-          answer="Pembayaran dapat dilakukan melalui berbagai metode, termasuk e-wallet, QRIS, transfer bank, serta pembayaran di swalayan terdekat."
+          question="What payment methods are used at Skillbridge?"
+          answer="Payments can be made through various methods, including e-wallet, QRIS, bank transfer, as well as payment at the nearest convenience store."
         />
         <FaqItem 
-          question="Ke mana saya dapat menghubungi untuk informasi kerjasama atau jika mengalami kendala?"
+          question="Where can I contact for cooperation information or if I experience problems?"
           answer={
             <>
-              Anda dapat menghubungi Skillbridge melalui WhatsApp{" "}
+              You can contact Skillbridge via WhatsApp{" "}
               <Link href="https://wa.me/62811201218" isExternal color="#1155CC">
                 wa.me/62811201218
               </Link>{" "} 
-              atau Anda bisa email ke{" "}
+                or you can email{" "}
               <Link href="mailto:mei.annisa@skillbridge.id" color="#1155CC">
                 mei.annisa@skillbridge.id
               </Link>.
@@ -42,12 +42,12 @@ const Faq = () => {
           }
         />
         <FaqItem 
-          question="Apakah saya mendapatkan sertifikat setelah menyelesaikan kursus?"
-          answer="Ya, Anda akan mendapatkan sertifikat setelah menyelesaikan semua materi kursus dan lulus dari tes yang disediakan."
+          question="Do I get a certificate after completing the course?"
+          answer="Yes, you will get a certificate after completing all course materials and passing the tests provided."
         />
         <FaqItem
-          question="Berapa lama saya bisa mengakses kursus setelah membelinya?"
-          answer="Anda bisa mengakses kursus yang sudah dibeli tanpa batas waktu (lifetime access) dan dapat kembali kapan saja untuk menonton ulang materi kursus."
+          question="How long can I access the course after purchasing it?"
+          answer="You can access the purchased course indefinitely (lifetime access) and can return at any time to re-watch the course material."
         />
       </Accordion>
     </Flex>

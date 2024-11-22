@@ -123,7 +123,7 @@ const Footer = () => {
                     <Box mb={{ base: "4", md: "0" }} display="flex" flexDirection="column" alignItems={{ base: "center", md: "start" }} pl={{ base: "0", md: "5", lg: "0" }}>
                         <Image src={LogoSkillbridge} alt="Brand Logo" objectFit="cover" />
                         <Text fontSize="lg" fontWeight="medium">
-                            Rintis Karir Impian Bersama SkillBridge
+                            Pioneer your dream career with SkillBridge
                         </Text>
                         {/* Social Media */}
                         <Flex direction="row" gap={4} my={"15"} justifyContent={{ base: 'center', md: 'flex-start' }}>
@@ -139,7 +139,7 @@ const Footer = () => {
                         </Flex>
 
                         <Text fontSize="lg" fontWeight="medium" mb={2}>
-                            Metode Pembayaran
+                            Payment Method
                         </Text>
                         <Box 
                             display="grid" 
@@ -305,13 +305,13 @@ const Footer = () => {
                             Skillbridge
                         </Text>
                         <Link href="#" my={1}>
-                            Tentang
+                            About
                         </Link>
                         <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeJiWiYl8GX3r5uw-oaoYRTpjk9tT_aJn65XYvuZXm8FppQtg/viewform" my={1} target="_blank" rel="noopener noreferrer">
-                            Karir
+                            Career
                         </Link>
                         <Link href="#" my={1}>
-                            Kerjasama
+                            Cooperation
                         </Link>
                         <Link href="https://kursuseksporonline.id/blog/" my={1} target="_blank" rel="noopener noreferrer">
                             Blog
@@ -326,16 +326,16 @@ const Footer = () => {
                         pt={{ base: "0", md: "5rem"}}
                     >
                         <Text fontSize="lg" fontWeight="bold">
-                            Lainnya
+                            More
                         </Text>
                         <Link href="https://docs.google.com/document/d/1sHQrMUHjp9Tguzfvwk1_hJNIBJiD1pKMVDpKRjvBkxQ/edit?usp=sharing" target="_blank" rel="noopener noreferrer" my={1}>
                             FAQ
                         </Link>
                         <Link href="/terms" my={1}>
-                            Syarat dan Ketentuan
+                            Terms and Conditions
                         </Link>
                         <Link href="/privacy" my={1}>
-                            Kebijakan Privasi
+                            Privacy Policy
                         </Link>
                     </Flex>
 
