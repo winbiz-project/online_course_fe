@@ -10,12 +10,15 @@ import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@ch
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from '@/routes/authcontext';
 import config from '@/config';
+import generateSlug from '@/routes/generateslug';
 
 
 
 function CourseQuiz() {
   const baseUrl = config.apiBaseUrl;
   const location = useLocation();
+  const courseId = location.state?.courseId;
+
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 //   const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList } = location.state || {};
@@ -28,7 +31,7 @@ function CourseQuiz() {
   const [subsectionIdx, setSubsectionIdx] = useState(0);
   const [subsectionName, setSubsectionName] = useState('');
   const [quizList, setQuizList] = useState([]);
-  const { quizId, courseId } = useParams();
+  const { courseSlug, quizId } = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -53,6 +56,7 @@ function CourseQuiz() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+
       setCourseDetail(data.response);
       setSectionList(data.response.sections);
       setSectionName(data.response.sections[sectionIndex].section_name);
@@ -70,33 +74,6 @@ function CourseQuiz() {
       console.error(`Could not get courses: ${error}`);
     }
   };
-
-  const getQuiz = async () => {
-    setLoading(true);
-    try {
-        const response = await fetch(`${baseUrl}/quiz/get_quiz_on_enrolled_course/${quizId}`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: user.email,
-                }),
-        });
-        if (!response.ok) {
-            setLoading(false);
-            throw new Error(`HTTP error! status: ${response.status}`);
-        } 
-        const data = await response.json();
-        setQuizData(data.Quiz);
-        setQuestionIdList(Object.keys(data.Quiz.details));
-        setCurrentQuestionId(Object.keys(data.Quiz.details)[0]);
-        setQuizAvail(true);
-        setLoading(false);
-    } catch (error) {
-        console.error(`Could not get quiz: ${error}`);
-    }
-  }
 
   const handleNext = () => {
     setCurrentQuestionId((currentQuestion < questionIdList.length -1 ? questionIdList[currentQuestion+1]:questionIdList[currentQuestion]));
@@ -155,10 +132,10 @@ function CourseQuiz() {
         if(response.ok) {
             setLoading(false);
             const data = await response.json();
-            navigate(`/e-learning/${courseId}/quiz/${quizId}/result?section=${sectionIndex}`, {
+            navigate(`/e-learning/${courseSlug}/quiz/${quizId}/result?section=${sectionIndex}`, {
                 state: {
                     quizScore: data['Score'],
-
+                    courseId: courseId,
                 }
             })
         }
@@ -206,9 +183,75 @@ function CourseQuiz() {
     )
   };
 
+  const validateCourseAndQuizAccess = async () => {
+    let isValid = false;
+    let hasAccess = null;
+  
+    try {
+      const enrollmentResponse = await fetch(`${baseUrl}/course/check_user_enrolled/${user.email}/${courseId}`);
+      if (!enrollmentResponse.ok) {
+        throw new Error('Failed to check enrollment status');
+      }
+      const enrollmentData = await enrollmentResponse.json();
+      hasAccess = enrollmentData.response;
+  
+      if (!hasAccess) {
+        swal.fire({
+          title: 'Access Denied',
+          icon: 'warning',
+          text: 'You need to purchase this course to access this page',
+          timer: 6000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
+        });
+        navigate(`/e-learning/${courseSlug}`, { replace: true });
+        return;
+      }
+  
+      const quizResponse = await fetch(`${baseUrl}/quiz/get_quiz_on_enrolled_course/${quizId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: user.email }),
+      });
+  
+      if (!quizResponse.ok) {
+        throw new Error(`HTTP error! status: ${quizResponse.status}`);
+      }
+  
+      const quizData = await quizResponse.json();
+      isValid = quizData.Quiz.quiz_course_origin_id === parseInt(courseId);
+  
+      if (!isValid) {
+        swal.fire({
+          title: "Course Quiz Doesn't Exist",
+          icon: "error",
+          toast: true,
+          timer: 6000,
+          position: 'top-right',
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+        navigate(`/e-learning/${courseSlug}`);
+        return;
+      }else{
+        setQuizData(quizData.Quiz);
+        setQuestionIdList(Object.keys(quizData.Quiz.details));
+        setCurrentQuestionId(Object.keys(quizData.Quiz.details)[0]);
+        setQuizAvail(true);
+        setLoading(false);
+      }
+  
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   useEffect(() => {
       getCourseDetail();
-      getQuiz();
+      validateCourseAndQuizAccess();
     }, [quizId]);
 
 return (
@@ -230,7 +273,17 @@ return (
                             </BreadcrumbItem>
 
                             <BreadcrumbItem>
-                                <BreadcrumbLink href={`/e-learning/${courseDetail.course_id}`}>{quizData.quiz_section_origin}</BreadcrumbLink>
+                                <BreadcrumbLink
+                                    onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate(`/e-learning/${courseSlug}`, {
+                                        state: { courseId: courseId },
+                                    });
+                                    }}
+                                    fontSize={{ base: 'xs', md: 'md' }}
+                                    >
+                                    {quizData.quiz_section_origin}
+                                </BreadcrumbLink>
                             </BreadcrumbItem>
 
                             <BreadcrumbItem>
@@ -238,7 +291,7 @@ return (
                             </BreadcrumbItem>
                         </Breadcrumb>
                         <Flex alignItems="center" justifyContent="space-between" mb={4} width={"250px"}>
-                            {quizIndex == 0 ? (
+                            {/* {quizIndex == 0 ? (
                                 <Box
                                     as="button"
                                     display="flex"
@@ -259,7 +312,7 @@ return (
                                 <Text fontWeight="bold">Sebelumnya</Text>
                                 </Box>
                             )}
-                            {renderNextButton()}
+                            {renderNextButton()} */}
                             {/* {quizIndex == quizList.length -1? (
                                 <Box as='span'>
                                 </Box>
@@ -414,7 +467,9 @@ return (
                                                         p={2}
                                                         backgroundColor={'#EBEBEB'}
                                                         onClick={() =>
-                                                        navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
+                                                        navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
+                                                            state: { courseId: courseId }
+                                                        })
                                                         }
                                                         _hover={{ bg: "#EBEBEB" }}
                                                         textAlign="left"
@@ -430,7 +485,9 @@ return (
                                                         width="100%"
                                                         p={2}
                                                         onClick={() =>
-                                                        navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
+                                                        navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
+                                                            state: { courseId: courseId }
+                                                        })
                                                         }
                                                         _hover={{ bg: "#EBEBEB" }}
                                                         textAlign="left"

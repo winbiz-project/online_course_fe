@@ -67,19 +67,16 @@ export default function Router() {
         { path: "", element: <Courses /> },
         {
           path: ":courseSlug",
-          element: <PrivateRoute />,
           children: [
             { path: "", element: <CourseDetailPage /> },
             {
               path: ":subsectionSlug",
-              element: <SectionRoute />,
               children: [
                 { path: "", element: <CourseVideo /> }
               ]
             },
             { 
               path: "quiz/:quizId", 
-              element: <QuizRoute />,
               children: [
                 { path: "", element: <CourseQuiz /> },
                 { path: "start", element: <StartQuiz /> },

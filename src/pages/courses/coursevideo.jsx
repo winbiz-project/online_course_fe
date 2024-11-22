@@ -1,5 +1,5 @@
 import Layout from '@/components/layout';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
     VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Link, 
     Breadcrumb, BreadcrumbItem, BreadcrumbLink, Icon, IconButton } from '@chakra-ui/react';
@@ -7,17 +7,23 @@ import { useParams, useSearchParams, useLocation, useNavigate  } from "react-rou
 import ReactPlayer from 'react-player';
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import config from '@/config';
+import swal from 'sweetalert2';
+import generateSlug from '@/routes/generateslug';
+import AuthContext from '@/routes/authcontext';
 
 function CourseVideo() {
   const baseUrl = config.apiBaseUrl;
   const [searchParams] = useSearchParams();
   const sectionIndex = searchParams.get('section');
+  const { user } = useContext(AuthContext);
 
   const location = useLocation();
   const { courseSlug, subsectionSlug } = useParams();
   const courseId = location.state?.courseId;
   const subsectionId = location.state?.subsectionId;
-
+  const [hasAccess, setHasAccess] = useState(null);
+  const [isValid, setIsValid] = useState(null);
+  
   const [courseDetail, setCourseDetail] = useState({});
   const [sectionName, setSectionName] = useState('');
   const [sectionList, setSectionList] = useState([]);
@@ -69,6 +75,7 @@ function CourseVideo() {
         setSubsectionVid(data);
         setSubsectionName(data.sub_section_title);
         setLoading(false);
+        console.log('Current subsectionId:', subsectionList[subsectionIdx]);
     }
     catch (error) {
         console.error(`Could not get courses: ${error}`);
@@ -78,12 +85,18 @@ function CourseVideo() {
   const renderNextButton = () => {
     // Jika belum di subseksi terakhir, lanjutkan ke subseksi berikutnya
     if (subsectionIdx < subsectionList.length - 1) {
+      const nextSubsectionSlug = generateSlug(subsectionList[subsectionIdx + 1].subsection_name);
       return (
         <Box
           as="button"
           display="flex"
           alignItems="center"
-          onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx + 1].subsection_id}?section=${sectionIndex}`)}
+          onClick={() => navigate(`/e-learning/${courseSlug}/${nextSubsectionSlug}?section=${sectionIndex}`, {
+        state: {
+          courseId: courseId,
+          subsectionId: subsectionList[subsectionIdx + 1].subsection_id
+        }
+          })}
         >
           <Text fontWeight="bold">Berikutnya</Text>
           <ChevronRightIcon boxSize={5} />
@@ -91,7 +104,7 @@ function CourseVideo() {
       );
     }
 
-    // Jika di subseksi terakhir dan ada kuis, navigasi ke halaman kuis
+    // Jika di </Box>subseksi terakhir dan ada kuis, navigasi ke halaman kuis
     if (quizList && quizList.length > 0) {
       return (
         <Box
@@ -122,18 +135,105 @@ function CourseVideo() {
       
     }
 
-    // Jika tidak ada kuis, dan sudah di subsection terakhir pada section dan tidak ada section selanjutnya
     return(
       <Box as='span'>
       </Box>
     )
   };
 
-  useEffect(() => {
-      getCourseDetail();
-      getVideo();
+  const validateCourseAccess = async () => {
+    try {
+      if (courseId) {
+        const enrollmentResponse = await fetch(`${baseUrl}/course/check_user_enrolled/` + user.email + '/' + courseId);
+        if (!enrollmentResponse.ok) {
+          throw new Error('Failed to check enrollment status');
+        }
+        const enrollmentData = await enrollmentResponse.json();
+        setHasAccess(enrollmentData.response);
+  
+        if (!enrollmentData.response) {
+          swal.fire({
+            title: 'Access Denied',
+            icon: 'warning',
+            text: 'You need to purchase the course to access the page',
+            timer: 6000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCloseButton: true,
+          });
+          return navigate(`/e-learning`);
+        }
+      } else {
+        setHasAccess(false);
+        swal.fire({
+          title: 'Access Denied',
+          icon: 'warning',
+          timer: 6000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
+        });
+        return navigate(`/e-learning`);
+      }
+  
+      // Validate the subsection details
+      if (subsectionId) {
+        const subsectionResponse = await fetch(`${baseUrl}/course/get_sub_section_details/${subsectionId}`);
+        if (!subsectionResponse.ok) {
+          throw new Error(`HTTP error! status: ${subsectionResponse.status}`);
+        }
+  
+        const subsectionData = await subsectionResponse.json();
+  
+        if (subsectionData.course_origin_id === parseInt(courseId)) {
+          setIsValid(true);
+        } else {
+          setIsValid(false);
+          swal.fire({
+            title: "Course Video Doesn't Exist",
+            icon: "error",
+            toast: true,
+            timer: 6000,
+            position: 'top-right',
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+          return navigate(`/e-learning`);
+        }
+      } else {
+        setIsValid(false);
+        swal.fire({
+          title: "Course Video Doesn't Exist",
+          icon: "error",
+          toast: true,
+          timer: 6000,
+          position: 'top-right',
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+        return navigate(`/e-learning`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      swal.fire({
+        title: 'An error occurred',
+        icon: 'error',
+        text: error.message,
+        timer: 6000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
+      navigate(`/e-learning`);
+    }
+  };
 
-    }, [subsectionId]);
+  useEffect(() => {
+    validateCourseAccess();
+    getCourseDetail();
+    getVideo();
+
+  }, [subsectionId]);
 
 
 return (
@@ -161,91 +261,45 @@ return (
                 </BreadcrumbItem>
 
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/e-learning/${courseId}`} fontSize={{base: 'xs', md: 'md'}}>{sectionName}</BreadcrumbLink>
+                  <BreadcrumbLink
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate(`/e-learning/${courseSlug}`, {
+                        state: { courseId: courseId },
+                      });
+                    }}
+                    fontSize={{ base: 'xs', md: 'md' }}
+                    >
+                    {sectionName}
+                  </BreadcrumbLink>
                 </BreadcrumbItem>
 
                 <BreadcrumbItem>
                   <Text fontSize={{base: 'xs', md: 'md'}}>{subsectionName}</Text>
                 </BreadcrumbItem>
-              </Breadcrumb>
+                </Breadcrumb>
 
-              <Flex alignItems="center" justifyContent="space-between" mb={4} width={{ base: "150px", md: "250px" }}>
-                {subsectionIdx == 0 ? (
+                <Flex alignItems="center" justifyContent="space-between" mb={4} width={{ base: "150px", md: "250px" }}>
+                {/* {subsectionIdx == 0 ? (
                   <Box as='span'>
                   </Box>
                 ) : (
                   <Box
-                    as="button"
-                    display="flex"
-                    alignItems="center"
-                    onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIdx-1].subsection_id}?section=${sectionIndex}`)}
+                  as="button"
+                  display="flex"
+                  alignItems="center"
+                  onClick={() => navigate(`/e-learning/${courseSlug}/${generateSlug(subsectionList[subsectionIdx-1].subsection_name)}?section=${sectionIndex}`, {
+                    state: { courseId: courseId },
+                    subsectionId: subsectionList[subsectionIdx-1].subsection_id,
+                  })}
                   >
-                    <ChevronLeftIcon boxSize={5}/>
-                    <Text fontSize={{base: 'xs', md: 'md'}} fontWeight="bold">Sebelumnya</Text>
+                  <ChevronLeftIcon boxSize={5}/>
+                  <Text fontSize={{base: 'xs', md: 'md'}} fontWeight="bold">Sebelumnya</Text>
                   </Box>
-                )}
+                )} */}
 
                 {/* Tombol Berikutnya */}
-                {renderNextButton()}
-                {/* {subsectionIndex < subsectionList.length-1? (
-                  <Box
-                    as="button"
-                    display="flex"
-                    alignItems="center"
-                    onClick={() => navigate(`/e-learning/${courseId}/${subsectionList[subsectionIndex+1].subsection_id}`, {
-                      state: {
-                        sectionName:sectionName,
-                        courseDetail: courseDetail,
-                        subsectionList: subsectionList,
-                        subsectionIndex: subsectionIndex+1,
-                        subsectionName: subsectionList[subsectionIndex+1].subsection_name,
-                        quizList: quizList,
-                      },
-                    })}
-                  >
-                    <Text fontWeight="bold">Berikutnya</Text>
-                    <ChevronRightIcon boxSize={5} />
-                  </Box>
-                ) : (
-                  quizList.length > 0 (
-                    <Box
-                      as="button"
-                      display="flex"
-                      alignItems="center"
-                      onClick={() => navigate(`/e-learning/quiz/${quizList[0].quiz_id}`, {
-                        state: {
-                          sectionName:sectionName,
-                          courseDetail: courseDetail,
-                          subsectionList: subsectionList,
-                          quizIndex: 0,
-                          quizList: quizList,
-                        },
-                      })}
-                    >
-                      <Text fontSize={{base: 'xs', md: 'md'}}  fontWeight="bold">Berikutnya</Text>
-                      <ChevronRightIcon boxSize={5} />
-                    </Box>
-                  ) : (
-                    <Box
-                      as="button"
-                      display="flex"
-                      alignItems="center"
-                      onClick={() => navigate(`/e-learning/quiz/${quizList[0].quiz_id}`, {
-                        state: {
-                          sectionName:sectionName,
-                          courseDetail: courseDetail,
-                          subsectionList: subsectionList,
-                          quizIndex: 0,
-                          quizList: quizList,
-                        },
-                      })}
-                    >
-                      <Text fontSize={{base: 'xs', md: 'md'}}  fontWeight="bold">Berikutnya</Text>
-                      <ChevronRightIcon boxSize={5} />
-                    </Box>
-                  )
-                )} */}
-                
+                {/* {renderNextButton()} */}
               </Flex>
             </Flex>
             
@@ -336,7 +390,9 @@ return (
                                 p={2}
                                 backgroundColor={'#EBEBEB'}
                                 onClick={() =>
-                                  navigate(`/e-learning/${courseId}/${subsection.subsection_id}?section=${idxSection}`)
+                                  navigate(`/e-learning/${courseSlug}/${generateSlug(subsection.subsection_name)}?section=${idxSection}`, {
+                                    state: { courseId: courseId, subsectionId: subsection.subsection_id },
+                                  })
                                 }
                                 _hover={{ bg: "#EBEBEB" }}
                                 textAlign="left"
@@ -354,7 +410,9 @@ return (
                                 width="100%"
                                 p={2}
                                 onClick={() =>
-                                  navigate(`/e-learning/${courseId}/${subsection.subsection_id}?section=${idxSection}`)
+                                  navigate(`/e-learning/${courseSlug}/${generateSlug(subsection.subsection_name)}?section=${idxSection}`, {
+                                    state: { courseId: courseId, subsectionId: subsection.subsection_id },
+                                  })
                                 }
                                 _hover={{ bg: "#EBEBEB" }}
                                 textAlign="left"
@@ -378,7 +436,9 @@ return (
                                     width="100%"
                                     p={2}
                                     onClick={() =>
-                                      navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
+                                      navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`, {
+                                        state: { courseId: courseId },
+                                      })
                                     }
                                     _hover={{ bg: "#EBEBEB" }}
                                     textAlign="left"
