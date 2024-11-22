@@ -8,6 +8,7 @@ import AuthContext from '@/routes/authcontext'
 import Layout from '@/components/layout';
 import config from '@/config';
 import generateSlug from '@/routes/generateslug';
+import swal from 'sweetalert2';
 
 const CourseDetailPage = () => {
   const baseUrl = config.apiBaseUrl;
@@ -34,20 +35,34 @@ const CourseDetailPage = () => {
   };
 
   const checkEnrollment = async () => {
-    try {
+    if (user) {
+      try {
       const response = await fetch(`${baseUrl}/course/check_user_enrolled/${user.email}/${courseId}`);
       if (!response.ok) {
         throw new Error('Failed to check enrollment status');
       }
       const data = await response.json();
       setIsEnrolled(data.response);
-      
-    } catch (error) {
+      } catch (error) {
       console.error('Error:', error);
+      }
     }
   };
 
   const handlePurchase = async () => {
+    if(!user) {
+      swal.fire({
+        title: 'Please login',
+        icon: 'warning',
+        text: 'You need to be logged in to access this action',
+        timer: 6000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
+      navigate("/auth/login"); // Arahkan ke halaman login
+      return; // Hentikan eksekusi lebih lanjut
+    }
     setLoading(true);
     try {
       const response = await fetch(`${baseUrl}/transaction/create_xendit_invoice`, {
@@ -187,7 +202,11 @@ const CourseDetailPage = () => {
                               as="button"
                               color="teal"
                               onClick={() =>
-                                navigate(`/e-learning/${courseId}/quiz/${quiz.quiz_id}/start?section=${idxSection}`)
+                                navigate(`/e-learning/${generateSlug(courseDetail.course_name)}/quiz/${quiz.quiz_id}/start?section=${idxSection}`, {
+                                  state: {
+                                    courseId: courseId,
+                                  },
+                                })
                               }
                             >
                               {'[Quiz]'} {quiz.quiz_title}

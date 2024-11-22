@@ -118,8 +118,8 @@ return (
       <LogoSkillbridge width={useBreakpointValue({ base: "20vh", md: "30vh" })} ml={{ base: 0, md: 12 }} />
 
       <Text fontSize={{ base: "2xl", md: "4xl" }} as="b" ml={{ base: 0, md: 12 }} textAlign={textAlign}>
-        Halo! Selamat Datang
-        <br />Kembali di SkillBridge
+        Hello! Welcome
+        <br />Back to SkillBridge
       </Text>
 
       <Center display={{ base: "none", md: "block" }} p={0} m={0} width="100%">
@@ -129,16 +129,16 @@ return (
 
     <Stack spacing={4} width="100%" mr={{ base: 0, md: 10 }} mt={{ base: 6, md: 0 }} ml={{ base: 0, md: 40 }}>
       <Text fontSize={{ base: "md", md: "2xl" }} as="b" textAlign="end" mr={{ base: 0, md: 12 }} mt={{ base: 4, md: '1vh' }}>
-        Belum memiliki akun?{' '}
+        Don't have an account yet?{' '}
         <Link color="#7091f5" href="/auth/register">
-          Daftar disini
+          Sign up here
         </Link>
       </Text>
       <Text fontSize={{ base: "xl", md: "3xl" }} fontWeight="bold" mt={{ base: 2, md: '5vh' }}>
-        Masuk ke Skillbridge
+        Login to Skillbridge
       </Text>
       <Text fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold" color="#545454" mt={{ base: -1, md: -4 }}>
-        Silakan masukkan informasi akun anda.
+        Please enter your account information.
       </Text>
 
       <Center mt={6}>
@@ -166,15 +166,15 @@ return (
           <Flex justifyContent="space-between" width={inputWidth}>
             <Box />
             <Link color="#7091F5" fontWeight={600} fontSize="20px" href="/auth/forgetpassword">
-              Lupa Password?
+              Forgot Password?
             </Link>
           </Flex>
           <Button onClick={handleLogin} width={inputWidth} height='7vh' colorScheme="blue" bgColor="#7091F5" textColor="white" shadow="lg" fontSize='20px' borderRadius="2xl">
-            Masuk
+            Login
           </Button>
           <Divider borderColor={"#108EE9"} width={inputWidth} />
           <Button onClick={handleGoogleLogin} width={inputWidth} height="7vh" bg="white" color="#7091F5" border="2px solid" borderColor="#7091F5" borderRadius="2xl" fontSize="20px" shadow="lg" _hover={{ bg: "gray.200" }} leftIcon={<FcGoogle size="24px" />}>
-            Masuk Dengan Google
+            Login with Google
           </Button>
         </Stack>
       </Center>

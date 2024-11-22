@@ -20,6 +20,10 @@ const Courses = () => {
   const [filterCourses, setFilterCourses] = useState(courses);
   const [loading, setLoading ] = useState(true);
 
+  const [page, setPage] = useState(1); // Current page
+  const limit = 1; // Number of items per page
+  const totalPages = Math.ceil(filterCourses.length / limit);
+
   const navigate = useNavigate();
   const getAllCoursesAndCategories = async () => {
     try {
@@ -113,7 +117,7 @@ const Courses = () => {
     let sortedCourses = [...filterCourses];
     if (option === 'latestCreated') {
       sortedCourses.sort((a, b) => new Date(b.course_created) - new Date(a.course_created));
-    } else if (option === 'newestCreated') {
+    } else if (option === 'earliestCreated') {
       sortedCourses.sort((a, b) => new Date(a.course_created) - new Date(b.course_created));
     } else if (option === 'titleAsc') {
       sortedCourses.sort((a, b) => a.course_name.localeCompare(b.course_name));
@@ -131,6 +135,9 @@ const Courses = () => {
     setFilterCourses(sortedCourses);
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -138,6 +145,11 @@ const Courses = () => {
       </Box>
     );
   }
+
+  const formatRupiah = (value) => {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+  };
+  
 
   return (
     <Layout>
@@ -157,7 +169,7 @@ const Courses = () => {
             </MenuButton>
             <MenuList>
               <MenuItem onClick={() => handleSortChange('latestCreated')}>Latest Created</MenuItem>
-              <MenuItem onClick={() => handleSortChange('newestCreated')}>Newest Created</MenuItem>
+              <MenuItem onClick={() => handleSortChange('earliestCreated')}>Earliest Created</MenuItem>
               <MenuItem onClick={() => handleSortChange('titleAsc')}>Title Ascending</MenuItem>
               <MenuItem onClick={() => handleSortChange('titleDesc')}>Title Descending</MenuItem>
               <MenuItem onClick={() => handleSortChange('highestRating')}>Highest Rating</MenuItem>
@@ -212,7 +224,7 @@ const Courses = () => {
           </Modal>
         </Flex>
         <Box>
-          {filterCourses.map((course) => {
+          {filterCourses.slice((page - 1) * limit, page * limit).map((course) => {
             const courseSlug = generateSlug(course.course_name);
             return(
             <React.Fragment key={course.course_id}>
@@ -224,7 +236,7 @@ const Courses = () => {
                   <Box width={["100%", "60%"]}>
                     <Box mt={4}>
                       <Text fontWeight="bold" fontSize="lg">{course.course_name}</Text>
-                      <Text fontWeight="bold" fontSize="sm" mt={2}>Price: Rp.{course.course_price}</Text>
+                      <Text fontWeight="bold" fontSize="sm" mt={2}>Price: {formatRupiah(course.course_price)}</Text>
                       <Text fontSize="md" color="gray.500" mt={2}>{course.course_desc}</Text>
                       <Flex align="center" mt={2} display={course.course_rating === 0 ? "none" : "flex"}>
                         <Stars value={course.course_rating} count={5} color="#2596be" size={20} edit={false} />
@@ -239,6 +251,77 @@ const Courses = () => {
             </React.Fragment>
           )})}
         </Box>
+
+        {/* Pagination */}
+        <Flex justifyContent="center" mt={8} mb={4}>
+        {/* Tombol Previous */}
+        <Button
+          onClick={() => handlePageChange(page - 1)}
+          isDisabled={page === 1}
+          mr={2}
+        >
+          ←
+        </Button>
+
+        {/* Halaman Pertama */}
+        <Button
+          onClick={() => handlePageChange(1)}
+          bgColor={page === 1 ? "#007BFF" : "#E0E0E0"}
+          color="#FFFFFF"
+          mx={1}
+        >
+          1
+        </Button>
+
+        {/* Ellipsis Sebelum Halaman Tengah */}
+        {page > 4 && <Text mx={1}>...</Text>}
+
+        {/* Halaman di Sekitar Halaman Aktif */}
+        {[...Array(totalPages)]
+          .map((_, index) => index + 1)
+          .filter(
+            (number) =>
+              number > 1 &&
+              number < totalPages &&
+              Math.abs(page - number) <= 2 // Tampilkan hanya 2 angka di sekitar halaman aktif
+          )
+          .map((number) => (
+            <Button
+              key={number}
+              onClick={() => handlePageChange(number)}
+              bgColor={page === number ? "#007BFF" : "#E0E0E0"}
+              color="#FFFFFF"
+              mx={1}
+            >
+              {number}
+            </Button>
+          ))}
+
+        {/* Ellipsis Setelah Halaman Tengah */}
+        {page < totalPages - 3 && <Text mx={1}>...</Text>}
+
+        {/* Halaman Terakhir */}
+        {totalPages > 1 && (
+          <Button
+            onClick={() => handlePageChange(totalPages)}
+            bgColor={page === totalPages ? "#007BFF" : "#E0E0E0"}
+            color="#FFFFFF"
+            mx={1}
+          >
+            {totalPages}
+          </Button>
+        )}
+
+        {/* Tombol Next */}
+        <Button
+          onClick={() => handlePageChange(page + 1)}
+          isDisabled={page === totalPages}
+          ml={2}
+        >
+          →
+        </Button>
+      </Flex>
+
       </Container>
     </Layout>
   );

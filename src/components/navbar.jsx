@@ -232,7 +232,7 @@ const Navbar = () => {
                         <MenuButton as={Button} colorScheme="white" variant="outline" rightIcon={<TriangleDownIcon />} mx={2}>
                             Hello, {user.name}
                         </MenuButton>
-                        <MenuList minW="120px">
+                        <MenuList minW="120px" zIndex={20}>
                             <MenuItem color={'black'} as={Link} to="/mycourses">My Courses</MenuItem>
                             <MenuItem color={'black'} onClick={handleLogout}>Logout</MenuItem>
                         </MenuList>
@@ -240,10 +240,10 @@ const Navbar = () => {
                 ) : (
                     <Box>
                         <Button as={Link} to="/auth/login" colorScheme="white" variant="outline" mx={2}>
-                            Masuk
+                            Login
                         </Button>
                         <Button as={Link} to="/auth/register" colorScheme='blue' bg="#1450A3" mx={2} boxShadow="md">
-                            Daftar
+                            Register
                         </Button>
                     </Box>
                 )}
