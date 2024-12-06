@@ -7,123 +7,123 @@ const Terms = () => {
     <Layout>
         <Box p={4} maxW="800px" mx="auto">
             <Heading as="h1" size="xl" mb={4}>
-                Syarat dan Ketentuan
+                Terms and Conditions
             </Heading>
             <Text fontSize="lg" mb={4}>
-                Skillbridge merupakan sebuah platform kursus online yang tepat untuk membantu mengembangkan keahlian profesional langsung dari ahlinya. Skillbridge dikelola oleh PT D&W Internasional.
+                Skillbridge is an online course platform designed to help develop professional skills directly from experts. Skillbridge is managed by PT D&W International.
             </Text>
             <Text fontSize="lg" mb={4}>
-                Ketentuan Penggunaan ini mengatur penggunaan Anda atas situs web, konten, serta fitur pada Skillbridge. Harap baca Ketentuan ini dengan cermat, dan hubungi kami jika Anda memiliki pertanyaan, permintaan informasi, atau keluhan. Dengan mengakses dan menggunakan situs Skillbridge, berarti Anda telah memahami dan menyetujui untuk terikat dan tunduk dengan semua peraturan yang berlaku di situs ini.
+                These Terms of Use govern your access to and use of the Skillbridge website, content, and features. Please read these Terms carefully, and contact us if you have any questions, requests for information, or complaints. By accessing and using the Skillbridge website, you agree to be bound by and comply with all applicable rules on this site.
             </Text>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                1. Layanan yang Ditawarkan
+                1. Services Offered
             </Text>
             <Text fontSize="lg" mb={4}>
-                Skillbridge menyediakan kursus online yang dirancang untuk mengembangkan keahlian profesional dalam berbagai bidang. Kami berhak untuk mengubah, memperbarui, atau menghentikan layanan kami kapan saja tanpa pemberitahuan terlebih dahulu.
+            Skillbridge provides online courses designed to develop professional skills in various fields. We reserve the right to modify, update, or discontinue our services at any time without prior notice.
             </Text>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                2. Akun Pengguna
-            </Text>
-            <Box>
-                <Text fontWeight={"bold"} fontSize="xl" mb={2}>
-                    2.1 Pendaftaran
-                </Text>
-                <Text fontSize="lg" mb={4}>
-                    Untuk mengakses kursus, Anda harus mendaftar dan membuat akun di Skillbridge. Anda setuju untuk memberikan informasi yang akurat, terbaru, dan lengkap selama proses pendaftaran.
-                </Text>
-            </Box>
-            <Box>
-                <Text fontWeight={"bold"} fontSize="xl" mb={2}>
-                    2.2 Keamanan Akun
-                </Text>
-                <Text fontSize="lg" mb={4}>
-                    Anda bertanggung jawab untuk menjaga kerahasiaan informasi akun Anda, termasuk kata sandi. Anda setuju untuk segera memberitahu kami tentang setiap penggunaan tidak sah atas akun Anda.
-                </Text>
-            </Box>
-            <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                3. Pengunaan Konten
+                2. User Accounts
             </Text>
             <Box>
                 <Text fontWeight={"bold"} fontSize="xl" mb={2}>
-                    3.1 Hak Cipta
+                    2.1 Registration
                 </Text>
                 <Text fontSize="lg" mb={4}>
-                    Semua konten yang tersedia di Skillbridge, termasuk tetapi tidak terbatas pada teks, grafik, logo, dan video, dilindungi oleh hak cipta dan hak kekayaan intelektual lainnya. Anda tidak diperbolehkan untuk menyalin, mendistribusikan, atau menggunakan konten kami tanpa izin tertulis dari kami.
+                    To access courses, you must register and create an account on Skillbridge. You agree to provide accurate, up-to-date, and complete information during the registration process.
                 </Text>
             </Box>
             <Box>
                 <Text fontWeight={"bold"} fontSize="xl" mb={2}>
-                    3.2 Lisensi Pengguna
+                    2.2 Account Security
                 </Text>
                 <Text fontSize="lg" mb={4}>
-                    Kami memberikan Anda lisensi terbatas, tidak eksklusif, tidak dapat dialihkan, dan dapat dicabut untuk mengakses dan menggunakan konten kursus kami untuk penggunaan pribadi dan non-komersial.
+                    You are responsible for maintaining the confidentiality of your account information, including your password. You agree to notify us immediately of any unauthorized use of your account.
                 </Text>
             </Box>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                4. Pembayaran dan Langganan
+                3. Use of Content
             </Text>
             <Box>
                 <Text fontWeight={"bold"} fontSize="xl" mb={2}>
-                    4.1 Harga dan Pembayaran
+                    3.1 Copyright
                 </Text>
                 <Text fontSize="lg" mb={4}>
-                    Harga untuk kursus kami tercantum di situs web dan dapat berubah sewaktu-waktu. Pembayaran dilakukan melalui metode yang tersedia di situs web kami.
+                    All content available on Skillbridge, including but not limited to text, graphics, logos, and videos, is protected by copyright and other intellectual property rights. You may not copy, distribute, or use our content without written permission from us.
                 </Text>
             </Box>
             <Box>
                 <Text fontWeight={"bold"} fontSize="xl" mb={2}>
-                    4.2 Kebijakan Pengembalian Dana
+                    3.2 User License
                 </Text>
                 <Text fontSize="lg" mb={4}>
-                    Pengembalian dana hanya berlaku jika terjadi kesalahan teknis yang sepenuhnya berada di bawah kendali Skillbridge dan menyebabkan gangguan layanan. Kesalahan teknis yang memenuhi syarat untuk pengembalian dana termasuk, namun tidak terbatas pada, masalah server, gangguan sistem, atau gangguan teknis serupa yang disebabkan oleh Skillbridge. Pengembalian dana tidak berlaku jika masalah atau kesalahan terjadi akibat tindakan atau kelalaian pengguna, seperti memilih produk yang tidak sesuai, kesalahan saat mengisi data pribadi, atau memasukkan alamat email yang tidak benar.
-                </Text>
-                <Text fontSize="lg" mb={4}>
-                    Jika Anda mengalami kesalahan teknis, Anda dapat menghubungi customer service kami melalui WhatsApp untuk memulai proses pengembalian dana.
-                </Text>
-                <Text fontSize="lg" mb={4}>
-                    Biaya berlangganan, biaya transaksi, dan biaya lainnya yang sudah dibayarkan tidak dapat ditukar, dibatalkan, dikembalikan, diganti, atau ditransfer ke pihak lain.
+                    We grant you a limited, non-exclusive, non-transferable, and revocable license to access and use our course content for personal and non-commercial purposes.
                 </Text>
             </Box>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                5. Kode Etik Pengguna
+                4. Payments and Subscriptions
+            </Text>
+            <Box>
+                <Text fontWeight={"bold"} fontSize="xl" mb={2}>
+                    4.1 Pricing and Payment
+                </Text>
+                <Text fontSize="lg" mb={4}>
+                    Course prices are listed on the website and are subject to change at any time. Payments are made through the methods available on our website.
+                </Text>
+            </Box>
+            <Box>
+                <Text fontWeight={"bold"} fontSize="xl" mb={2}>
+                    4.2 Refund Policy
+                </Text>
+                <Text fontSize="lg" mb={4}>
+                    Refunds are only applicable in the event of technical errors entirely under Skillbridge’s control that disrupt service. Technical errors eligible for refunds include, but are not limited to, server issues, system disruptions, or similar technical issues caused by Skillbridge. Refunds are not available for issues or errors caused by user actions or omissions, such as selecting an unsuitable product, errors in personal data input, or entering an incorrect email address.
+                </Text>
+                <Text fontSize="lg" mb={4}>
+                    If you experience a technical error, you may contact our customer service via WhatsApp to initiate the refund process.
+                </Text>
+                <Text fontSize="lg" mb={4}>
+                    Subscription fees, transaction fees, and other charges paid are non-refundable, non-cancelable, non-exchangeable, and non-transferable to other parties.
+                </Text>
+            </Box>
+            <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
+                5. User Code of Conduct
             </Text>
             <Text fontSize="lg" mb={2}>
-                Anda setuju untuk tidak menggunakan platform ini untuk melakukan hal-hal berikut:
+                You agree not to use the platform for the following purposes:
             </Text>
             <UnorderedList spacing={3} fontSize="lg" mb={2}>
             <ListItem>
-                Mengunggah, memposting, atau mengirimkan konten yang melanggar hukum, menyinggung, atau melanggar hak kekayaan intelektual orang lain.
+                Uploading, posting, or transmitting content that is unlawful, offensive, or infringes upon the intellectual property rights of others.
             </ListItem>
             <ListItem>
-                Mengunduh, menyimpan, membuat salinan, membagikan, mengunggah ulang, maupun menyebarluaskan dengan cara apapun juga dan media apapun juga isi dari situs web baik tanpa atau dengan mendapatkan keuntungan komersial.
+                Downloading, storing, copying, sharing, reposting, or distributing any content from the website in any way or through any medium, whether for commercial purposes or not.
             </ListItem>
             <ListItem>
-                Menggunakan Skillbridge dalam kondisi atau cara apapun yang dapat merusak, melumpuhkan, membebani, atau mengganggu server atau jaringan Skillbridge. Anda juga tidak diperbolehkan untuk mengakses layanan, akun pengguna, sistem komputer atau jaringan secara tidak sah, dengan cara hacking, password mining, atau cara tidak sah lainnya.
+                Using Skillbridge in any condition or manner that may damage, disable, overburden, or interfere with Skillbridge servers or networks. You are also prohibited from unauthorized access to services, user accounts, computer systems, or networks through hacking, password mining, or other unauthorized methods
             </ListItem>
             </UnorderedList>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                6. Pembatasan Tanggung Jawab
+                6. Limitation of Liability
             </Text>
             <Text fontSize="lg" mb={4}>
-                Kami tidak bertanggung jawab atas kerugian atau kerusakan yang mungkin timbul dari penggunaan situs kami atau ketidakmampuan untuk mengakses situs kami. Kami juga tidak menjamin bahwa situs kami akan bebas dari kesalahan atau gangguan.
+                We are not liable for any losses or damages arising from your use of our website or your inability to access it. We also do not guarantee that our site will be error-free or uninterrupted.
             </Text>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                7. Perubahan Syarat dan Ketentuan
+                7. Changes to Terms and Conditions
             </Text>
             <Text fontSize="lg" mb={4}>
-                Kami berhak untuk mengubah syarat dan ketentuan ini kapan saja. Perubahan akan diberlakukan segera setelah diposting di situs web. Penggunaan berkelanjutan Anda atas situs setelah perubahan menandakan persetujuan Anda terhadap syarat dan ketentuan yang diperbarui.
+                We reserve the right to amend these terms and conditions at any time. Changes will take effect immediately upon posting on the website. Your continued use of the website after such changes constitutes your acceptance of the updated terms and conditions.
             </Text>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                8. Hukum yang Berlaku
+                8. Governing Law
             </Text>
             <Text fontSize="lg" mb={4}>
-                Syarat dan ketentuan ini diatur oleh dan ditafsirkan sesuai dengan hukum yang berlaku di Indonesia. Setiap sengketa yang timbul dari atau terkait dengan syarat dan ketentuan ini akan diselesaikan di pengadilan yang berwenang di Jakarta, Indonesia.
+                These terms and conditions are governed by and construed in accordance with the applicable laws of Indonesia. Any disputes arising from or related to these terms and conditions will be resolved in a competent court in Jakarta, Indonesia.
             </Text>
             <Text fontWeight={"bold"} fontSize="2xl" mb={2}>
-                9. Hubungi Kami
+                9. Contact Us
             </Text>
             <Text fontSize="lg" mb={2}>
-                Jika Anda memiliki pertanyaan mengenai Ketentuan Layanan ini, Anda dapat menghubungi Kami melalui:
+                If you have any questions regarding these Terms of Service, you can contact us via:
             </Text>
             <HStack spacing={2}>
                 <Text fontSize="lg">WhatsApp :</Text>

@@ -135,7 +135,11 @@ const ResultQuiz = () => {
                                     h={8}
                                     mr={5}
                                     onClick={() =>
-                                        navigate(`/e-learning/${courseId}/quiz/${quizId}/start?section=${sectionIndex}`)
+                                      navigate(`/e-learning/${courseSlug}/quiz/${quizId}?section=${sectionIndex}`, {
+                                        state: {
+                                        courseId: courseId,
+                                        },
+                                      })
                                     }
                                     >
                                     Ulangi Kuis

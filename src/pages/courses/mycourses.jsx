@@ -9,12 +9,14 @@ import {
   Image,
   Button,
   Spinner,
+  Progress,
   Container, Divider, InputGroup, InputRightElement, IconButton
 } from "@chakra-ui/react";
 import { SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import AuthContext from '@/routes/authcontext'
 import config from "@/config";
+import generateSlug from "@/routes/generateslug";
 
 const MyCourses = () => {
     const baseUrl = config.apiBaseUrl;
@@ -38,6 +40,13 @@ const MyCourses = () => {
         }
     };
 
+    // Dummy progress data
+    const dummyProgress = {
+        course1: 40,
+        course2: 75,
+        course3: 20,
+    };
+
     useEffect(() => {
         getAllCourses();
         }
@@ -59,7 +68,12 @@ const MyCourses = () => {
                         <Container maxW="container.xl" my={'20'}>
                             {courses.length > 0 ? (
                                 <Box>
-                                    {courses.map((course) => (
+                                    {courses.map((course, index) => {
+                                        const progress =
+                                        dummyProgress[`course${index + 1}`] || Math.floor(Math.random() * 100);
+                                        const courseSlug = generateSlug(course.course_name);
+                                        
+                                        return (
                                         <React.Fragment key={course.course_id}>
                                             <Box mb={5} borderRadius={8} alignItems="center">
                                                 <Flex direction="row" justify="space-between" alignItems="center" wrap="wrap">
@@ -74,14 +88,25 @@ const MyCourses = () => {
                                                                 <Stars value={course.course_rating} count={5} color="#2596be" size={20} edit={false} />
                                                                 <Text fontSize="sm" color="gray.500" ml={2}>({course.course_rating})</Text>
                                                             </Flex>
-                                                            <Button onClick={() => navigate(`/e-learning/${course.course_id}`)} mt={4} w="100%" colorScheme="blue">Go to course</Button>
+                                                            <Text fontSize="sm" color="gray.500" mt={2}>
+                                                                Progress: {progress}%
+                                                            </Text>
+                                                            <Progress
+                                                                value={progress}
+                                                                size="sm"
+                                                                colorScheme="blue"
+                                                                borderRadius="lg"
+                                                                mt={2}
+                                                            />
+                                                            <Button onClick={() => navigate(`/e-learning/${courseSlug}`, { state: { courseId: course.course_id } })} mt={4} w="100%" colorScheme="blue">Go to course</Button>
                                                         </Box>
                                                     </Box>
                                                 </Flex>
                                             </Box>
                                             <Divider borderColor={"#108EE9"} mb={5} />
                                         </React.Fragment>
-                                    ))}
+                                        )
+                                    })}
                                 </Box>
                             ) : (
                                 <Flex direction="column" align="center" justify="center" mt="10%">
