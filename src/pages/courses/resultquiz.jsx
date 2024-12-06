@@ -8,6 +8,7 @@ import {
     GridItem,
     Spinner,
 } from "@chakra-ui/react";
+import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useNavigate, useParams, useLocation, useSearchParams } from 'react-router-dom'
 import Layout from '@/components/layout';
 import { useState, useEffect } from "react";
@@ -16,10 +17,12 @@ import config from "@/config";
 
 const ResultQuiz = () => {
     const baseUrl = config.apiBaseUrl;
-    const { courseId, quizId } = useParams();
+    const { courseSlug , quizId } = useParams();
     const [searchParams] = useSearchParams();
     const sectionIndex = searchParams.get('section');
     const location = useLocation();
+    const courseId = location.state?.courseId;
+
     const navigate = useNavigate();
     const { quizScore } = location.state || {};
     const [quizList, setQuizList] = useState([]);
@@ -96,6 +99,7 @@ const ResultQuiz = () => {
     };
 
     useEffect(() => {
+        console.log(courseId, courseSlug)
         getCourseDetail();
     }, [quizId]);
 

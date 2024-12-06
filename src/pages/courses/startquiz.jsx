@@ -12,20 +12,23 @@ import { useNavigate, useParams, useLocation, useSearchParams } from 'react-rout
 import Layout from '@/components/layout';
 import { useEffect, useState, useContext } from "react";
 import config from "@/config";
+import generateSlug from '@/routes/generateslug';
 import AuthContext from '@/routes/authcontext';
 
 
 const StartQuiz = () => {
     const location = useLocation();
+    const courseId = location.state?.courseId;
     const navigate = useNavigate();
     const baseUrl = config.apiBaseUrl;
     const { user } = useContext(AuthContext);
     // const { sectionName, sectionIndex, courseDetail, subsectionList, quizIndex, quizList } = location.state || {};
-    const { courseId, quizId } = useParams();
+    const { courseSlug, quizId } = useParams();
     const [searchParams] = useSearchParams();
     const sectionIndex = searchParams.get('section');
     const [quizData, setQuizData] = useState({});
     const [loading, setLoading] = useState(true);
+
 
     const getQuiz = async () => {
         try {
@@ -83,7 +86,11 @@ const StartQuiz = () => {
                                 color='white'  
                                 h={8}
                                 onClick={() =>
-                                    navigate(`/e-learning/${courseId}/quiz/${quizId}?section=${sectionIndex}`)
+                                    navigate(`/e-learning/${courseSlug}/quiz/${quizId}?section=${sectionIndex}`, {
+                                        state: {
+                                        courseId: courseId,
+                                        },
+                                    })
                                 }
                                 >
                                 Attempt Quiz
