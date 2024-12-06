@@ -16,6 +16,7 @@ import { SearchIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import AuthContext from '@/routes/authcontext'
 import config from "@/config";
+import generateSlug from "@/routes/generateslug";
 
 const MyCourses = () => {
     const baseUrl = config.apiBaseUrl;
@@ -70,6 +71,7 @@ const MyCourses = () => {
                                     {courses.map((course, index) => {
                                         const progress =
                                         dummyProgress[`course${index + 1}`] || Math.floor(Math.random() * 100);
+                                        const courseSlug = generateSlug(course.course_name);
                                         
                                         return (
                                         <React.Fragment key={course.course_id}>
@@ -96,7 +98,7 @@ const MyCourses = () => {
                                                                 borderRadius="lg"
                                                                 mt={2}
                                                             />
-                                                            <Button onClick={() => navigate(`/e-learning/${course.course_id}`)} mt={4} w="100%" colorScheme="blue">Go to course</Button>
+                                                            <Button onClick={() => navigate(`/e-learning/${courseSlug}`, { state: { courseId: course.course_id } })} mt={4} w="100%" colorScheme="blue">Go to course</Button>
                                                         </Box>
                                                     </Box>
                                                 </Flex>
