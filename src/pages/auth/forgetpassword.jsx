@@ -112,8 +112,8 @@ export default function ForgetPassword() {
                 <Stack align='flex-start' width="100%">
                     <LogoSkillbridge width='30vh' ml='12' />
                     <Text fontSize='4xl' as='b' ml='12'>
-                        Ayo Bergabung dengan
-                        <br />SkillBridge
+                        Come and Join 
+                        <br />SkillBridge!
                     </Text>
                     <Center width={'100%'}>
                         <Image src={'/src/assets/images/BookBridge.png'} alt='' width="50vh" height='auto' ml={'10'} />
@@ -121,16 +121,16 @@ export default function ForgetPassword() {
                 </Stack>
                 <Stack spacing={4} mr={'10'}>
                     <Text fontSize='2xl' as='b' textAlign={'end'} mr={'12'} mt={'1hv'}>
-                        Sudah punya akun?{' '}
+                        Already have an account?{' '}
                         <Link color="#7091f5" href="/auth/login">
-                            Masuk disini
+                            Log in here
                         </Link>
                     </Text>
                     <Text fontSize="3xl" fontWeight="bold" mt={'5vh'}>
-                        Lupa Password
+                        Forgot Password
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold" color="#545454" mt={'-4'}>
-                        Silakan masukkan informasi akun anda.
+                        Please enter your account information.
                     </Text>
 
                     <Center mt={6}>
@@ -161,7 +161,7 @@ export default function ForgetPassword() {
                             </Button>
                             <Divider borderColor={"#108EE9"} />
                             <Button onClick={handleCancel} bg="white" color="#7091F5" border="2px solid" borderColor="#7091F5" borderRadius="2xl" height="7vh" _hover={{ bg: "gray.200" }} >
-                                Batal
+                                Cancel
                             </Button>
                         </Stack>
                     </Center>

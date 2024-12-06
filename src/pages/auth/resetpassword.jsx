@@ -84,100 +84,143 @@ export default function ResetPassword() {
     };
 
     return (
-        <SimpleGrid columns={2} spacing={10} mt={12}>
-            <Stack align='flex-start' width="100%">
-                <LogoSkillbridge width='30vh' ml='12' />
-                <Text fontSize='4xl' as='b' ml='12'>
-                    Ayo Bergabung dengan
-                    <br />SkillBridge
+        <SimpleGrid 
+            columns={{ base: 1, md: 2 }} 
+            spacing={10} 
+            mt={{ base: 6, md: 12 }} 
+            px={{ base: 4, md: 10 }}
+            >
+            <Stack align={{ base: "center", md: "flex-start" }} width="100%">
+                <LogoSkillbridge 
+                width={{ base: "20vh", md: "30vh" }} 
+                ml={{ base: 0, md: 12 }} 
+                />
+                <Text 
+                fontSize={{ base: "2xl", md: "4xl" }} 
+                as="b" 
+                ml={{ base: 0, md: 12 }} 
+                textAlign={{ base: "center", md: "left" }}
+                >
+                Ayo Bergabung dengan
+                <br />SkillBridge
                 </Text>
                 <Center width={'100%'}>
-                    <Image src={'/src/assets/images/BookBridge.png'} alt='' width="50vh" height='auto' ml={'10'} />
+                <Image 
+                    src={'/src/assets/images/BookBridge.png'} 
+                    alt='' 
+                    width={{ base: "40vh", md: "50vh" }} 
+                    height="auto" 
+                    ml={{ base: 0, md: 10 }} 
+                />
                 </Center>
             </Stack>
-            <Stack spacing={4} mr={'10'}>
-                <Text fontSize='2xl' as='b' textAlign={'end'} mr={'12'} mt={'1hv'}>
-                    Sudah punya akun?{' '}
-                    <Link color="#7091f5" href="/auth/login">
-                        Masuk disini
-                    </Link>
+            <Stack spacing={4} width="100%" mt={{ base: 4, md: 0 }} ml={{ base: 0, md: 10 }}>
+                <Text 
+                fontSize={{ base: "md", md: "2xl" }} 
+                as="b" 
+                textAlign={{ base: "center", md: "end" }} 
+                mr={{ base: 0, md: 12 }} 
+                >
+                Sudah punya akun?{' '}
+                <Link color="#7091f5" href="/auth/login">
+                    Masuk disini
+                </Link>
                 </Text>
-                <Text fontSize="3xl" fontWeight="bold" mt={'5vh'}>
-                    Reset Password
+                <Text 
+                fontSize={{ base: "xl", md: "3xl" }} 
+                fontWeight="bold" 
+                textAlign={{ base: "center", md: "left" }}
+                >
+                Reset Password
                 </Text>
-                <Text fontSize="2xl" fontWeight="bold" color="#545454" mt={'-4'}>
-                    Silakan masukkan informasi akun anda.
+                <Text 
+                fontSize={{ base: "lg", md: "2xl" }} 
+                fontWeight="bold" 
+                color="#545454" 
+                textAlign={{ base: "center", md: "left" }}
+                >
+                Silakan masukkan informasi akun anda.
                 </Text>
-
-                <Center mt={6}>
-                    <Stack spacing={6} mr={'10'}>
-                        <Text fontSize="2xl" fontWeight="bold" color="#545454">
-                            Email : {email}
-                        </Text>
-
-                        <InputGroup>
-                            <Input
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                width='65vh'
-                                height='7vh'
-                                fontSize="20px"
-                                type={show1 ? "text" : "password"}
-                                placeholder="New Password"
-                                borderColor="#7091F5"
-                            />
-                            <InputRightElement height="100%" mr={2}>
-                                <IconButton
-                                    variant="unstyled"
-                                    onClick={handleShow1}
-                                    color="#8A8A8A"
-                                    fontSize="24px"
-                                    icon={show1 ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-                                />
-                            </InputRightElement>
-                        </InputGroup>
-
-                        <InputGroup>
-                            <Input
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                width="65vh"
-                                height="7vh"
-                                fontSize="20px"
-                                type={show2 ? "text" : "password"}
-                                placeholder="Confirm Password"
-                                borderColor="#7091F5"
-                            />
-                            <InputRightElement height="100%" mr={2}>
-                                <IconButton
-                                    variant="unstyled"
-                                    onClick={handleShow2}
-                                    color="#8A8A8A"
-                                    fontSize="24px"
-                                    icon={show2 ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-                                />
-                            </InputRightElement>
-                        </InputGroup>
-
-                        <Button
-                            width='65vh'
-                            height='7vh'
-                            colorScheme="blue"
-                            bgColor="#7091F5"
-                            textColor="white"
-                            shadow="lg"
-                            fontSize='20px'
-                            onClick={handleSubmit}
-                        >
-                            Ubah Password
-                        </Button>
-                        <Divider borderColor={"#108EE9"} />
-                        <Button onClick={handleCancel} bg="white" color="#7091F5" border="2px solid" borderColor="#7091F5" borderRadius="2xl" height="7vh" _hover={{ bg: "gray.200" }}>
-                            Batal
-                        </Button>
-                    </Stack>
+                <Center>
+                <Stack spacing={4} width="100%" align="center">
+                    <Text 
+                    fontSize={{ base: "md", md: "2xl" }} 
+                    fontWeight="bold" 
+                    color="#545454" 
+                    textAlign={{ base: "center", md: "left" }}
+                    >
+                    Email : {email}
+                    </Text>
+                    <InputGroup width={{ base: "90%", md: "65vh" }}>
+                    <Input
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        height="7vh"
+                        fontSize="20px"
+                        type={show1 ? "text" : "password"}
+                        placeholder="New Password"
+                        borderColor="#7091F5"
+                    />
+                    <InputRightElement height="100%" mr={2}>
+                        <IconButton
+                        variant="unstyled"
+                        onClick={handleShow1}
+                        color="#8A8A8A"
+                        fontSize="24px"
+                        icon={show1 ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                        />
+                    </InputRightElement>
+                    </InputGroup>
+                    <InputGroup width={{ base: "90%", md: "65vh" }}>
+                    <Input
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        height="7vh"
+                        fontSize="20px"
+                        type={show2 ? "text" : "password"}
+                        placeholder="Confirm Password"
+                        borderColor="#7091F5"
+                    />
+                    <InputRightElement height="100%" mr={2}>
+                        <IconButton
+                        variant="unstyled"
+                        onClick={handleShow2}
+                        color="#8A8A8A"
+                        fontSize="24px"
+                        icon={show2 ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                        />
+                    </InputRightElement>
+                    </InputGroup>
+                    <Button
+                    width={{ base: "90%", md: "65vh" }}
+                    height="7vh"
+                    colorScheme="blue"
+                    bgColor="#7091F5"
+                    textColor="white"
+                    shadow="lg"
+                    fontSize="20px"
+                    onClick={handleSubmit}
+                    >
+                    Ubah Password
+                    </Button>
+                    <Divider borderColor={"#108EE9"} />
+                    <Button 
+                    onClick={handleCancel} 
+                    bg="white" 
+                    color="#7091F5" 
+                    border="2px solid" 
+                    borderColor="#7091F5" 
+                    borderRadius="2xl" 
+                    height="7vh" 
+                    width={{ base: "90%", md: "65vh" }}
+                    _hover={{ bg: "gray.200" }}
+                    >
+                    Batal
+                    </Button>
+                </Stack>
                 </Center>
             </Stack>
-        </SimpleGrid>
+            </SimpleGrid>
+
     );
 }
