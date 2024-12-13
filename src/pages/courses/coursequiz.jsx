@@ -132,6 +132,23 @@ function CourseQuiz() {
         if(response.ok) {
             setLoading(false);
             const data = await response.json();
+
+            const addprogress = await fetch(`${baseUrl}/course/add_quiz_progress`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_email: user.email,
+                    courseid: courseId,
+                    quizid : quizId,
+                }),
+            });
+
+            if (!addprogress.ok) {
+                throw new Error(`HTTP error! status: ${addprogress.status}`);
+            }
+
             navigate(`/e-learning/${courseSlug}/quiz/${quizId}/result?section=${sectionIndex}`, {
                 state: {
                     quizScore: data['Score'],
