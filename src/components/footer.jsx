@@ -21,12 +21,14 @@ import linkedIn from "@/assets/linkedIn.svg";
 
 const Footer = () => {
     const [subscribeEmail, setSubscribeEmail] = useState('');
+    const [loading, setLoading] = useState(false);
     const baseUrl = config.apiBaseUrl;
 
     const handleSubscribe = async (event) => {
         
         event.preventDefault();
-        if (!subscribeEmail) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!subscribeEmail || !emailRegex.test(subscribeEmail)) {
             swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -34,6 +36,8 @@ const Footer = () => {
             });
             return;
         }
+
+        setLoading(true);
 
         try {
             const response = await fetch(`${baseUrl}/email/subscribe`, {
