@@ -31,20 +31,13 @@ const MyCourses = () => {
             if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
             }
-            const data = await response.json(); 
+            const data = await response.json();
             setCourses(data.response);
             setLoading(false);
             
         } catch (error) {
             console.error(`Could not get courses: ${error}`);
         }
-    };
-
-    // Dummy progress data
-    const dummyProgress = {
-        course1: 40,
-        course2: 75,
-        course3: 20,
     };
 
     useEffect(() => {
@@ -69,8 +62,6 @@ const MyCourses = () => {
                             {courses.length > 0 ? (
                                 <Box>
                                     {courses.map((course, index) => {
-                                        const progress =
-                                        dummyProgress[`course${index + 1}`] || Math.floor(Math.random() * 100);
                                         const courseSlug = generateSlug(course.course_name);
                                         
                                         return (
@@ -89,10 +80,10 @@ const MyCourses = () => {
                                                                 <Text fontSize="sm" color="gray.500" ml={2}>({course.course_rating})</Text>
                                                             </Flex>
                                                             <Text fontSize="sm" color="gray.500" mt={2}>
-                                                                Progress: {progress}%
+                                                                Progress: {course.progress_percentage}%
                                                             </Text>
                                                             <Progress
-                                                                value={progress}
+                                                                value={course.progress_percentage}
                                                                 size="sm"
                                                                 colorScheme="blue"
                                                                 borderRadius="lg"

@@ -82,6 +82,30 @@ function CourseVideo() {
     }
   }
 
+  const handleOnEndedVideo = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/course/add_subsection_progress`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.email,
+          courseid : courseId,
+          subsectionid: subsectionId,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(`Could not get courses: ${error}`);
+    }
+  };
+
+
   const renderNextButton = () => {
     // Jika belum di subseksi terakhir, lanjutkan ke subseksi Next
     if (subsectionIdx < subsectionList.length - 1) {
@@ -321,6 +345,7 @@ return (
                   playing
                   width="100%"
                   height="100%"
+                  onEnded={handleOnEndedVideo}
                   controls
                   config={{
                     file: {
