@@ -139,7 +139,7 @@ function CourseQuiz() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    user_email: user.email,
+                    email: user.email,
                     courseid: courseId,
                     quizid : quizId,
                 }),
