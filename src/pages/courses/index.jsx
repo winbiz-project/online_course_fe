@@ -162,7 +162,7 @@ const Courses = () => {
             </InputRightElement>
           </InputGroup>
 
-          <Menu > 
+          {/* <Menu > 
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />} position="absolute"
             bottom={-10} right={160}>
               Sort by
@@ -187,7 +187,55 @@ const Courses = () => {
             onClick={handleOpenModal}
           >
             Category Filter
-          </Button>
+          </Button> */}
+
+          <Flex
+              direction={{ base: "column", md: "row" }}
+              w={{ base: "100%", md: "auto" }}
+              justify="flex-end"
+              mt={{ base: 4, md: 0 }}
+              ml={{ base: 0, md: 980 }}
+            >
+              <Menu>
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />} mb={{ base: 2, md: 0 }}>
+                  Sort by
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => handleSortChange("latestCreated")}>
+                    Latest Created
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("earliestCreated")}>
+                    Earliest Created
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("titleAsc")}>
+                    Title Ascending
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("titleDesc")}>
+                    Title Descending
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("highestRating")}>
+                    Highest Rating
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("lowestRating")}>
+                    Lowest Rating
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("highPrice")}>
+                    Highest Price
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("lowPrice")}>
+                    Lowest Price
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+
+              <Button
+                colorScheme="blue"
+                ml={{ base: 0, md: 4 }}
+                onClick={handleOpenModal}
+              >
+                Category Filter
+              </Button>
+            </Flex>
 
           <Modal isOpen={isModalOpen} onClose={handleCloseModal} isCentered>
             <ModalOverlay />

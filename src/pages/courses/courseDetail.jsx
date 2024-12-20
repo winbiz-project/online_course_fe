@@ -117,9 +117,9 @@ const CourseDetailPage = () => {
 
   return (
     <Layout>
-      <VStack spacing={4}>
-        <Center>
-          <Box bg="#2D2F31" p={8} color="white">
+      {/* <VStack spacing={4}>
+        <Center w='100%'>
+          <Box bg="#2D2F31" p={8} color="white" w="100vw">
             <HStack spacing={8} margin={'3%'} >
               <VStack spacing={3} >
                 <Heading as="h1" size={'2xl'} textAlign="left" alignSelf={"flex-start"}>{courseDetail.course_name}</Heading>
@@ -239,6 +239,158 @@ const CourseDetailPage = () => {
                 </AccordionPanel>
               </AccordionItem>
 
+          </Accordion>
+        </Flex>
+      </VStack> */}
+
+      <VStack spacing={4} w="100%">
+        <Box bg="#2D2F31" color="white" w="100%" py={8} px={{ base: 4, md: 8 }}>
+          <Flex
+            direction={{ base: 'column', md: 'row' }}
+            align={{ base: 'center', md: 'flex-start' }}
+            justify="space-between"
+            maxW="1200px"
+            mx="auto"
+          >
+            <VStack spacing={4} align="flex-start" w={{ base: '100%', md: '50%' }}>
+              <Heading as="h1" size="xl" textAlign={{ base: 'center', md: 'left' }}>
+                {courseDetail.course_name}
+              </Heading>
+
+              <Image
+                borderRadius="lg"
+                src={courseDetail.course_photo}
+                alt={courseDetail.course_name}
+                width={{ base: "100%", md: "65%" }}
+                display={{ base: "block", md: "none" }} // Hanya tampil di mobile
+              />
+
+              <HStack spacing={2}>
+                <Text fontSize="lg">{courseDetail.course_rating}</Text>
+                <StarIcon color="yellow.400" />
+                <Text fontSize="lg">({courseDetail.rating_users_count} reviews)</Text>
+              </HStack>
+              <HStack wrap="wrap">
+                {courseDetail.course_categories?.map((category) => (
+                  <Badge key={category.category_id} bg="#2ECC71" textColor="white" mb={2}>
+                    {category.category_name}
+                  </Badge>
+                ))}
+              </HStack>
+              <Text fontSize="lg" textAlign={{ base: 'center', md: 'left' }}>
+                {courseDetail.course_desc}
+              </Text>
+
+              {!isEnrolled && (
+                <>
+                  <Text fontSize="2xl" fontWeight="bold" textAlign="left">
+                    Price: Rp{courseDetail.course_price.toLocaleString('id-ID')}
+                  </Text>
+                  <Button bg="#3498DB" color="white" size="lg" onClick={handlePurchase}>
+                    Enroll Now
+                  </Button>
+                </>
+              )}
+            </VStack>
+
+            <Box w={{ base: '100%', md: '45%' }} mt={{ base: 8, md: 0 }} >
+              <Image
+                borderRadius="lg"
+                src={courseDetail.course_photo}
+                alt={courseDetail.course_name}
+                maxW="100%"
+                objectFit="contain"
+                display={{ base: "none", md: "block" }} // Hanya tampil di mobile
+              />
+            </Box>
+          </Flex>
+        </Box>
+
+        <Flex direction="column" align="center" w="full" px={4} py={8}>
+          <Heading size="lg" mb={4} textAlign="left" alignSelf={{base: '',md: "flex-start"}} ml={{base: 0, md: 4}}>
+            Course Content
+          </Heading>
+          <Accordion mt={4} allowMultiple w="100%">
+            {courseDetail.sections?.map((section, idxSection) => (
+              <AccordionItem key={section.section_id}>
+                <AccordionButton>
+                  <Box flex="1" textAlign="left" fontWeight="bold" fontSize="xl">
+                    {section.section_name}
+                  </Box>
+                  {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
+                </AccordionButton>
+                <AccordionPanel>
+                  {section.subsections?.map((subsection) => (
+                    <React.Fragment key={subsection.subsection_id}>
+                      {isEnrolled ? (
+                        <Text
+                          as="button"
+                          color="teal"
+                          onClick={() =>
+                            navigate(
+                              `/e-learning/${generateSlug(
+                                courseDetail.course_name
+                              )}/${generateSlug(subsection.subsection_name)}?section=${idxSection}`,
+                              {
+                                state: {
+                                  courseId: courseDetail.course_id,
+                                  subsectionId: subsection.subsection_id,
+                                },
+                              }
+                            )
+                          }
+                        >
+                          {subsection.subsection_name}
+                        </Text>
+                      ) : (
+                        <Text color="gray.500">{subsection.subsection_name}</Text>
+                      )}
+                      <Divider mt={2} />
+                    </React.Fragment>
+                  ))}
+
+                  {section.quizzes?.map((quiz) => (
+                    <React.Fragment key={quiz.quiz_id}>
+                      {isEnrolled ? (
+                        <Text
+                          as="button"
+                          color="teal"
+                          onClick={() =>
+                            navigate(
+                              `/e-learning/${generateSlug(
+                                courseDetail.course_name
+                              )}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,
+                              { state: { courseId } }
+                            )
+                          }
+                        >
+                          [Quiz] {quiz.quiz_title}
+                        </Text>
+                      ) : (
+                        <Text color="gray.500">[Quiz] {quiz.quiz_title}</Text>
+                      )}
+                      <Divider mt={2} />
+                    </React.Fragment>
+                  ))}
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+              <AccordionItem>
+                  <AccordionButton>
+                    <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
+                      Review
+                    </Box>
+                    {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
+                  </AccordionButton>
+                  <AccordionPanel>
+                    {isEnrolled ? (
+                      <Link color="teal.500" fontSize={'lg'}>Review Course</Link>
+                    ) : (
+                      <Text color="gray.500" fontSize={'lg'}>Review Course</Text>
+                    )}
+                    
+                  </AccordionPanel>
+                </AccordionItem>
           </Accordion>
         </Flex>
       </VStack>
