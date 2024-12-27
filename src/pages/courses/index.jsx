@@ -204,7 +204,7 @@ const Courses = () => {
               Category Filter
             </MenuButton>
             <MenuList>
-              {/* Scrollable Checkbox List */}
+              
               <Box maxHeight="200px" overflowY="auto" p={2}>
                 <VStack align="start" spacing={2}>
                   {displayedCategories.map((category, index) => (
@@ -218,7 +218,6 @@ const Courses = () => {
                   ))}
                 </VStack>
               </Box>
-              {/* Fixed Apply and Clear Buttons */}
               <Box p={2} borderTop="1px solid gray">
                 <HStack justify="space-between">
                   <Button size="sm" colorScheme="blue" onClick={applyCategoryFilter} w="48%">
