@@ -241,17 +241,16 @@ export default function ForgetPassword() {
                     mr={{ base: 0, md: 4 }}
                     >
                     Already have an account?{" "}
-                    <Link
-                        color="#7091f5"
-                        href="/auth/login"
-                        // as='b'
-                        fontSize={{ base: "lg", md: "2xl" }}
-                        textAlign={{ base: "center", md: "end" }}
-                    >
-                        Log in here
-                    </Link>
                 </Text>
-                
+                <Link
+                    color="#7091f5"
+                    onClick={() => navigate('/auth/login')}
+                    as='b'
+                    fontSize={{ base: "lg", md: "2xl" }}
+                    textAlign={{ base: "center", md: "end" }}
+                >
+                    Log in here
+                </Link>
             </Flex>
 
             <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold">

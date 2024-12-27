@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Stars from 'react-stars';
 import axios from 'axios';
 import {
-  Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, Wrap, WrapItem, Spinner,
+  Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, Wrap, WrapItem, Spinner, VStack, HStack, Checkbox,
   Flex, Text, Image, Button, Container, Divider, InputGroup, InputRightElement, IconButton, Menu, MenuButton, MenuList, MenuItem
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from '@chakra-ui/icons'
@@ -14,8 +14,9 @@ import generateSlug from "@/routes/generateslug";
 const Courses = () => {
   const baseUrl = config.apiBaseUrl;
   const [courses, setCourses] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [displayedCategories, setDisplayedCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [filterCourses, setFilterCourses] = useState(courses);
   const [loading, setLoading ] = useState(true);
@@ -36,6 +37,7 @@ const Courses = () => {
       setCourses(data.courses);
       setFilterCourses(data.courses);
       setCategories(data.categories);
+      setDisplayedCategories(data.categories);
       setLoading(false);
     } catch (error) {
       console.error(`Could not get courses: ${error}`);
@@ -43,35 +45,47 @@ const Courses = () => {
   };
 
   const handleFilterCategory = (categoryId) => {
-    setSelectedCategories((prevSelected) => {
-      if (prevSelected.includes(categoryId)) {
-        return prevSelected.filter(id => id !== categoryId);
-      } else {
-        return [...prevSelected, categoryId];
-      }
-    });
+    const isCurrentlySelected = selectedCategories.includes(categoryId);
+  
+    const updatedSelectedCategories = isCurrentlySelected
+      ? selectedCategories.filter((id) => id !== categoryId)
+      : [...selectedCategories, categoryId];
+  
+    setSelectedCategories(updatedSelectedCategories);
+  
+    const updatedCategories = [
+      ...categories.filter((cat) =>
+        updatedSelectedCategories.includes(cat.category_id)
+      ),
+      ...categories.filter(
+        (cat) => !updatedSelectedCategories.includes(cat.category_id)
+      ),
+    ];
+  
+    setDisplayedCategories(updatedCategories);
   };
 
   const applyCategoryFilter = () => {
+    
     if (selectedCategories.length > 0) {
       const filteredCourses = courses.filter(course =>
         course.course_categories.some(category => selectedCategories.includes(category.category_id))
       );
       setFilterCourses(filteredCourses);
-      console.log('Filtered Courses:', filteredCourses);
-      handleCloseModal();
     } else {
       setFilterCourses(courses);
-      handleCloseModal();
     }
+    const selectedCategoryNames = selectedCategories.map(categoryId => {
+      const category = categories.find(cat => cat.category_id === categoryId);
+      return category ? category.category_name : '';
+    });
+    // console.log("Applied categories:", selectedCategories);
+    setIsMenuOpen(false);
   };
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const clearFilter = () => {
+    setSelectedCategories([]);
+    setDisplayedCategories(categories);
   };
 
   useEffect(() => {
@@ -162,7 +176,7 @@ const Courses = () => {
             </InputRightElement>
           </InputGroup>
 
-          {/* <Menu > 
+          <Menu > 
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />} position="absolute"
             bottom={-10} right={160}>
               Sort by
@@ -179,97 +193,43 @@ const Courses = () => {
             </MenuList>
           </Menu>
           
-          <Button
-            position="absolute"
-            bottom={-10}
-            right={0}
-            colorScheme="blue"
-            onClick={handleOpenModal}
-          >
-            Category Filter
-          </Button> */}
-
-          <Flex
-              direction={{ base: "column", md: "row" }}
-              w={{ base: "100%", md: "auto" }}
-              justify="flex-end"
-              mt={{ base: 4, md: 0 }}
-              ml={{ base: 0, md: 980 }}
+          <Menu>
+            <MenuButton
+              as={Button}
+              colorScheme="blue"
+              position="absolute"
+              bottom={-10}
+              right={0}
             >
-              <Menu>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />} mb={{ base: 2, md: 0 }}>
-                  Sort by
-                </MenuButton>
-                <MenuList>
-                  <MenuItem onClick={() => handleSortChange("latestCreated")}>
-                    Latest Created
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSortChange("earliestCreated")}>
-                    Earliest Created
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSortChange("titleAsc")}>
-                    Title Ascending
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSortChange("titleDesc")}>
-                    Title Descending
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSortChange("highestRating")}>
-                    Highest Rating
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSortChange("lowestRating")}>
-                    Lowest Rating
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSortChange("highPrice")}>
-                    Highest Price
-                  </MenuItem>
-                  <MenuItem onClick={() => handleSortChange("lowPrice")}>
-                    Lowest Price
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-
-              <Button
-                colorScheme="blue"
-                ml={{ base: 0, md: 4 }}
-                onClick={handleOpenModal}
-              >
-                Category Filter
-              </Button>
-            </Flex>
-
-          <Modal isOpen={isModalOpen} onClose={handleCloseModal} isCentered>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Filter Categories</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Wrap>
-                  {categories.map((category) => (
-                    <WrapItem key={category.category_id}>
-                      <Button
-                        onClick={() => handleFilterCategory(category.category_id)}
-                        bg={selectedCategories.includes(category.category_id) ? 'gray.200' : 'white'}
-                        color={selectedCategories.includes(category.category_id) ? '#3884cc' : 'black'}
-                        border={selectedCategories.includes(category.category_id) ? '2px solid #3884cc' : '1px solid gray'}
-                        boxShadow={selectedCategories.includes(category.category_id) ? '0 0 10px rgba(0, 0, 0, 0.1)' : 'none'}
-                      >
-                        {category.category_name}
-                      </Button>
-                    </WrapItem>
+              Category Filter
+            </MenuButton>
+            <MenuList>
+              
+              <Box maxHeight="200px" overflowY="auto" p={2}>
+                <VStack align="start" spacing={2}>
+                  {displayedCategories.map((category, index) => (
+                    <Checkbox
+                      key={category.category_id}
+                      isChecked={selectedCategories.includes(category.category_id)}
+                      onChange={() => handleFilterCategory(category.category_id, index)}
+                    >
+                      {category.category_name}
+                    </Checkbox>
                   ))}
-                </Wrap>
-              </ModalBody>
-
-              <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={applyCategoryFilter}>
-                Apply
-              </Button>
-              <Button onClick={handleCloseModal}>
-                Close
-              </Button>
-            </ModalFooter>
-            </ModalContent>
-          </Modal>
+                </VStack>
+              </Box>
+              <Box p={2} borderTop="1px solid gray">
+                <HStack justify="space-between">
+                  <Button size="sm" colorScheme="blue" onClick={applyCategoryFilter} w="48%">
+                    Apply
+                  </Button>
+                  <Button size="sm" colorScheme="red" variant="outline" onClick={clearFilter} w="48%">
+                    Clear Filter
+                  </Button>
+                </HStack>
+              </Box>
+            </MenuList>
+          </Menu>
         </Flex>
         <Box>
           {filterCourses.slice((page - 1) * limit, page * limit).map((course) => {
