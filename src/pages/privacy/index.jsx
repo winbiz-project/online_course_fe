@@ -7,7 +7,7 @@ const Privacy = () => {
     <Layout>
         <Box p={4} maxW="800px" mx="auto">
             <Heading as="h1" size="xl" mb={4}>
-                Kebijakan Privasi
+                Privacy Policy
             </Heading>
             <Text fontSize="lg" mb={4}>
                 Skillbridge is committed to protecting and respecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you access and use the Skillbridge website.

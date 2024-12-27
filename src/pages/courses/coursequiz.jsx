@@ -276,7 +276,7 @@ return (
     { quizAvail && courseAvail && !loading ?
         (
             <Box position="relative" height="auto" pb={5}>
-                <Flex direction="row" justifyContent="space-between" height={"60vh"} overflow="hidden">
+                <Flex direction="row" justifyContent="space-between"  overflow="hidden">
                     <Flex direction="column" width={sidebarOpen ? "75%" : "100%"} transition="width 0.3s ease">
                     <Flex
                         justifyContent="space-between"
@@ -356,12 +356,12 @@ return (
                                                 <Flex>
                                                     <Text>{currentQuestion + 1}.</Text>
                                                     {quizData.details[currentQuestionId].question_img && (
-                                                        <Box boxSize='sm'>
+                                                        <Box w={'300px'}>
                                                             <Image src={quizData.details[currentQuestionId].question_img} alt={`Image for question ${currentQuestionId + 1}`} />
                                                         </Box>
                                                     )}
                                                 </Flex>
-                                                <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
+                                                <Text>{quizData.details[currentQuestionId].question_text}</Text>
                                             </>
                                         )
                                         :

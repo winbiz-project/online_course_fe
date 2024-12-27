@@ -231,9 +231,9 @@ const CourseDetailPage = () => {
                 </AccordionButton>
                 <AccordionPanel>
                   {isEnrolled ? (
-                    <Link color="teal.500" fontSize={'lg'}>Review Course</Link>
+                    <Link color="teal.500" fontSize={'lg'}>Review Course & Certificate</Link>
                   ) : (
-                    <Text color="gray.500" fontSize={'lg'}>Review Course</Text>
+                    <Text color="gray.500" fontSize={'lg'}>Review Course & Certificate</Text>
                   )}
                   
                 </AccordionPanel>
