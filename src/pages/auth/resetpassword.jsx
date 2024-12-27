@@ -101,8 +101,8 @@ export default function ResetPassword() {
                 ml={{ base: 0, md: 12 }} 
                 textAlign={{ base: "center", md: "left" }}
                 >
-                Ayo Bergabung dengan
-                <br />SkillBridge
+                Come and join
+                <br />SkillBridge!
                 </Text>
                 <Center width={'100%'}>
                 <Image 
@@ -121,9 +121,9 @@ export default function ResetPassword() {
                 textAlign={{ base: "center", md: "end" }} 
                 mr={{ base: 0, md: 12 }} 
                 >
-                Sudah punya akun?{' '}
+                Already have an account?{' '}
                 <Link color="#7091f5" href="/auth/login">
-                    Masuk disini
+                    Log in here
                 </Link>
                 </Text>
                 <Text 
@@ -139,7 +139,7 @@ export default function ResetPassword() {
                 color="#545454" 
                 textAlign={{ base: "center", md: "left" }}
                 >
-                Silakan masukkan informasi akun anda.
+                Please enter your account information.
                 </Text>
                 <Center>
                 <Stack spacing={4} width="100%" align="center">
@@ -201,7 +201,7 @@ export default function ResetPassword() {
                     fontSize="20px"
                     onClick={handleSubmit}
                     >
-                    Ubah Password
+                    Change Password
                     </Button>
                     <Divider borderColor={"#108EE9"} />
                     <Button 
@@ -215,7 +215,7 @@ export default function ResetPassword() {
                     width={{ base: "90%", md: "65vh" }}
                     _hover={{ bg: "gray.200" }}
                     >
-                    Batal
+                    Cancel
                     </Button>
                 </Stack>
                 </Center>
