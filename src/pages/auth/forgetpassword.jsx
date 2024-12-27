@@ -244,7 +244,7 @@ export default function ForgetPassword() {
                 </Text>
                 <Link
                     color="#7091f5"
-                    href="/auth/login"
+                    onClick={() => navigate('/auth/login')}
                     as='b'
                     fontSize={{ base: "lg", md: "2xl" }}
                     textAlign={{ base: "center", md: "end" }}
