@@ -231,20 +231,20 @@ export default function ForgetPassword() {
             align={{ base: "center", md: "flex-end" }}
             width="100%"
             textAlign={{ base: "center", md: "end" }}
-            justify="space-between"
+            justify="center"
             fontSize={{ base: "md", md: "lg" }}
             >
                 <Text
                     fontSize={{ base: "lg", md: "2xl" }}
                     as="b"
                     textAlign={{ base: "center", md: "end" }}
-                    mr={{ base: 0, md: 12 }}
+                    mr={{ base: 0, md: 4 }}
                     >
                     Already have an account?{" "}
                 </Text>
                 <Link
                     color="#7091f5"
-                    href="/auth/login"
+                    onClick={() => navigate('/auth/login')}
                     as='b'
                     fontSize={{ base: "lg", md: "2xl" }}
                     textAlign={{ base: "center", md: "end" }}
