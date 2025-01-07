@@ -8,9 +8,12 @@ import {
   VStack,
   UnorderedList,
   ListItem,
+  Flex,
+  Divider,
 } from "@chakra-ui/react";
 
 import PeoplePlaceholder from "@/assets/images/people-placeholder.png";
+import MeiAnnisa from "@/assets/images/Mei-Annisa.webp"
 
 const AboutUs = () => {
   return (
@@ -23,85 +26,150 @@ const AboutUs = () => {
           </Heading>
           <VStack spacing={8} align="stretch">
             {/* Introduction */}
-            <Text fontSize="lg" textAlign="justify">
-              The online learning platform designed by Skillbridge is a modern
-              solution for developing various skills, ranging from technology,
-              business, and design to personal development. With instructors from
-              world-renowned universities and industry experts, you will gain
-              in-depth insights, innovative teaching methods, and materials that
-              align with the latest trends.
-            </Text>
-            <Text fontSize="lg" textAlign="justify">
-              The interactive courses offered include learning videos, quizzes,
-              practical projects, and community discussions, allowing you to
-              immediately apply what you've learned. The flexibility of study
-              schedules enables you to access materials anytime and anywhere,
-              making it suitable for students, professionals, and individuals
-              seeking continuous growth.
-            </Text>
-            <Text fontSize="lg" textAlign="justify">
-              In addition to skill-based courses, this platform also provides
-              exclusive tips on pursuing further education, securing
-              scholarships, and building a career abroad.
-            </Text>
+            <Box 
+              backgroundColor="#CDE5FB"
+              borderRadius="xl"
+              p={6}
+              boxShadow="sm"
+              >
+                <Text fontSize="lg" textAlign="justify" mb={6}>
+                The online learning platform designed by Skillbridge is a modern
+                solution for developing various skills, ranging from technology,
+                business, and design to personal development. With instructors from
+                world-renowned universities and industry experts, you will gain
+                in-depth insights, innovative teaching methods, and materials that
+                align with the latest trends.
+                </Text>
+                <Text fontSize="lg" textAlign="justify" mb={6}>
+                The interactive courses offered include learning videos, quizzes,
+                practical projects, and community discussions, allowing you to
+                immediately apply what you've learned. The flexibility of study
+                schedules enables you to access materials anytime and anywhere,
+                making it suitable for students, professionals, and individuals
+                seeking continuous growth.
+                </Text>
+                <Text fontSize="lg" textAlign="justify">
+                In addition to skill-based courses, this platform also provides
+                exclusive tips on pursuing further education, securing
+                scholarships, and building a career abroad.
+                </Text>
+            </Box>
 
             {/* Vision & Mission */}
-            <Box>
+            <Box 
+              backgroundColor="#CDE5FB"
+              borderRadius="xl"
+              p={6}
+              boxShadow="sm"
+              >
               <Heading as="h2" size="lg" mb={4}>
                 Vision:
               </Heading>
-              <Text fontSize="lg" textAlign="justify">
+              <Text fontSize="lg" textAlign="justify" mb={8}>
                 To become a leading global learning platform that equips
                 individuals with relevant skills and international insights for
                 success in the digital era and global competition.
               </Text>
-            </Box>
-            <Box>
               <Heading as="h2" size="lg" mb={4}>
                 Mission:
               </Heading>
-              <UnorderedList spacing={2} fontSize="lg">
-                <ListItem>Providing High-Quality Learning Courses</ListItem>
-                <ListItem>Offering Career Guidance</ListItem>
-                <ListItem>Building a Global Community</ListItem>
-              </UnorderedList>
+              <VStack align="start" spacing={4}>
+                <Flex alignItems="center">
+                  <Text fontWeight="bold" color="blue.500" mr={2}>
+                    🌟
+                  </Text>
+                  <Text fontSize="lg">Providing High-Quality Learning Courses</Text>
+                </Flex>
+                <Flex alignItems="center">
+                  <Text fontWeight="bold" color="blue.500" mr={2}>
+                    💼
+                  </Text>
+                  <Text fontSize="lg">Offering Career Guidance</Text>
+                </Flex>
+                <Flex alignItems="center">
+                  <Text fontWeight="bold" color="blue.500" mr={2}>
+                    🌍
+                  </Text>
+                  <Text fontSize="lg">Building a Global Community</Text>
+                </Flex>
+              </VStack>
             </Box>
 
             {/* Strengths */}
-            <Box>
+            <Box 
+              backgroundColor="#CDE5FB"
+              borderRadius="xl"
+              p={6}
+              boxShadow="sm"
+              >
               <Heading as="h2" size="lg" mb={4}>
                 Our Strengths:
               </Heading>
-              <UnorderedList spacing={4} fontSize="lg">
-                <ListItem>
-                  <Text fontWeight="bold">World-Class Instructors:</Text> Learn
-                  directly from professors at prestigious universities and global
-                  industry experts with extensive experience and international
-                  reputations.
-                </ListItem>
-                <ListItem>
-                  <Text fontWeight="bold">Wide Range of Courses:</Text> Access
-                  various skill categories, including technology, business, arts,
-                  and personal development, designed to meet both professional and
-                  personal needs.
-                </ListItem>
-                <ListItem>
-                  <Text fontWeight="bold">
-                    Guidance for International Studies and Careers:
-                  </Text>{" "}
-                  Receive exclusive tips on pursuing further education, securing
-                  scholarships, and building a career abroad.
-                </ListItem>
-                <ListItem>
-                  <Text fontWeight="bold">Global Community:</Text> Engage with
-                  learners worldwide to share insights and expand your network.
-                </ListItem>
-                <ListItem>
-                  <Text fontWeight="bold">Up-to-Date with Industry Trends:</Text>{" "}
-                  The materials are constantly updated to stay relevant to job
-                  market demands and the latest trends in the field.
-                </ListItem>
-              </UnorderedList>
+              <Box>
+                <Box mb={4}>
+                  <Flex alignItems="center">
+                    <Text mr={2}>📚</Text>
+                    <Box>
+                      <Text fontWeight="bold">World-Class Instructors:</Text>
+                      <Text fontSize="lg">
+                        Learn directly from professors at prestigious universities and global
+                        industry experts with extensive experience and international reputations.
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Box>
+                <Divider />
+                <Box my={4}>
+                  <Flex alignItems="center">
+                    <Text mr={2}>🛠️</Text>
+                    <Box>
+                      <Text fontWeight="bold">Wide Range of Courses:</Text>
+                      <Text fontSize="lg">
+                        Access various skill categories, including technology, business, arts, and
+                        personal development, designed to meet both professional and personal needs.
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Box>
+                <Divider />
+                <Box my={4}>
+                  <Flex alignItems="center">
+                    <Text mr={2}>🎓</Text>
+                    <Box>
+                      <Text fontWeight="bold">Guidance for International Studies and Careers:</Text>
+                      <Text fontSize="lg">
+                        Receive exclusive tips on pursuing further education, securing scholarships,
+                        and building a career abroad.
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Box>
+                <Divider />
+                <Box my={4}>
+                  <Flex alignItems="center">
+                    <Text mr={2}>🌍</Text>
+                    <Box>
+                      <Text fontWeight="bold">Global Community:</Text>
+                      <Text fontSize="lg">
+                        Engage with learners worldwide to share insights and expand your network.
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Box>
+                <Divider />
+                <Box my={4}>
+                  <Flex alignItems="center">
+                    <Text mr={2}>📈</Text>
+                    <Box>
+                      <Text fontWeight="bold">Up-to-Date with Industry Trends:</Text>
+                      <Text fontSize="lg">
+                        The materials are constantly updated to stay relevant to job market demands
+                        and the latest trends in the field.
+                      </Text>
+                    </Box>
+                  </Flex>
+                </Box>
+              </Box>
             </Box>
 
             {/* Teams and Founder Section */}
@@ -140,7 +208,7 @@ const AboutUs = () => {
                     bg="gray.200"
                   >
                     <Image
-                      src={PeoplePlaceholder}
+                      src={MeiAnnisa}
                       alt="Mei Annisa"
                       objectFit="cover"
                     />
@@ -202,14 +270,19 @@ const AboutUs = () => {
                       objectFit="cover"
                     />
                   </Box>
-                  <Text fontWeight="bold">Leandra Refitri Listianty</Text>
+                  <Text fontWeight="bold">Leandara Refitri Listianty</Text>
                   <Text color="gray.500">Digital Marketing</Text>
                 </VStack>
               </SimpleGrid>
             </Box>
 
             {/* Location */}
-            <Box>
+            <Box 
+              backgroundColor="#CDE5FB"
+              borderRadius="xl"
+              p={6}
+              boxShadow="sm"
+              >
               <Heading as="h2" size="lg" mb={4}>
                 Location:
               </Heading>
