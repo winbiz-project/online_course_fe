@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import PeoplePlaceholder from "@/assets/images/people-placeholder.png";
-import MeiAnnisa from "@/assets/images/Mei-Annisa.webp";
+import MeiAnnisa from "@/assets/images/mei-annisa.jpg";
 import ChandraTri from "@/assets/images/chandra-tri.jpg";
 import RizkaSavira from "@/assets/images/rizka-savira.jpg";
 import RanggaBani from "@/assets/images/rangga-bani.jpg";
