@@ -106,7 +106,7 @@ const AboutUs = () => {
 
             {/* Teams and Founder Section */}
             <Box>
-              <Heading as="h2" size="lg" mb={6} textAlign="center">
+              <Heading as="h2" size="lg" mb={10} textAlign="center">
                 Teams and Founder
               </Heading>
               <SimpleGrid
