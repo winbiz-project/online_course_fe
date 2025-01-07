@@ -184,12 +184,18 @@ const AboutUs = () => {
                 mb={8}
               >
                 {/* Elemen Baris Pertama */}
-                <VStack>
+                <VStack
+                    transition="transform 0.3s ease" // Tambahkan transition untuk animasi
+                    _hover={{
+                    transform: "scale(1.1)", // Zoom in saat dihover
+                    }}
+                >
                   <Box
                     boxSize="200px"
                     borderRadius="full"
                     overflow="hidden"
                     bg="gray.200"
+                    
                   >
                     <Image
                       src={PeoplePlaceholder}
@@ -200,7 +206,12 @@ const AboutUs = () => {
                   <Text fontWeight="bold">Chandra Tri Wardana</Text>
                   <Text color="gray.500">Manager Marketing</Text>
                 </VStack>
-                <VStack>
+                <VStack
+                    transition="transform 0.3s ease" // Tambahkan transition untuk animasi
+                    _hover={{
+                      transform: "scale(1.1)", // Zoom in saat dihover
+                    }}
+                >
                   <Box
                     boxSize="200px"
                     borderRadius="full"
@@ -216,7 +227,12 @@ const AboutUs = () => {
                   <Text fontWeight="bold">Mei Annisa</Text>
                   <Text color="gray.500">Direktur Skillbridge</Text>
                 </VStack>
-                <VStack>
+                <VStack
+                    transition="transform 0.3s ease" // Tambahkan transition untuk animasi
+                    _hover={{
+                      transform: "scale(1.1)", // Zoom in saat dihover
+                    }}
+                >
                   <Box
                     boxSize="200px"
                     borderRadius="full"
@@ -241,7 +257,12 @@ const AboutUs = () => {
                 mx="auto"
                 width={{ base: "100%", md: "60%" }}
               >
-                <VStack>
+                <VStack
+                    transition="transform 0.3s ease" // Tambahkan transition untuk animasi
+                    _hover={{
+                      transform: "scale(1.1)", // Zoom in saat dihover
+                    }}
+                >
                   <Box
                     boxSize="200px"
                     borderRadius="full"
@@ -257,7 +278,12 @@ const AboutUs = () => {
                   <Text fontWeight="bold">Rangga Bani Nugraha</Text>
                   <Text color="gray.500">Digital Marketing</Text>
                 </VStack>
-                <VStack>
+                <VStack
+                    transition="transform 0.3s ease" // Tambahkan transition untuk animasi
+                    _hover={{
+                      transform: "scale(1.1)", // Zoom in saat dihover
+                    }}
+                >
                   <Box
                     boxSize="200px"
                     borderRadius="full"
