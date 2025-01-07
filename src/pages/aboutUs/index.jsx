@@ -13,7 +13,11 @@ import {
 } from "@chakra-ui/react";
 
 import PeoplePlaceholder from "@/assets/images/people-placeholder.png";
-import MeiAnnisa from "@/assets/images/Mei-Annisa.webp"
+import MeiAnnisa from "@/assets/images/Mei-Annisa.webp";
+import ChandraTri from "@/assets/images/chandra-tri.jpg";
+import RizkaSavira from "@/assets/images/rizka-savira.jpg";
+import RanggaBani from "@/assets/images/rangga-bani.jpg";
+import LeandaraRefitri from "@/assets/images/leandara-refitri.jpg";
 
 const AboutUs = () => {
   return (
@@ -198,7 +202,7 @@ const AboutUs = () => {
                     
                   >
                     <Image
-                      src={PeoplePlaceholder}
+                      src={ChandraTri}
                       alt="Chandra Tri Wardana"
                       objectFit="cover"
                     />
@@ -240,7 +244,7 @@ const AboutUs = () => {
                     bg="gray.200"
                   >
                     <Image
-                      src={PeoplePlaceholder}
+                      src={RizkaSavira}
                       alt="Rizka Savira"
                       objectFit="cover"
                     />
@@ -270,7 +274,7 @@ const AboutUs = () => {
                     bg="gray.200"
                   >
                     <Image
-                      src={PeoplePlaceholder}
+                      src={RanggaBani}
                       alt="Rangga Bani Nugraha"
                       objectFit="cover"
                     />
@@ -291,7 +295,7 @@ const AboutUs = () => {
                     bg="gray.200"
                   >
                     <Image
-                      src={PeoplePlaceholder}
+                      src={LeandaraRefitri}
                       alt="Leandara Refitri Listianty"
                       objectFit="cover"
                     />
