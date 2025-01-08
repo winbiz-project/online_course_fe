@@ -280,7 +280,7 @@ return (
               <Breadcrumb separator={<ChevronRightIcon color="gray.500" />} mb={4}>
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/mycourses" display="flex" alignItems="center">
-                    <Text fontSize={{base: 'xs', md: 'md'}}>Home</Text>
+                    <Text fontSize={{base: 'sm', md: 'md'}}>Home</Text>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
 
@@ -292,14 +292,14 @@ return (
                         state: { courseId: courseId },
                       });
                     }}
-                    fontSize={{ base: 'xs', md: 'md' }}
+                    fontSize={{ base: 'sm', md: 'md' }}
                     >
                     {sectionName}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
 
                 <BreadcrumbItem>
-                  <Text fontSize={{base: 'xs', md: 'md'}}>{subsectionName}</Text>
+                  <Text fontSize={{base: 'sm', md: 'md'}}>{subsectionName}</Text>
                 </BreadcrumbItem>
                 </Breadcrumb>
 
