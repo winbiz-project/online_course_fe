@@ -1,79 +1,46 @@
-// import { Card, CardBody, CardFooter, Heading, Image, Stack, Text } from "@chakra-ui/react";
+import { Card, CardBody, CardFooter, Heading, Image, Stack, Text, Box, Flex, Avatar, Icon } from "@chakra-ui/react";
+import { StarIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
-// const CardTestimony = ({ testimony }) => {
-//     const { title, description, material, image } = testimony;
-//     return (
-//         <Card
-//             direction={{ base: 'column', sm: 'row' }}
-//             overflow='hidden'
-//             variant='outline'
-//             borderRadius={"15px"}
-//             px={"8"}
-//             py={"4"}
-//         >
-            
-//             <Image
-//                 objectFit='cover'
-//                 src={image}
-//                 alt={title}
-//                 height={{ base: "250px", sm: '100%' }}
-//                 borderRadius={"15px"}
-//             />
-
-//             <Stack>
-//                 <CardBody>
-//                     <Heading size='md'>{title}</Heading>
-//                     <Text py='2'>
-//                         {description}
-//                     </Text>
-//                 </CardBody>
-
-//                 <CardFooter>
-//                     <Text fontSize='md' fontWeight='bold'>
-//                         {material}
-//                     </Text>
-//                 </CardFooter>
-//             </Stack>
-//         </Card>
-//     )
-// }
-
-// export default CardTestimony
-
-import { Card, CardBody, CardFooter, Heading, Image, Stack, Text } from "@chakra-ui/react";
-
-const CardTestimony = ({ testimony }) => {
-    const { title, description, material, image } = testimony;
+const CardTestimony = ({ review }) => {
     return (
-        <Card
-            direction={{ base: "column", md: "column", lg: "row" }}
-            overflow="hidden"
-            variant="outline"
-            borderRadius="15px"
-            px={{ base: "4", md: "8" }}
-            py={{ base: "2", md: "4" }}
-        >
-            <Image
-                objectFit="cover"
-                src={image}
-                alt={title}
-                height={{ base: "250px", md: "100%" }}
-                borderRadius="15px"
-            />
-            <Stack spacing={4} mt={{ base: "4", md: "0" }}>
-                <CardBody>
-                    <Heading size="md">{title}</Heading>
-                    <Text py="2">
-                        {description}
+            <Box
+                key={review.review_id}
+                mb="6"
+                p="4"
+                borderWidth="1px"
+                borderRadius="lg"
+                backgroundColor={'white'}
+                minHeight="250px"
+                maxHeight="350px"
+                maxW='400px'
+              >
+                <Flex mb="4">
+                    <Text as={'b'}>
+                        {review.course_origin}
                     </Text>
-                </CardBody>
-                <CardFooter>
-                    <Text fontSize="md" fontWeight="bold">
-                        {material}
-                    </Text>
-                </CardFooter>
-            </Stack>
-        </Card>
+                </Flex>
+                <Flex alignItems="center" mb="2">
+                  <Avatar name={review.review_user} size="sm" mr="2" />
+                  <Text fontWeight="bold">{review.review_user}</Text>
+                  <Flex alignItems="center" ml="4">
+                    {[...Array(5)].map((_, i) => (
+                        <Icon
+                        key={i}
+                        as={StarIcon}
+                        color={
+                            i < Math.round(parseFloat(review.review_rating))
+                            ? "yellow.400"
+                            : "gray.300"
+                        }
+                        />
+                    ))}
+                    </Flex>
+                </Flex>
+  
+                
+  
+                <Text>{review.review_text}</Text>
+              </Box>
     );
 };
 
