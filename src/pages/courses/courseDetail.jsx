@@ -384,7 +384,14 @@ const CourseDetailPage = () => {
                   </AccordionButton>
                   <AccordionPanel>
                     {isEnrolled ? (
-                      <Link color="teal.500" fontSize={'lg'}>Review Course</Link>
+                      <Text color="teal.500" fontSize={'lg'} as="button" onClick={() =>
+                        navigate(
+                          `/e-learning/${generateSlug(
+                            courseDetail.course_name
+                          )}/review`,
+                          { state: { courseId } }
+                        )
+                      }>Review Course</Text>
                     ) : (
                       <Text color="gray.500" fontSize={'lg'}>Review Course</Text>
                     )}

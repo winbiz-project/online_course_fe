@@ -102,7 +102,7 @@ const MyCourses = () => {
                             ) : (
                                 <Flex direction="column" align="center" justify="center" mt="10%">
                                     <Text fontSize="3xl" fontWeight={'bold'} mb="20px">You haven't enrolled in any courses yet.</Text>
-                                    <Button colorScheme="blue" onClick={() => navigate('/courses')}>Enroll Courses Now</Button>
+                                    <Button colorScheme="blue" onClick={() => navigate('/e-learning')}>Enroll Courses Now</Button>
                                 </Flex>
                             )}
                         </Container>
