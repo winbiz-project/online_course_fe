@@ -176,7 +176,7 @@ const Courses = () => {
             </InputRightElement>
           </InputGroup>
 
-          <Menu > 
+          {/* <Menu > 
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />} position="absolute"
             bottom={-10} right={160}>
               Sort by
@@ -191,9 +191,87 @@ const Courses = () => {
               <MenuItem onClick={() => handleSortChange('highPrice')}>Highest Price</MenuItem>
               <MenuItem onClick={() => handleSortChange('lowPrice')}>Lowest Price</MenuItem>
             </MenuList>
-          </Menu>
+          </Menu> */}
+
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              w={{ base: "100%", md: "auto" }}
+              justify="flex-end"
+              mt={{ base: 4, md: 0 }}
+              ml={{ base: 0, md: 980 }}
+            >
+              <Menu>
+                <MenuButton as={Button} rightIcon={<ChevronDownIcon />} mb={{ base: 2, md: 0 }}>
+                  Sort by
+                </MenuButton>
+                <MenuList>
+                  <MenuItem onClick={() => handleSortChange("latestCreated")}>
+                    Latest Created
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("earliestCreated")}>
+                    Earliest Created
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("titleAsc")}>
+                    Title Ascending
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("titleDesc")}>
+                    Title Descending
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("highestRating")}>
+                    Highest Rating
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("lowestRating")}>
+                    Lowest Rating
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("highPrice")}>
+                    Highest Price
+                  </MenuItem>
+                  <MenuItem onClick={() => handleSortChange("lowPrice")}>
+                    Lowest Price
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+              
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  colorScheme="blue"
+                  ml={{ base: 0, md: 4 }}
+                >
+                  Category Filter
+                </MenuButton>
+                <MenuList>
+                  
+                  <Box maxHeight="200px" overflowY="auto" p={2}>
+                    <VStack align="start" spacing={2}>
+                      {displayedCategories.map((category, index) => (
+                        <Checkbox
+                          key={category.category_id}
+                          isChecked={selectedCategories.includes(category.category_id)}
+                          onChange={() => handleFilterCategory(category.category_id, index)}
+                        >
+                          {category.category_name}
+                        </Checkbox>
+                      ))}
+                    </VStack>
+                  </Box>
+                  <Box p={2} borderTop="1px solid gray">
+                    <HStack justify="space-between">
+                      <Button size="sm" colorScheme="blue" onClick={applyCategoryFilter} w="48%">
+                        Apply
+                      </Button>
+                      <Button size="sm" colorScheme="red" variant="outline" onClick={clearFilter} w="48%">
+                        Clear Filter
+                      </Button>
+                    </HStack>
+                  </Box>
+                </MenuList>
+              </Menu>
+
+            </Flex>
+
           
-          <Menu>
+          {/* <Menu>
             <MenuButton
               as={Button}
               colorScheme="blue"
@@ -229,7 +307,7 @@ const Courses = () => {
                 </HStack>
               </Box>
             </MenuList>
-          </Menu>
+          </Menu> */}
         </Flex>
         <Box>
           {filterCourses.slice((page - 1) * limit, page * limit).map((course) => {
