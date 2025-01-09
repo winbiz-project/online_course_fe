@@ -30,6 +30,7 @@ import ResultQuiz from "@/pages/courses/resultquiz";
 import Review from "@/pages/courses/review";
 import ForgetPassword from "@/pages/auth/forgetpassword";
 import ResetPassword from "@/pages/auth/resetpassword";
+import AboutUs from "@/pages/aboutUs";
 
 
 export default function Router() {
@@ -113,6 +114,10 @@ export default function Router() {
     {
       path: "/privacy",
       element: <Privacy />
+    },
+    {
+      path: "/about-us",
+      element: <AboutUs />
     },
   ]);
 
