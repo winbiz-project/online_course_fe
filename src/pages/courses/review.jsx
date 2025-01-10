@@ -22,6 +22,7 @@ const Review = () => {
     const [hasReviewed, setHasReviewed] = useState(null);
     const [reviewRating, setReviewRating] = useState(0);
     const [reviewComment, setReviewComment] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const fetchReviews = async () => {
       try {
@@ -43,6 +44,7 @@ const Review = () => {
         setReviewComment(reviews.find((review) => review.review_user === useremail).review_text);
         setReviewRating(reviews.find((review) => review.review_user === useremail).review_rating);
       }
+      setLoading(false);
       console.log("Has Reviewed:", hasReviewed);
     };
 
@@ -62,10 +64,31 @@ const Review = () => {
     };
 
     const handleSubmitReview = () => {
-      console.log("User Rating:", reviewRating);
-      console.log("User Comment:", reviewComment);
-      onClose();
-    };
+      try {
+        const response = fetch(`${baseUrl}/course/add_rating_course`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            courseid : courseId,
+            email : user.email,
+            rating: reviewRating,
+            testimonial: reviewComment,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        window.location.reload();
+      } catch (error) {
+        console.error("Error submitting review:", error);
+      } finally {
+        onClose();
+      }
+    }
 
     const resetReviewForm = () => {
       setReviewRating(0);
@@ -105,6 +128,9 @@ const Review = () => {
             </Flex>
         </Flex>
         <Flex maxW="1200px" mx="auto" p="4" pt="0" direction={{ base: "column", md: "row" }}>
+          <Text fontSize="2xl" fontWeight="bold" mb="4" display={{base: "block", md: "none"}}>
+              Course Title
+          </Text>
           <Box flex="1" pr={{ base: "0", md: "8" }} mb={{ base: "8", md: "0" }}>
             <Flex alignItems="center" mb="4">
               <StarIcon color="yellow.400" mr="2" boxSize={7}/>
@@ -125,16 +151,22 @@ const Review = () => {
                   100;
                 return (
                   <Flex key={stars} alignItems="center">
-                    <Text fontSize="sm" w="20px">
-                      {stars}
-                    </Text>
-                    <StarIcon color="yellow.400" mr="2" />
+                    {[...Array(5)].map((_, i) => (
+                      <Icon
+                        key={i}
+                        as={StarIcon}
+                        color={i < stars ? "yellow.400" : "gray.300"}
+                        boxSize={4}
+                        cursor="pointer"
+                      />
+                    ))}
                     <Progress
                       value={percentage}
                       size="sm"
                       w="200px"
                       colorScheme="yellow"
                       mr="2"
+                      ml="10px"
                     />
                     <Text fontSize="sm">{percentage.toFixed(0)}%</Text>
                   </Flex>
@@ -144,7 +176,7 @@ const Review = () => {
           </Box>
   
           <Box flex="2">
-            <Text fontSize="2xl" fontWeight="bold" mb="4">
+            <Text fontSize="2xl" fontWeight="bold" mb="4" display={{base: "none", md: "block"}}>
               Course Title
             </Text>
             <Flex justifyContent="flex-end" mb="4">

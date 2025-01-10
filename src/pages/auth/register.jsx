@@ -43,6 +43,17 @@ export default function Register() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (!email || !username || !password || !confirmPassword) {
+          swal.fire({
+            title:"Please fill out all fields.",
+            icon: "error",
+            showCloseButton: true,
+            confirmButtonText: 'OK'
+          })
+          return;
+        }
+
         if (password !== confirmPassword) {
             swal.fire({
                 title: 'Error',
@@ -56,6 +67,13 @@ export default function Register() {
         }
 
     };
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSubmit(e);
+      }
+    }
 
 
 return (
@@ -126,6 +144,7 @@ return (
           _placeholder={{ color: "#8A8A8A", fontWeight: "500" }}
           borderColor="#7091F5"
           placeholder="Email"
+          onKeyDown={handleKeyDown}
         />
         <Input
           value={username}
@@ -136,6 +155,7 @@ return (
           _placeholder={{ color: "#8A8A8A", fontWeight: "500" }}
           borderColor="#7091F5"
           placeholder="Username"
+          onKeyDown={handleKeyDown}
         />
         <InputGroup width={inputWidth}>
           <Input
@@ -147,6 +167,7 @@ return (
             _placeholder={{ color: "#8A8A8A", fontWeight: "500" }}
             borderColor="#7091F5"
             placeholder="Password"
+            onKeyDown={handleKeyDown}
           />
           <InputRightElement height="100%" display="flex" alignItems="center" mr={2}>
             <IconButton
@@ -168,6 +189,7 @@ return (
             _placeholder={{ color: "#8A8A8A", fontWeight: "500" }}
             borderColor="#7091F5"
             placeholder="Confirm Password"
+            onKeyDown={handleKeyDown}
           />
           <InputRightElement height="100%" display="flex" alignItems="center" mr={2}>
             <IconButton
