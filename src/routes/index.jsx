@@ -31,6 +31,7 @@ import Review from "@/pages/courses/review";
 import ForgetPassword from "@/pages/auth/forgetpassword";
 import ResetPassword from "@/pages/auth/resetpassword";
 import AboutUs from "@/pages/aboutUs";
+import Certificate from "@/pages/courses/certificate";
 
 
 export default function Router() {
@@ -90,6 +91,13 @@ export default function Router() {
               children: [
                 {path: "", element: <Review />}
               ]
+            },
+            {
+              path: "certificate",
+              children: [
+                {path: "uniqueIdCertificate", element: <Certificate />}
+              ]
+
             }
           ]
         },
