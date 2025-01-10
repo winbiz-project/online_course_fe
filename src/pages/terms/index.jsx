@@ -10,7 +10,7 @@ const Terms = () => {
                 Terms and Conditions
             </Heading>
             <Text fontSize="lg" mb={4}>
-                Skillbridge is an online course platform designed to help develop professional skills directly from experts. Skillbridge is managed by PT D&W International.
+                Skillbridge is an online course platform designed to help develop professional skills directly from experts.
             </Text>
             <Text fontSize="lg" mb={4}>
                 These Terms of Use govern your access to and use of the Skillbridge website, content, and features. Please read these Terms carefully, and contact us if you have any questions, requests for information, or complaints. By accessing and using the Skillbridge website, you agree to be bound by and comply with all applicable rules on this site.
