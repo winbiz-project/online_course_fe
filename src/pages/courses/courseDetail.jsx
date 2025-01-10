@@ -383,21 +383,32 @@ const CourseDetailPage = () => {
                     {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
                   </AccordionButton>
                   <AccordionPanel>
-                    {isEnrolled ? (
-                      <Text color="teal.500" fontSize={'lg'} as="button" onClick={() =>
-                        navigate(
-                          `/e-learning/${generateSlug(
-                            courseDetail.course_name
-                          )}/review`,
-                          { state: { courseId } }
-                        )
-                      }>Review Course</Text>
-                    ) : (
-                      <Text color="gray.500" fontSize={'lg'}>Review Course</Text>
-                    )}
+                    <Text color="teal.500" fontSize={'lg'} as="button" onClick={() =>
+                      navigate(
+                        `/e-learning/${generateSlug(
+                          courseDetail.course_name
+                        )}/review`,
+                        { state: { courseId } }
+                      )
+                    }>Review Course</Text>
                     
                   </AccordionPanel>
                 </AccordionItem>
+                {isEnrolled && (
+                  <AccordionItem>
+                    <AccordionButton>
+                      <Box flex="1" textAlign="left" fontWeight="bold" fontSize="xl">
+                        Certificate
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                    <AccordionPanel>
+                      <Link color="teal.500" fontSize="lg">
+                        Review Course & Certificate
+                      </Link>
+                    </AccordionPanel>
+                  </AccordionItem>
+                )}
           </Accordion>
         </Flex>
       </VStack>
