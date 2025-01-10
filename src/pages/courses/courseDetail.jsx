@@ -98,36 +98,38 @@ const CourseDetailPage = () => {
   };
 
   const getUserProgress = async () => {
-    try {
-      const response = await fetch(`${baseUrl}/course/get_user_progress`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: user.email,
-          courseid: courseId,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    if(user){
+      try {
+        const response = await fetch(`${baseUrl}/course/get_user_progress`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: user.email,
+            courseid: courseId,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // Mengumpulkan data dari `completed_subsections` ke array sementara
+        const completedSubsections = data.completed_subsections.map(subsection => subsection.sub_section_id);
+        setUserProgressVid(completedSubsections);
+  
+        // Mengumpulkan data dari `completed_quizzes` ke array sementara
+        const completedQuizzes = data.completed_quizzes.map(quiz => quiz.quiz_id);
+        setUserProgressQuiz(completedQuizzes);
+  
+  
+        console.log(userProgressVid);
+        console.log(userProgressQuiz);
+  
+      } catch (error) {
+        console.error(`Could not get user progress: ${error}`);
       }
-      const data = await response.json();
-      
-      // Mengumpulkan data dari `completed_subsections` ke array sementara
-      const completedSubsections = data.completed_subsections.map(subsection => subsection.sub_section_id);
-      setUserProgressVid(completedSubsections);
-
-      // Mengumpulkan data dari `completed_quizzes` ke array sementara
-      const completedQuizzes = data.completed_quizzes.map(quiz => quiz.quiz_id);
-      setUserProgressQuiz(completedQuizzes);
-
-
-      console.log(userProgressVid);
-      console.log(userProgressQuiz);
-
-    } catch (error) {
-      console.error(`Could not get user progress: ${error}`);
     }
   }
 
@@ -135,7 +137,7 @@ const CourseDetailPage = () => {
     await Promise.all([
       getCourseDetail(),
       checkEnrollment(),
-      getUserProgress(),
+      getUserProgress()
     ]);
     setLoading(false);
   };
