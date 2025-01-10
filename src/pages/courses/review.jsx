@@ -35,25 +35,21 @@ const Review = () => {
         }
         const data = await response.json();
         setReviews(data);
+        if (user){
+          setHasReviewed(data.some((review) => review.review_user_email === user.email));
+          if (data.some((review) => review.review_user_email === user.email)){
+            setReviewComment(data.find((review) => review.review_user_email === user.email).review_text);
+            setReviewRating(data.find((review) => review.review_user_email === user.email).review_rating);
+          }
+          setLoading(false);
+        }
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }
     };
 
-    const checkIfReviewed = (useremail) => {
-      setHasReviewed(reviews.some((review) => review.review_user_email === useremail));
-      if (hasReviewed){
-        setReviewComment(reviews.find((review) => review.review_user_email === useremail).review_text);
-        setReviewRating(reviews.find((review) => review.review_user_email === useremail).review_rating);
-      }
-      setLoading(false);
-      console.log("Has Reviewed:", hasReviewed);
-    };
-
     useEffect(() => {
       fetchReviews();
-      if (user){
-      checkIfReviewed(user.email);}
     }, []);
   
     const averageRating = (
@@ -65,7 +61,7 @@ const Review = () => {
       setVisibleReviews((prev) => Math.min(prev + 2, reviews.length));
     };
 
-    const handleSubmitReview = () => {
+    const addReview = () => {
       try {
         const response = fetch(`${baseUrl}/course/add_rating_course`, {
           method: "POST",
@@ -91,6 +87,28 @@ const Review = () => {
         onClose();
       }
     }
+
+    const createCertificate = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/course/create_certificate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            course_id: courseId,
+          }),
+        });
+      } catch (error) {
+        console.error("Error creating certificate:", error);
+      }
+    };
+
+    const handleSubmitReview = () => {
+      createCertificate();
+      addReview();
+    };
 
     const resetReviewForm = () => {
       setReviewRating(0);

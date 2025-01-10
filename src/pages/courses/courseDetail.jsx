@@ -43,7 +43,7 @@ const CourseDetailPage = () => {
       }
       const data = await response.json();
       setIsEnrolled(data.response);
-      } catch (error) {
+    } catch (error) {
       console.error('Error:', error);
       }
     }
@@ -98,7 +98,7 @@ const CourseDetailPage = () => {
   const fetchData = async () => {
     await Promise.all([
       getCourseDetail(),
-      checkEnrollment()
+      checkEnrollment(),
     ]);
     setLoading(false);
   };
@@ -403,9 +403,9 @@ const CourseDetailPage = () => {
                       <AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel>
-                      <Link color="teal.500" fontSize="lg">
+                      <Text color="teal.500" fontSize="lg">
                         Course Certificate
-                      </Link>
+                      </Text>
                     </AccordionPanel>
                   </AccordionItem>
                 )}
