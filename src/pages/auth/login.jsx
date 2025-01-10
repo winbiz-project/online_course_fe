@@ -8,6 +8,7 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import React, {useState, useContext} from 'react';
 import InputText from "@/components/InputText";
 import AuthContext from "@/routes/authcontext";
+import swal from 'sweetalert2';
 
 
 export default function Login() {
@@ -28,6 +29,17 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     try {
+      
+      if (!email || !password) {
+        swal.fire({
+          title:"Please fill out all fields.",
+          icon: "error",
+          showCloseButton: true,
+          confirmButtonText: 'OK'
+        })
+        return;
+      }
+
       loginUser(email, password, navigate);
     } catch (error) {
       console.error('Error during login:', error);
@@ -54,7 +66,7 @@ export default function Login() {
     }
   }
 
-  
+
 return (
   <Flex direction={{ base: "column", md: "row" }} mt={{ base: 6, md: 0 }} px={{ base: 4, md: 0 }}>
     <Stack align={contentAlign} width="100%" spacing={4}>
