@@ -388,7 +388,7 @@ const CourseDetailPage = () => {
                         `/e-learning/${generateSlug(
                           courseDetail.course_name
                         )}/review`,
-                        { state: { courseId } }
+                        { state: { courseId, courseName: courseDetail.course_name } }
                       )
                     }>Review Course</Text>
                     
@@ -404,7 +404,7 @@ const CourseDetailPage = () => {
                     </AccordionButton>
                     <AccordionPanel>
                       <Link color="teal.500" fontSize="lg">
-                        Review Course & Certificate
+                        Course Certificate
                       </Link>
                     </AccordionPanel>
                   </AccordionItem>
