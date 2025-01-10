@@ -6,7 +6,7 @@ import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, S
 
 import { useDisclosure, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay } from '@chakra-ui/react';
 import { useParams, useSearchParams } from "react-router-dom";
-import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@chakra-ui/icons';
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthContext from '@/routes/authcontext';
 import config from '@/config';
@@ -149,9 +149,8 @@ function CourseQuiz() {
                 throw new Error(`HTTP error! status: ${addprogress.status}`);
             }
 
-            navigate(`/e-learning/${courseSlug}/quiz/${quizId}/result?section=${sectionIndex}`, {
+            navigate(`/e-learning/${courseSlug}/quiz/${quizId}/start?section=${sectionIndex}`, {
                 state: {
-                    quizScore: data['Score'],
                     courseId: courseId,
                 }
             })
@@ -280,12 +279,12 @@ return (
                     <Flex direction="column" width={sidebarOpen ? "75%" : "100%"} transition="width 0.3s ease">
                     <Flex
                         justifyContent="space-between"
-                        p={5}
+                        p={{ base: 3, md: 5 }}
                     >
                         <Breadcrumb separator={<ChevronRightIcon color="gray.500" />} mb={4}>
                             <BreadcrumbItem>
                                 <BreadcrumbLink href="/mycourses" display="flex" alignItems="center">
-                                <Text>Home</Text>
+                                <Text fontSize={{ base: 'sm', md: 'md' }}   >Home</Text>
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
 
@@ -304,7 +303,7 @@ return (
                             </BreadcrumbItem>
 
                             <BreadcrumbItem>
-                                <Text>{quizData.quiz_title}</Text>
+                                <Text fontSize={{ base: 'sm', md: 'md' }}>{quizData.quiz_title}</Text>
                             </BreadcrumbItem>
                         </Breadcrumb>
                         <Flex alignItems="center" justifyContent="space-between" mb={4} width={"250px"}>
@@ -346,31 +345,19 @@ return (
                             )} */}
                         </Flex>
                     </Flex>
-                    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} just>
-                        <Text fontSize="2xl" fontWeight="bold" pr={210}>Quiz {quizData.quiz_title}</Text>
-                        <Flex direction='column'>
-                                <Box p={'40px 20px 20px 0px'}>
-                                    {quizData.details[currentQuestionId].question_img ?
-                                        (
-                                            <>
-                                                <Flex>
-                                                    <Text>{currentQuestion + 1}.</Text>
-                                                    {quizData.details[currentQuestionId].question_img && (
-                                                        <Box w={'300px'}>
-                                                            <Image src={quizData.details[currentQuestionId].question_img} alt={`Image for question ${currentQuestionId + 1}`} />
-                                                        </Box>
-                                                    )}
-                                                </Flex>
-                                                <Text>{quizData.details[currentQuestionId].question_text}</Text>
-                                            </>
-                                        )
-                                        :
-                                        (
-                                            <>
-                                                <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
-                                            </>
-                                        )
-                                    }
+                    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                        <Text fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold">Quiz {quizData.quiz_title}</Text>
+
+                        {quizData.details[currentQuestionId].question_img ?
+                        (
+                            <VStack px={{base: '30px', md: ''}} mb={5}>
+                                <Box justifyContent='center' display={'flex'} pt='20px' pb='20px'>
+                                    {quizData.details[currentQuestionId].question_img && (
+                                        <Image src={quizData.details[currentQuestionId].question_img} alt={`Image for question ${currentQuestionId + 1}`} w={{base: '100%', md: '30%'}}/>
+                                    )}
+                                </Box>
+                                <Box>
+                                    <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
                                     <RadioGroup
                                         value={answers[currentQuestionId]?.selected || ""} 
                                         onChange={(value) => handleAnswerChange(currentQuestionId, value)}
@@ -384,23 +371,47 @@ return (
                                         </Stack>
                                     </RadioGroup>
                                 </Box>
-                        </Flex>
+                            </VStack>
+                        ) 
+                        : 
+                        (
+                            <Flex direction='column' px={{base: '30px', md: ''}}>
+                                <Box pt={'20px'} pb={'20px'}>
+                                    <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
+                                    <RadioGroup
+                                        value={answers[currentQuestionId]?.selected || ""} 
+                                        onChange={(value) => handleAnswerChange(currentQuestionId, value)}
+                                    >
+                                        <Stack direction="column" pt={2}>
+                                            {Object.keys(quizData.details[currentQuestionId].answers).map((key) => (
+                                                <Radio key={key} value={key} py={1}>
+                                                    {quizData.details[currentQuestionId].answers[key].answer_text}
+                                                </Radio>
+                                            ))}
+                                        </Stack>
+                                    </RadioGroup>
+                                </Box>
+                            </Flex>
+                        )}
+
+
                         
                         <Flex justifyContent="space-between" mt={5}>
                             <Button
                             leftIcon={<ChevronLeftIcon />}
                             isDisabled={currentQuestion === 0}
                             onClick={handlePrevious}
-                            mr={40}
+                            mr={{base: 20, md: 40}}
+                            size={{ base: "sm", md: "md" }}
                             >
                             Previous
                             </Button>
-
                             {currentQuestion === questionIdList.length - 1 ? (
                             <Button
                                 rightIcon={<ChevronRightIcon />}
                                 onClick={onOpen}
-                                ml={40}
+                                ml={{base: 20, md: 40}}
+                                size={{ base: "sm", md: "md" }}
                             >
                                 Submit
                             </Button>
@@ -408,7 +419,8 @@ return (
                             <Button
                                 rightIcon={<ChevronRightIcon />}
                                 onClick={handleNext}
-                                ml={40}
+                                ml={{base: 20, md: 40}}
+                                size={{ base: "sm", md: "md" }}
                             >
                                 Next
                             </Button>

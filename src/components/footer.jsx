@@ -308,7 +308,7 @@ const Footer = () => {
                         <Text fontSize="lg" fontWeight="bold">
                             Skillbridge
                         </Text>
-                        <Link href="#" my={1}>
+                        <Link href="/about-us" my={1}>
                             About
                         </Link>
                         <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeJiWiYl8GX3r5uw-oaoYRTpjk9tT_aJn65XYvuZXm8FppQtg/viewform" my={1} target="_blank" rel="noopener noreferrer">

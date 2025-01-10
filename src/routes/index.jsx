@@ -27,8 +27,11 @@ import Privacy from "@/pages/privacy";
 import CourseQuiz from "@/pages/courses/coursequiz";
 import StartQuiz from "@/pages/courses/startquiz";
 import ResultQuiz from "@/pages/courses/resultquiz";
+import Review from "@/pages/courses/review";
 import ForgetPassword from "@/pages/auth/forgetpassword";
 import ResetPassword from "@/pages/auth/resetpassword";
+import AboutUs from "@/pages/aboutUs";
+import Certificate from "@/pages/courses/certificate";
 
 
 export default function Router() {
@@ -83,6 +86,19 @@ export default function Router() {
                 { path: "result", element: <ResultQuiz /> }
               ]
             },
+            {
+              path: "review",
+              children: [
+                {path: "", element: <Review />}
+              ]
+            },
+            {
+              path: "certificate",
+              children: [
+                {path: "uniqueIdCertificate", element: <Certificate />}
+              ]
+
+            }
           ]
         },
       ],
@@ -106,6 +122,10 @@ export default function Router() {
     {
       path: "/privacy",
       element: <Privacy />
+    },
+    {
+      path: "/about-us",
+      element: <AboutUs />
     },
   ]);
 

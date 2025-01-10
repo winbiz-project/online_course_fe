@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
   VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, 
-  Spacer} from '@chakra-ui/react';
-import { StarIcon, LockIcon } from '@chakra-ui/icons';
+  Spacer, Icon } from '@chakra-ui/react';
+import { StarIcon, LockIcon, CheckIcon } from '@chakra-ui/icons';
 import { json, useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '@/routes/authcontext'
 import Layout from '@/components/layout';
@@ -17,6 +17,8 @@ const CourseDetailPage = () => {
   const [ loading, setLoading ] = useState(true);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [courseDetail, setCourseDetail] = useState({});
+  const [userProgressVid, setUserProgressVid] = useState([]);
+  const [userProgressQuiz, setUserProgressQuiz] = useState([]);
   const location = useLocation();
   const courseId = location.state?.courseId;
   const navigate = useNavigate();
@@ -43,7 +45,7 @@ const CourseDetailPage = () => {
       }
       const data = await response.json();
       setIsEnrolled(data.response);
-      } catch (error) {
+    } catch (error) {
       console.error('Error:', error);
       }
     }
@@ -95,10 +97,44 @@ const CourseDetailPage = () => {
     }
   };
 
+  const getUserProgress = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/course/get_user_progress`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.email,
+          courseid: courseId,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      
+      // Mengumpulkan data dari `completed_subsections` ke array sementara
+      const completedSubsections = data.completed_subsections.map(subsection => subsection.sub_section_id);
+      setUserProgressVid(completedSubsections);
+
+      // Mengumpulkan data dari `completed_quizzes` ke array sementara
+      const completedQuizzes = data.completed_quizzes.map(quiz => quiz.quiz_id);
+      setUserProgressQuiz(completedQuizzes);
+
+
+      console.log(userProgressVid);
+      console.log(userProgressQuiz);
+
+    } catch (error) {
+      console.error(`Could not get user progress: ${error}`);
+    }
+  }
+
   const fetchData = async () => {
     await Promise.all([
       getCourseDetail(),
-      checkEnrollment()
+      checkEnrollment(),
     ]);
     setLoading(false);
   };
@@ -117,132 +153,6 @@ const CourseDetailPage = () => {
 
   return (
     <Layout>
-      {/* <VStack spacing={4}>
-        <Center w='100%'>
-          <Box bg="#2D2F31" p={8} color="white" w="100vw">
-            <HStack spacing={8} margin={'3%'} >
-              <VStack spacing={3} >
-                <Heading as="h1" size={'2xl'} textAlign="left" alignSelf={"flex-start"}>{courseDetail.course_name}</Heading>
-                <HStack justify="center" alignSelf={"flex-start"}>
-                  <Text fontSize="lg">{courseDetail.course_rating}</Text>
-                  <StarIcon color="yellow.400" />
-                  <Text fontSize="lg">({courseDetail.rating_users_count} reviews)</Text>
-                </HStack>
-                <HStack justify="left" alignSelf={"flex-start"}>
-                  {courseDetail.course_categories && courseDetail.course_categories.map((category) => (
-                    <Badge key={category.category_id} bg={'#2ECC71'} textColor={'white'}>{category.category_name}</Badge>
-                  ))}
-                </HStack>
-                <Text fontSize="lg" textAlign="left">{courseDetail.course_desc}</Text>
-                
-                {!isEnrolled && (
-                  <><Text fontSize="2xl" fontWeight="bold" textAlign="left" alignSelf={"flex-start"}>Price: Rp{courseDetail.course_price.toLocaleString('id-ID')}</Text>
-                  <Button onClick={handlePurchase} bg={'#3498DB'} color='white' size="lg" alignSelf="flex-start">Enroll Now</Button></>
-                )}
-              </VStack>
-              <Box width={["100%", "65%"]}>
-                <Image
-                  borderRadius="lg"
-                  src={courseDetail.course_photo}
-                  alt={courseDetail.course_name}
-                />
-              </Box>
-            </HStack>
-          </Box>
-
-          <Divider orientation="hoizontal" />
-          
-        </Center>
-
-        <Flex direction="column" align="center" w="full" p={8}>
-          <Heading size="lg" mb={4} textAlign="left" alignSelf="flex-start" textShadow="2px 2px 4px rgba(0, 0, 0, 0.25)">Course Content</Heading>
-          <Accordion mt={'5'} allowMultiple w="100%">
-            {courseDetail.sections.map((section, idxSection) => (
-              <AccordionItem key={section.section_id}>
-                <AccordionButton>
-                  <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
-                    {section.section_name}
-                  </Box>
-                  {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
-                </AccordionButton>
-                <AccordionPanel>
-                  {section.subsections.map((subsection, index) => {
-                    const courseslug = generateSlug(courseDetail.course_name);
-                    const subsectionslug = generateSlug(subsection.subsection_name);  
-                    
-                    return(
-                      <React.Fragment key={subsection.subsection_id}>
-                        {isEnrolled ? (
-                          <Text
-                            as="button"
-                            color="teal"
-                            onClick={() =>
-                              navigate(`/e-learning/${courseslug}/${subsectionslug}?section=${idxSection}`, { 
-                                state: { courseId: courseDetail.course_id, subsectionId: subsection.subsection_id } 
-                              })
-                            }
-                          >
-                            {subsection.subsection_name}
-                          </Text>
-                        ) : (
-                          <Text color="gray.500">{subsection.subsection_name}</Text>
-                        )}
-                        <Divider mt={'2'} />
-                      </React.Fragment>
-                    )
-                  })}
-
-                  {section.quizzes && section.quizzes.length > 0 && (
-                    <>
-                      {section.quizzes.map((quiz, index) => (
-                        <React.Fragment key={quiz.quiz_id}>
-                          {isEnrolled ? (
-                            // <Link to={`/e-learning/${courseId}/${subsection.subsection_id}`} style={{ color: 'teal' }}>{subsection.subsection_name}</Link>
-                            <Text
-                              as="button"
-                              color="teal"
-                              onClick={() =>
-                                navigate(`/e-learning/${generateSlug(courseDetail.course_name)}/quiz/${quiz.quiz_id}/start?section=${idxSection}`, {
-                                  state: {
-                                    courseId: courseId,
-                                  },
-                                })
-                              }
-                            >
-                              {'[Quiz]'} {quiz.quiz_title}
-                            </Text>
-                          ) : (
-                            <Text color="gray.500">{'[Quiz]'} {quiz.quiz_title}</Text>
-                          )}
-                          <Divider mt={'2'} />
-                        </React.Fragment>
-                      ))}
-                    </>
-                  )}
-                </AccordionPanel>
-              </AccordionItem>
-            ))}
-              <AccordionItem>
-                <AccordionButton>
-                  <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'2xl'}>
-                    Review
-                  </Box>
-                  {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
-                </AccordionButton>
-                <AccordionPanel>
-                  {isEnrolled ? (
-                    <Link color="teal.500" fontSize={'lg'}>Review Course & Certificate</Link>
-                  ) : (
-                    <Text color="gray.500" fontSize={'lg'}>Review Course & Certificate</Text>
-                  )}
-                  
-                </AccordionPanel>
-              </AccordionItem>
-
-          </Accordion>
-        </Flex>
-      </VStack> */}
-
       <VStack spacing={4} w="100%">
         <Box bg="#2D2F31" color="white" w="100%" py={8} px={{ base: 4, md: 8 }}>
           <Flex
@@ -300,7 +210,7 @@ const CourseDetailPage = () => {
                 alt={courseDetail.course_name}
                 maxW="100%"
                 objectFit="contain"
-                display={{ base: "none", md: "block" }} // Hanya tampil di mobile
+                display={{ base: "none", md: "block" }} // Hanya tampil di desktop
               />
             </Box>
           </Flex>
@@ -323,25 +233,43 @@ const CourseDetailPage = () => {
                   {section.subsections?.map((subsection) => (
                     <React.Fragment key={subsection.subsection_id}>
                       {isEnrolled ? (
-                        <Text
-                          as="button"
-                          color="teal"
-                          onClick={() =>
-                            navigate(
-                              `/e-learning/${generateSlug(
-                                courseDetail.course_name
-                              )}/${generateSlug(subsection.subsection_name)}?section=${idxSection}`,
-                              {
-                                state: {
-                                  courseId: courseDetail.course_id,
-                                  subsectionId: subsection.subsection_id,
-                                },
-                              }
-                            )
-                          }
-                        >
-                          {subsection.subsection_name}
-                        </Text>
+                        <Flex alignItems='center'>
+                          <Box 
+                            borderRadius="full" 
+                            border="2px solid #CBD5E0" 
+                            bgColor='#F8F9FA' 
+                            w="20px" 
+                            h="20px" 
+                            mr="5px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            >
+                            {userProgressVid.includes(parseInt(subsection.subsection_id)) && 
+                              <Icon as={CheckIcon} color="teal" p='2px'>
+                              </Icon>
+                            }
+                          </Box>
+                          <Text
+                            as="button"
+                            color="teal"
+                            onClick={() =>
+                              navigate(
+                                `/e-learning/${generateSlug(
+                                  courseDetail.course_name
+                                )}/${generateSlug(subsection.subsection_name)}?section=${idxSection}`,
+                                {
+                                  state: {
+                                    courseId: courseDetail.course_id,
+                                    subsectionId: subsection.subsection_id,
+                                  },
+                                }
+                              )
+                            }
+                          >
+                            {subsection.subsection_name}
+                          </Text>
+                        </Flex>
                       ) : (
                         <Text color="gray.500">{subsection.subsection_name}</Text>
                       )}
@@ -352,20 +280,39 @@ const CourseDetailPage = () => {
                   {section.quizzes?.map((quiz) => (
                     <React.Fragment key={quiz.quiz_id}>
                       {isEnrolled ? (
-                        <Text
-                          as="button"
-                          color="teal"
-                          onClick={() =>
-                            navigate(
-                              `/e-learning/${generateSlug(
-                                courseDetail.course_name
-                              )}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,
-                              { state: { courseId } }
-                            )
-                          }
-                        >
-                          [Quiz] {quiz.quiz_title}
-                        </Text>
+                        <Flex alignItems='center'>
+                          <Box
+                            borderRadius="full" 
+                            border="2px solid #CBD5E0" 
+                            bgColor='#F8F9FA' 
+                            w="20px" 
+                            h="20px" 
+                            mr="5px"
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="center"
+                            >
+                            {userProgressQuiz.includes(parseInt(quiz.quiz_id)) && 
+                                <Icon as={CheckIcon} color="teal" p='2px'>
+
+                                </Icon>
+                              }
+                          </Box>
+                          <Text
+                            as="button"
+                            color="teal"
+                            onClick={() =>
+                              navigate(
+                                `/e-learning/${generateSlug(
+                                  courseDetail.course_name
+                                )}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,
+                                { state: { courseId } }
+                              )
+                            }
+                          >
+                            [Quiz] {quiz.quiz_title}
+                          </Text>
+                        </Flex>
                       ) : (
                         <Text color="gray.500">[Quiz] {quiz.quiz_title}</Text>
                       )}
@@ -383,14 +330,32 @@ const CourseDetailPage = () => {
                     {isEnrolled ? <AccordionIcon /> : <LockIcon color="gray.500" />}
                   </AccordionButton>
                   <AccordionPanel>
-                    {isEnrolled ? (
-                      <Link color="teal.500" fontSize={'lg'}>Review Course</Link>
-                    ) : (
-                      <Text color="gray.500" fontSize={'lg'}>Review Course</Text>
-                    )}
+                    <Text color="teal.500" fontSize={'lg'} as="button" onClick={() =>
+                      navigate(
+                        `/e-learning/${generateSlug(
+                          courseDetail.course_name
+                        )}/review`,
+                        { state: { courseId, courseName: courseDetail.course_name } }
+                      )
+                    }>Review Course</Text>
                     
                   </AccordionPanel>
                 </AccordionItem>
+                {isEnrolled && (
+                  <AccordionItem>
+                    <AccordionButton>
+                      <Box flex="1" textAlign="left" fontWeight="bold" fontSize="xl">
+                        Certificate
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                    <AccordionPanel>
+                      <Text color="teal.500" fontSize="lg">
+                        Course Certificate
+                      </Text>
+                    </AccordionPanel>
+                  </AccordionItem>
+                )}
           </Accordion>
         </Flex>
       </VStack>

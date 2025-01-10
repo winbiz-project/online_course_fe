@@ -124,7 +124,7 @@ const ResultQuiz = () => {
                         >
                             <Text as={'b'} fontSize={'3xl'}>{'[Quiz]'} {quizList[quizIndex].quiz_title}</Text>
                             <Text as={'i'} fontSize={'md'} pb={'50px'}>Section: {sectionName}</Text>
-                            <Text pb={'10px'}>Nilai Anda: {roundedScore}</Text>
+                            <Text pb={'10px'}>Your Score: {roundedScore}</Text>
                             <Flex>
                                 <Box 
                                     as='button' 
@@ -142,37 +142,8 @@ const ResultQuiz = () => {
                                       })
                                     }
                                     >
-                                    Ulangi Kuis
+                                    Re-attempt Quiz
                                 </Box>
-                                {renderNextButton()}
-                                {/* {quizIndex == quizList.length -1? (
-                                    <Box
-                                        as='button' 
-                                        borderRadius='md' 
-                                        bgColor={'#3498DB'} 
-                                        width={'130px'} 
-                                        color='white'  
-                                        h={8}
-                                        onClick={() =>
-                                            navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)
-                                        }
-                                        >
-                                    </Box>
-                                ):(
-                                    <Box 
-                                        as='button' 
-                                        borderRadius='md' 
-                                        bgColor={'#3498DB'} 
-                                        width={'130px'} 
-                                        color='white'  
-                                        h={8}
-                                        onClick={() =>
-                                            navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)
-                                        }
-                                        >
-                                        Berikutnya
-                                    </Box>
-                                )} */}
                             </Flex>
                     </Box>
                 </Flex>

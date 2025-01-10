@@ -1,10 +1,10 @@
-import { Flex, Text, Grid } from "@chakra-ui/react";
+import { Flex, Text, SimpleGrid } from "@chakra-ui/react";
 import CardTestimony from "../card/testimony";
 import unsplash from "@/assets/images/unsplash.png"
 import LogoBCA from "@/assets/images/logo_bca.png";
 import React, { useState } from 'react';
 import { Box, IconButton } from '@chakra-ui/react';
-import { ArrowLeftIcon, ArrowRightIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -15,52 +15,75 @@ import SwiperCore from "swiper";
 
 SwiperCore.use([Navigation, Pagination]);
 
-const testimonys = [
-  {
-    title: "Jumpstart Karier, dari Hukum ke Codywriter (1)",
-    description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
-    material: "React Native",
-    image: unsplash, // replace with actual image
-  },
-  {
-    title: "Jumpstart Karier, dari Hukum ke Codywriter (2)",
-    description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
-    material: "React Native",
-    image: unsplash, // replace with actual image
-  },
-  {
-    title: "Jumpstart Karier, dari Hukum ke Codywriter (3)",
-    description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
-    material: "React Native",
-    image: unsplash, // replace with actual image
-  },
-  {
-    title: "Jumpstart Karier, dari Hukum ke Codywriter (4)",
-    description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
-    material: "React Native",
-    image: unsplash, // replace with actual image
-  },
-
-]
-
 const Testimony = () => {
-  const testimony = {
-    title: "Jumpstart Karier, dari Hukum ke Codywriter",
-    description: "ik yang jumpstart karier, dari hukum ke codywriter, tapi karena ikut Bootcamp Myskill",
-    material: "React Native",
-    image: unsplash, // replace with actual image
-  };
+  
+  const [reviews, setReviews] = useState([
+    {
+      review_id: 1,
+      review_text:
+        "This course was very insightful and inspirational! The materials I've learned here will definitely help me understand Python better.",
+      review_rating: "4.0",
+      review_published: true,
+      review_user: "Alia",
+      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
+    },
+    {
+      review_id: 2,
+      review_text:
+        "Good course! The content is well-structured and the examples are easy to follow.",
+      review_rating: "5.0",
+      review_published: true,
+      review_user: "David",
+      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
+    },
+    {
+      review_id: 3,
+      review_text:
+        "Decent course, but some sections could use more detail. Overall, it was helpful!",
+      review_rating: "3.0",
+      review_published: true,
+      review_user: "Sophia",
+      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
+    },
+    {
+      review_id: 4,
+      review_text:
+        "Amazing course! I learned a lot and feel confident about Python now.",
+      review_rating: "5.0",
+      review_published: true,
+      review_user: "Liam",
+      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
+    },
+    {
+      review_id: 5,
+      review_text:
+        "The course was okay, but I expected more practical examples.",
+      review_rating: "3.0",
+      review_published: true,
+      review_user: "Emma",
+      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
+    }
+  ]);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const renderGrid = (columns) => (
+    <SimpleGrid
+      columns={columns}
+      spacing={6}
+      mt={10}
+      justifyItems="center"
+      justifyContent="center"
+    >
+      {reviews.map((review, index) => (
+        <CardTestimony key={index} review={review} />
+      ))}
+    </SimpleGrid>
+  );
 
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? testimonys.length - 1 : prev - 1));
-  };
+  const [swiperInstance, setSwiperInstance] = useState(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === testimonys.length - 1 ? 0 : prev + 1));
-  };
-
+  if (reviews.length !==0 ){
   return (
     <Flex
       direction="column"
@@ -76,51 +99,71 @@ const Testimony = () => {
       <Text fontSize="3xl" fontWeight="bold">
         User, Tutor, and Partner Stories
       </Text>
-      <Grid
-        templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
-        display={{base: 'none', md:'grid'}}
-        gap={5}
-        py={10}
-      >
-        <CardTestimony colspan={1} testimony={testimonys[0]} />
-        <CardTestimony colspan={1} testimony={testimonys[1]} />
-        <CardTestimony colspan={1} testimony={testimonys[2]} />
-        <CardTestimony colspan={1} testimony={testimonys[3]} />
-      </Grid>
-      <Box w='100%' display={{base: 'block', md: "none"}} mt='5'>
-        <Swiper
-          spaceBetween={50}
-          slidesPerView={1}
-          pagination={{ clickable: true }}
-          navigation
-          breakpoints={{
-            640: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 2,
-            },
-          }}
-        >
-          {testimonys.map((testimony, index) => (
-            <SwiperSlide key={index}>
-              <CardTestimony testimony={testimony} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </Box>
-      {/* <Flex direction="column" alignItems="center" display={{base: 'block', md: 'none'}}>
-        <CardTestimony colspan={1} testimony={testimonys[currentIndex]} />
-        <Flex mt={4}>
-          <IconButton icon={<ArrowLeftIcon />} onClick={prevSlide} />
-          <IconButton icon={<ArrowRightIcon />} onClick={nextSlide} ml={2} />
-        </Flex>
-      </Flex> */}
+
+      {reviews.length === 1 ? (
+        renderGrid(1)
+      ): reviews.length === 2 && window.innerWidth > 640 ? (
+        renderGrid(2)
+      ) : reviews.length > 2 && reviews.length <= 4 && window.innerWidth > 768 ? (
+        renderGrid(reviews.length)
+      ) : (
+        <Box w='100%'  mt='5' p={4} display='flex' flexDirection='row' alignItems="center">
+          <IconButton
+            icon={<ChevronLeftIcon />}
+            onClick={() => swiperInstance?.slidePrev()} // Navigasi ke slide sebelumnya
+            bg="white"
+            borderRadius="full"
+            boxShadow="lg"
+            _hover={{ bg: "gray.200" }}
+            isDisabled={isBeginning}
+            mr={2}
+          />
+          <Swiper
+            spaceBetween={30}
+            slidesPerView={1}
+            onSwiper={(swiper) => setSwiperInstance(swiper)}
+            pagination={{ clickable: true }}
+            onSlideChange={(swiper) => {
+              setIsBeginning(swiper.isBeginning);
+              setIsEnd(swiper.isEnd);
+            }}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 4,
+              },
+            }}
+            style={{ flex: 1 }}
+          >
+            {reviews.map((review, index) => (
+              <SwiperSlide key={index}>
+                <CardTestimony review={review} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          <IconButton
+            icon={<ChevronRightIcon/>}
+            onClick={() => swiperInstance?.slideNext()}
+            bg="white"
+            borderRadius="full"
+            boxShadow="lg"
+            _hover={{ bg: "gray.200" }}
+            aria-label="Next Slide"
+            isDisabled={isEnd}
+            ml={2}
+          />
+
+        </Box>
+      )}
     </Flex>
   );
 };
+}
 
 export default Testimony;
