@@ -108,6 +108,9 @@ const Review = () => {
             </Flex>
         </Flex>
         <Flex maxW="1200px" mx="auto" p="4" pt="0" direction={{ base: "column", md: "row" }}>
+          <Text fontSize="2xl" fontWeight="bold" mb="4" display={{base: "block", md: "none"}}>
+              Course Title
+          </Text>
           {/* Left Section: Ratings Summary */}
           <Box flex="1" pr={{ base: "0", md: "8" }} mb={{ base: "8", md: "0" }}>
             <Flex alignItems="center" mb="4">
@@ -129,16 +132,26 @@ const Review = () => {
                   100;
                 return (
                   <Flex key={stars} alignItems="center">
-                    <Text fontSize="sm" w="20px">
+                    {/* <Text fontSize="sm" w="20px">
                       {stars}
                     </Text>
-                    <StarIcon color="yellow.400" mr="2" />
+                    <StarIcon color="yellow.400" mr="2" /> */}
+                    {[...Array(5)].map((_, i) => (
+                      <Icon
+                        key={i}
+                        as={StarIcon}
+                        color={i < stars ? "yellow.400" : "gray.300"}
+                        boxSize={4}
+                        cursor="pointer"
+                      />
+                    ))}
                     <Progress
                       value={percentage}
                       size="sm"
                       w="200px"
                       colorScheme="yellow"
                       mr="2"
+                      ml="10px"
                     />
                     <Text fontSize="sm">{percentage.toFixed(0)}%</Text>
                   </Flex>
@@ -149,11 +162,11 @@ const Review = () => {
   
           {/* Right Section: Reviews List */}
           <Box flex="2">
-            <Text fontSize="2xl" fontWeight="bold" mb="4">
+            <Text fontSize="2xl" fontWeight="bold" mb="4" display={{base: "none", md: "block"}}>
               Course Title
             </Text>
-            <Flex justifyContent="flex-end" mb="4"> {/* Menambahkan Flex untuk memindahkan tombol ke kanan */}
-              <Button colorScheme="blue" onClick={onOpen}>
+            <Flex justifyContent={{base: "", md: "flex-end"}} mb="4"> {/* Menambahkan Flex untuk memindahkan tombol ke kanan */}
+              <Button colorScheme="blue" onClick={onOpen} w={{base: '100%', md:'23%'}}>
                 {hasReviewed ? "Show Your Review" : "Review Course"}
               </Button>
             </Flex>
