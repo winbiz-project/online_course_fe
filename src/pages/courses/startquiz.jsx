@@ -46,6 +46,11 @@ const StartQuiz = () => {
 
     const [courseDetail, setCourseDetail] = useState({});
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+      
+
     const getQuiz = async () => {
         try {
             const response = await fetch(`${baseUrl}/quiz/get_quiz_on_enrolled_course/${quizId}`,{
@@ -96,6 +101,7 @@ const StartQuiz = () => {
     };
 
     useEffect(() => {
+      scrollToTop();
       getCourseDetail();
       getQuiz();
     }, [quizId]);
