@@ -135,6 +135,7 @@ const CourseDetailPage = () => {
     await Promise.all([
       getCourseDetail(),
       checkEnrollment(),
+      getUserProgress(),
     ]);
     setLoading(false);
   };
