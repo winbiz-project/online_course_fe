@@ -31,6 +31,13 @@ export default function Register() {
 
     const inputWidth = useBreakpointValue({ base: "90vw", md: "65vh" });
 
+    const emailRegex = /^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$/;
+
+    // Fungsi Validasi
+    function isValidEmail(email) {
+      return emailRegex.test(email);
+    }
+
     const handleGoogleLogin = async (e) => {
       e.preventDefault();
       setLoading(true);
@@ -51,7 +58,16 @@ export default function Register() {
             showCloseButton: true,
             confirmButtonText: 'OK'
           })
-          return;
+        }
+
+        if (!isValidEmail(email)){
+          swal.fire({
+            title: "Invalid Email Address",
+            text: "Please enter a valid email address in the format: user@example.com.",
+            icon: "error",
+            showCloseButton: true,
+            confirmButtonText: 'OK'
+          })
         }
 
         if (password !== confirmPassword) {
