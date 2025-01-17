@@ -75,7 +75,6 @@ function CourseVideo() {
         setSubsectionVid(data);
         setSubsectionName(data.sub_section_title);
         setLoading(false);
-        console.log('Current subsectionId:', subsectionList[subsectionIdx]);
     }
     catch (error) {
         console.error(`Could not get courses: ${error}`);
@@ -99,7 +98,6 @@ function CourseVideo() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data);
     } catch (error) {
       console.error(`Could not get courses: ${error}`);
     }

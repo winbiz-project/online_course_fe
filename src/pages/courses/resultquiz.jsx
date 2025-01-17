@@ -99,7 +99,6 @@ const ResultQuiz = () => {
     };
 
     useEffect(() => {
-        console.log(courseId, courseSlug)
         getCourseDetail();
     }, [quizId]);
 

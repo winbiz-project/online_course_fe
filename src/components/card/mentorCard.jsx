@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 
 const MentorCard = ({ mentor }) => {
-  console.log(mentor.image);
   return (
     <Card
       maxW="sm"

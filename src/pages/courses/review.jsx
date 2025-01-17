@@ -41,8 +41,8 @@ const Review = () => {
             setReviewComment(data.find((review) => review.review_user_email === user.email).review_text);
             setReviewRating(data.find((review) => review.review_user_email === user.email).review_rating);
           }
-          setLoading(false);
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }

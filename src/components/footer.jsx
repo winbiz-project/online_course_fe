@@ -314,9 +314,6 @@ const Footer = () => {
                         <Link href="https://docs.google.com/forms/d/e/1FAIpQLSeJiWiYl8GX3r5uw-oaoYRTpjk9tT_aJn65XYvuZXm8FppQtg/viewform" my={1} target="_blank" rel="noopener noreferrer">
                             Career
                         </Link>
-                        <Link href="#" my={1}>
-                            Cooperation
-                        </Link>
                         <Link href="https://kursuseksporonline.id/blog/" my={1} target="_blank" rel="noopener noreferrer">
                             Blog
                         </Link>

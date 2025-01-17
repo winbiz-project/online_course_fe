@@ -68,7 +68,6 @@ const StartQuiz = () => {
             const data = await response.json();
             setQuizData(data.Quiz);
             setLoading(false);
-            console.log(data);
         } catch (error) {
             console.error(`Could not get quiz: ${error}`);
         }
