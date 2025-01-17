@@ -33,7 +33,6 @@ const Courses = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(data.courses)
       setCourses(data.courses);
       setFilterCourses(data.courses);
       setCategories(data.categories);
@@ -79,7 +78,6 @@ const Courses = () => {
       const category = categories.find(cat => cat.category_id === categoryId);
       return category ? category.category_name : '';
     });
-    // console.log("Applied categories:", selectedCategories);
     setIsMenuOpen(false);
   };
 

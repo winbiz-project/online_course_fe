@@ -91,13 +91,6 @@ export default function Router() {
               children: [
                 {path: "", element: <Review />}
               ]
-            },
-            {
-              path: "certificate",
-              children: [
-                {path: "uniqueIdCertificate", element: <Certificate />}
-              ]
-
             }
           ]
         },
@@ -109,6 +102,12 @@ export default function Router() {
       element: <PrivateRoute />,
       children: [
         { path: "", element: <MyCourses />}
+      ]
+    },
+    {
+      path: "/certificate",
+      children: [
+        {path: ":uniqueIdCertificate", element: <Certificate />}
       ]
     },
     {

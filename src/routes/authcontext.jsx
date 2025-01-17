@@ -140,8 +140,6 @@ export const AuthProvider = ({ children }) => {
         const refreshToken = localStorage.getItem('refreshToken');
         const parsedRefreshToken = JSON.parse(refreshToken);
 
-        console.log(parsedRefreshToken)
-
         const response = await axios.post(`${baseUrl}/logout`, {
             refresh_token: parsedRefreshToken,
         });
@@ -199,11 +197,6 @@ export const AuthProvider = ({ children }) => {
         setLoading(false)
     }, [authTokens, loading])
 
-    useEffect(() => {
-        if (googleAccount) {
-            console.log('Updated googleAccount:', googleAccount);
-        }
-    }, [googleAccount]);
 
     return (
         <AuthContext.Provider value={contextData}>

@@ -154,6 +154,14 @@ const Navbar = () => {
                                     >
                                         Hello, {user.name}
                                     </Box>
+
+                                    <Box fontSize='xl' mt={3} mb={3}>
+                                        <Link to="/mycourses" onClick={onClose}>
+                                            <Text fontFamily='Montserrat, sans-serif'>
+                                                My Courses
+                                            </Text>
+                                        </Link>
+                                    </Box>
                                 </>
                             )}
                             <Box fontSize='xl' mt={3} mb={3}>

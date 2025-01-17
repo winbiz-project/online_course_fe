@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Box, Image, Text, Badge, Button, Divider, Heading, Center, Tag, Flex, Spinner,
   VStack, HStack, Container, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, 
-  Spacer, Icon } from '@chakra-ui/react';
+  Spacer, Icon, Toast, 
+  useToast} from '@chakra-ui/react';
 import { StarIcon, LockIcon, CheckIcon } from '@chakra-ui/icons';
 import { json, useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import AuthContext from '@/routes/authcontext'
@@ -19,8 +20,11 @@ const CourseDetailPage = () => {
   const [courseDetail, setCourseDetail] = useState({});
   const [userProgressVid, setUserProgressVid] = useState([]);
   const [userProgressQuiz, setUserProgressQuiz] = useState([]);
+  const [userProgressPercentage, setUserProgressPercentage] = useState(0);
+  const [certificateData, setCertificateData] = useState({});
   const location = useLocation();
   const courseId = location.state?.courseId;
+  const toast = useToast();
   const navigate = useNavigate();
 
   const getCourseDetail = async () => {
@@ -98,7 +102,7 @@ const CourseDetailPage = () => {
   };
 
   const getUserProgress = async () => {
-    if(user){
+    if(user && isEnrolled) {
       try {
         const response = await fetch(`${baseUrl}/course/get_user_progress`, {
           method: 'POST',
@@ -115,17 +119,24 @@ const CourseDetailPage = () => {
         }
         const data = await response.json();
         
-        // Mengumpulkan data dari `completed_subsections` ke array sementara
         const completedSubsections = data.completed_subsections.map(subsection => subsection.sub_section_id);
         setUserProgressVid(completedSubsections);
   
-        // Mengumpulkan data dari `completed_quizzes` ke array sementara
         const completedQuizzes = data.completed_quizzes.map(quiz => quiz.quiz_id);
         setUserProgressQuiz(completedQuizzes);
-  
-  
-        console.log(userProgressVid);
-        console.log(userProgressQuiz);
+
+        if (courseDetail?.sections) {
+          const totalSubsections = courseDetail.sections.reduce((acc, section) => acc + section.subsections.length, 0) || 0;
+          const totalQuizzes = courseDetail.sections.reduce((acc, section) => acc + section.quizzes.length, 0) || 0;
+          const totalItems = totalSubsections + totalQuizzes;
+          const totalProgressPercentage = totalItems > 0 ? Math.round(((completedSubsections.length + completedQuizzes.length) / totalItems) * 100) : 0;
+
+          setUserProgressPercentage(totalProgressPercentage);
+          
+          if (totalProgressPercentage === 100) {
+            getCertificateURL();
+          }
+        }
   
       } catch (error) {
         console.error(`Could not get user progress: ${error}`);
@@ -133,12 +144,44 @@ const CourseDetailPage = () => {
     }
   }
 
+  const getCertificateURL = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/certificate/get_course_certificate/${courseId}/${user.user_id}`);
+      const data = await response.json();
+      setCertificateData(data.certificate_details);
+    } catch (error) {
+      console.error(`Could not get certificate URL: ${error}`);
+    }
+  };
+
+  const handleCertificateClick = () => {
+    if (userProgressPercentage === 100) {
+      if (certificateData) {
+        navigate(`/certificate/${certificateData.unique_id}`);
+      } else {
+        toast({
+          title: "Certificate Not Available",
+          description: "Your course progress is complete. Please ensure you've reviewed the course to receive your certificate.",
+          status: "info",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } else {
+      toast({
+        title: "Course Incomplete",
+        description: "Complete the course to 100% and review it to unlock your certificate.",
+        status: "warning",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   const fetchData = async () => {
-    await Promise.all([
-      getCourseDetail(),
-      checkEnrollment(),
-      getUserProgress()
-    ]);
+    await Promise.all([getCourseDetail(), checkEnrollment()]);
+    await getUserProgress();
+
     setLoading(false);
   };
 
@@ -353,7 +396,12 @@ const CourseDetailPage = () => {
                       <AccordionIcon />
                     </AccordionButton>
                     <AccordionPanel>
-                      <Text color="teal.500" fontSize="lg">
+                      <Text
+                        color={userProgressPercentage === 100 && certificateData ? "teal.500" : "gray.500"}
+                        fontSize="lg"
+                        as="button"
+                        onClick={handleCertificateClick}
+                      >
                         Course Certificate
                       </Text>
                     </AccordionPanel>
