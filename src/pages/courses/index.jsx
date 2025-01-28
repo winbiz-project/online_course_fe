@@ -22,7 +22,7 @@ const Courses = () => {
   const [loading, setLoading ] = useState(true);
 
   const [page, setPage] = useState(1); // Current page
-  const limit = 1; // Number of items per page
+  const limit = 5; // Number of items per page
   const totalPages = Math.ceil(filterCourses.length / limit);
 
   const navigate = useNavigate();
@@ -64,23 +64,6 @@ const Courses = () => {
     setDisplayedCategories(updatedCategories);
   };
 
-  const applyCategoryFilter = () => {
-    
-    if (selectedCategories.length > 0) {
-      const filteredCourses = courses.filter(course =>
-        course.course_categories.some(category => selectedCategories.includes(category.category_id))
-      );
-      setFilterCourses(filteredCourses);
-    } else {
-      setFilterCourses(courses);
-    }
-    const selectedCategoryNames = selectedCategories.map(categoryId => {
-      const category = categories.find(cat => cat.category_id === categoryId);
-      return category ? category.category_name : '';
-    });
-    setIsMenuOpen(false);
-  };
-
   const clearFilter = () => {
     setSelectedCategories([]);
     setDisplayedCategories(categories);
@@ -101,29 +84,23 @@ const Courses = () => {
     setSearchTerm(e.target.value);
   }
 
-  const handleSearchClick = () => {
+  useEffect(() => {
+    let filtered = courses;
+  
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(course =>
+        course.course_categories.some(category => selectedCategories.includes(category.category_id))
+      );
+    }
+  
     if (searchTerm) {
-      const filtered = filterCourses.filter(course =>
+      filtered = filtered.filter(course =>
         course.course_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setFilterCourses(filtered);
-    }else{
-      if (selectedCategories.length > 0) {
-        const filteredCourses = courses.filter(course =>
-          course.course_categories.some(category => selectedCategories.includes(category.category_id))
-        );
-        setFilterCourses(filteredCourses);
-      } else {
-        setFilterCourses(courses);
-      }
     }
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      handleSearchClick();
-    }
-  };
+  
+    setFilterCourses(filtered);
+  }, [searchTerm, selectedCategories, courses]);
 
   const handleSortChange = (option) => {
     let sortedCourses = [...filterCourses];
@@ -168,28 +145,11 @@ const Courses = () => {
       <Container maxW="container.xl" mt={'10'}>
         <Flex direction="column" align="center" mb={8} position="relative" w="100%">
           <InputGroup w="100%" mb={5}>
-            <Input placeholder="Search..." onChange={handleSearch} onKeyDown={handleKeyPress}/>
+            <Input placeholder="Search..." onChange={handleSearch} value={searchTerm} />
             <InputRightElement width="4.5rem" height="100%" display="flex" alignItems="center" justifyContent="center">
-              <IconButton variant="unstyled" color="#108EE9" icon={<SearchIcon />} onClick={handleSearchClick}/>
+              <IconButton variant="unstyled" color="#108EE9" icon={<SearchIcon />} />
             </InputRightElement>
           </InputGroup>
-
-          {/* <Menu > 
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} position="absolute"
-            bottom={-10} right={160}>
-              Sort by
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => handleSortChange('latestCreated')}>Latest Created</MenuItem>
-              <MenuItem onClick={() => handleSortChange('earliestCreated')}>Earliest Created</MenuItem>
-              <MenuItem onClick={() => handleSortChange('titleAsc')}>Title Ascending</MenuItem>
-              <MenuItem onClick={() => handleSortChange('titleDesc')}>Title Descending</MenuItem>
-              <MenuItem onClick={() => handleSortChange('highestRating')}>Highest Rating</MenuItem>
-              <MenuItem onClick={() => handleSortChange('lowestRating')}>Lowest Rating</MenuItem>
-              <MenuItem onClick={() => handleSortChange('highPrice')}>Highest Price</MenuItem>
-              <MenuItem onClick={() => handleSortChange('lowPrice')}>Lowest Price</MenuItem>
-            </MenuList>
-          </Menu> */}
 
             <Flex
               direction={{ base: "column", md: "row" }}
@@ -255,9 +215,6 @@ const Courses = () => {
                   </Box>
                   <Box p={2} borderTop="1px solid gray">
                     <HStack justify="space-between">
-                      <Button size="sm" colorScheme="blue" onClick={applyCategoryFilter} w="48%">
-                        Apply
-                      </Button>
                       <Button size="sm" colorScheme="red" variant="outline" onClick={clearFilter} w="48%">
                         Clear Filter
                       </Button>
@@ -267,73 +224,93 @@ const Courses = () => {
               </Menu>
 
             </Flex>
-
-          
-          {/* <Menu>
-            <MenuButton
-              as={Button}
-              colorScheme="blue"
-              position="absolute"
-              bottom={-10}
-              right={0}
-            >
-              Category Filter
-            </MenuButton>
-            <MenuList>
-              
-              <Box maxHeight="200px" overflowY="auto" p={2}>
-                <VStack align="start" spacing={2}>
-                  {displayedCategories.map((category, index) => (
-                    <Checkbox
-                      key={category.category_id}
-                      isChecked={selectedCategories.includes(category.category_id)}
-                      onChange={() => handleFilterCategory(category.category_id, index)}
-                    >
-                      {category.category_name}
-                    </Checkbox>
-                  ))}
-                </VStack>
-              </Box>
-              <Box p={2} borderTop="1px solid gray">
-                <HStack justify="space-between">
-                  <Button size="sm" colorScheme="blue" onClick={applyCategoryFilter} w="48%">
-                    Apply
-                  </Button>
-                  <Button size="sm" colorScheme="red" variant="outline" onClick={clearFilter} w="48%">
-                    Clear Filter
-                  </Button>
-                </HStack>
-              </Box>
-            </MenuList>
-          </Menu> */}
         </Flex>
         <Box>
-          {filterCourses.slice((page - 1) * limit, page * limit).map((course) => {
-            const courseSlug = generateSlug(course.course_name);
-            return(
-            <React.Fragment key={course.course_id}>
-              <Box mb={courses.length == 1? 20 : 5} borderRadius={8} alignItems="center">
-                <Flex direction="row" justify="space-between" alignItems="center" wrap="wrap">
-                  <Box width={["100%", "35%"]}>
-                    <Image src={getDefaultImage(course.course_photo)} alt={course.course_name} w="100%" h={64} objectFit='fill' borderRadius={8} />
+          {filterCourses.length === 0 ? (
+            // Kondisi jika hasil filter kosong
+            <Box textAlign="center" mt={10} p={5} bg="gray.100" borderRadius="md" boxShadow="md">
+              <Text fontSize="xl" fontWeight="bold" color="gray.700">
+                No courses match your search or selected filters.
+              </Text>
+              <Text fontSize="md" color="gray.500" mt={2}>
+                Try adjusting your search keywords or filter options to find the right courses for you.
+              </Text>
+            </Box>
+          ) : (
+            // Render daftar kursus jika ada hasil
+            filterCourses.slice((page - 1) * limit, page * limit).map((course) => {
+              const courseSlug = generateSlug(course.course_name);
+              return (
+                <React.Fragment key={course.course_id}>
+                  <Box
+                    mb={courses.length === 1 ? 20 : 5}
+                    borderRadius={8}
+                    alignItems="center"
+                  >
+                    <Flex
+                      direction="row"
+                      justify="space-between"
+                      alignItems="center"
+                      wrap="wrap"
+                    >
+                      <Box width={["100%", "35%"]}>
+                        <Image
+                          src={getDefaultImage(course.course_photo)}
+                          alt={course.course_name}
+                          w="100%"
+                          h={64}
+                          objectFit="fill"
+                          borderRadius={8}
+                        />
+                      </Box>
+                      <Box width={["100%", "60%"]}>
+                        <Box mt={4}>
+                          <Text fontWeight="bold" fontSize="lg">
+                            {course.course_name}
+                          </Text>
+                          <Text fontWeight="bold" fontSize="sm" mt={2}>
+                            Price: {formatRupiah(course.course_price)}
+                          </Text>
+                          <Text fontSize="md" color="gray.500" mt={2}>
+                            {course.course_desc}
+                          </Text>
+                          <Flex
+                            align="center"
+                            mt={2}
+                            display={course.course_rating === 0 ? "none" : "flex"}
+                          >
+                            <Stars
+                              value={course.course_rating}
+                              count={5}
+                              color="#2596be"
+                              size={20}
+                              edit={false}
+                            />
+                            <Text fontSize="sm" color="gray.500" ml={2}>
+                              ({course.course_rating})
+                            </Text>
+                          </Flex>
+                          <Button
+                            onClick={() =>
+                              navigate(`/e-learning/${courseSlug}`, {
+                                state: { courseId: course.course_id },
+                              })
+                            }
+                            mt={4}
+                            w="100%"
+                            colorScheme="blue"
+                          >
+                            Go to course
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Flex>
                   </Box>
-                  <Box width={["100%", "60%"]}>
-                    <Box mt={4}>
-                      <Text fontWeight="bold" fontSize="lg">{course.course_name}</Text>
-                      <Text fontWeight="bold" fontSize="sm" mt={2}>Price: {formatRupiah(course.course_price)}</Text>
-                      <Text fontSize="md" color="gray.500" mt={2}>{course.course_desc}</Text>
-                      <Flex align="center" mt={2} display={course.course_rating === 0 ? "none" : "flex"}>
-                        <Stars value={course.course_rating} count={5} color="#2596be" size={20} edit={false} />
-                        <Text fontSize="sm" color="gray.500" ml={2}>({course.course_rating})</Text>
-                      </Flex>
-                      <Button onClick={() => navigate(`/e-learning/${courseSlug}`, { state: { courseId: course.course_id } })} mt={4} w="100%" colorScheme="blue">Go to course</Button>
-                    </Box>
-                  </Box>
-                </Flex>
-              </Box>
-              <Divider borderColor={"#108EE9"} mb={5} />
-            </React.Fragment>
-          )})}
+                  <Divider borderColor={"#108EE9"} mb={5} />
+                </React.Fragment>
+              );
+            })
+          )}
         </Box>
 
         {/* Pagination */}
@@ -347,7 +324,6 @@ const Courses = () => {
           ←
         </Button>
 
-        {/* Halaman Pertama */}
         <Button
           onClick={() => handlePageChange(1)}
           bgColor={page === 1 ? "#007BFF" : "#E0E0E0"}
@@ -357,10 +333,8 @@ const Courses = () => {
           1
         </Button>
 
-        {/* Ellipsis Sebelum Halaman Tengah */}
         {page > 4 && <Text mx={1}>...</Text>}
 
-        {/* Halaman di Sekitar Halaman Aktif */}
         {[...Array(totalPages)]
           .map((_, index) => index + 1)
           .filter(
@@ -381,10 +355,8 @@ const Courses = () => {
             </Button>
           ))}
 
-        {/* Ellipsis Setelah Halaman Tengah */}
         {page < totalPages - 3 && <Text mx={1}>...</Text>}
 
-        {/* Halaman Terakhir */}
         {totalPages > 1 && (
           <Button
             onClick={() => handlePageChange(totalPages)}
@@ -396,7 +368,6 @@ const Courses = () => {
           </Button>
         )}
 
-        {/* Tombol Next */}
         <Button
           onClick={() => handlePageChange(page + 1)}
           isDisabled={page === totalPages}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Layout from "@/components/layout";
-import { Spinner, Box, Image, Text, Button, useToast } from "@chakra-ui/react";
+import { Spinner, Box, Image, Text, Button, useToast, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@chakra-ui/react";
 import AuthContext from "@/routes/authcontext";
 import config from "@/config";
 
@@ -11,6 +11,8 @@ const Certificate = () => {
     const { uniqueIdCertificate } = useParams();
     const [certificateDetails, setCertificateDetails] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const link = window.location.href;
     const toast = useToast();
 
     const getCertificateURL = async () => {
@@ -26,19 +28,6 @@ const Certificate = () => {
             setLoading(false);
         }
     };
-
-    const handleShare = () => {
-        navigator.clipboard.writeText(window.location.href).then(() => {
-            toast({
-                title: "Link copied!",
-                description: "The certificate link has been copied to your clipboard.",
-                status: "success",
-                duration: 3000,
-                isClosable: true,
-            });
-        });
-    };
-
 
     const handleDownload = async (uniqueId) => {
         try {
@@ -99,13 +88,13 @@ const Certificate = () => {
                         />
                     </Box>
                     <Text fontSize="lg" fontWeight="medium" color="gray.600" mb={5}>
-                        Issued to: <b>{certificateDetails.certificate_user_origin}</b> <br />
+                        Issued to: <b>{certificateDetails.certificate_user_origin_name}</b> <br />
                         For completing: <b>{certificateDetails.certificate_course_origin}</b> <br />
                         Date: {certificateDetails.issued_date}
                     </Text>
                     {certificateDetails.certificate_user_origin === user?.email && (
                         <Box display="flex" justifyContent="center" gap={4}>
-                            <Button colorScheme="teal" onClick={handleShare}>
+                            <Button colorScheme="teal" onClick={onOpen}>
                                 Share
                             </Button>
                             <Button colorScheme="blue" onClick={handleDownload}>
@@ -121,6 +110,25 @@ const Certificate = () => {
                     </Text>
                 </Box>
             )}
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Share Your Certificate</ModalHeader>
+                    <ModalBody>
+                        <p className="mb-4 text-gray-600">
+                            Copy the link below to share your certificate:
+                        </p>
+                        <div className="px-4 py-2 border rounded-lg bg-gray-100">
+                            <span className="text-sm text-gray-800 break-words">{link}</span>
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button colorScheme="gray" onClick={onClose}>
+                            Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Layout>
     );
 };
