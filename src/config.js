@@ -1,5 +1,5 @@
 const config = {
-    apiBaseUrl: 'http://149.28.133.123:8303'
+    apiBaseUrl: 'https://api.skillbridgeacademy.my.id'
 }
 
 export default config;
