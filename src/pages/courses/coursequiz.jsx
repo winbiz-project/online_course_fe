@@ -123,14 +123,13 @@ function CourseQuiz() {
                 courseid: courseDetail.course_id,
                 correct: total_correct,
                 total: total_question
-                }),
+            }),
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         if(response.ok) {
-            setLoading(false);
             const data = await response.json();
 
             const addprogress = await fetch(`${baseUrl}/course/add_quiz_progress`, {
@@ -270,345 +269,359 @@ function CourseQuiz() {
       validateCourseAndQuizAccess();
     }, [quizId]);
 
-return (
-  <Layout>
-    { quizAvail && courseAvail && !loading ?
-        (
-            <Box position="relative" height="auto" pb={5}>
-                <Flex direction="row" justifyContent="space-between"  overflow="hidden">
-                    <Flex direction="column" width={sidebarOpen ? "75%" : "100%"} transition="width 0.3s ease">
-                    <Flex
-                        justifyContent="space-between"
-                        p={{ base: 3, md: 5 }}
-                    >
-                        <Breadcrumb separator={<ChevronRightIcon color="gray.500" />} mb={4}>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink href="/mycourses" display="flex" alignItems="center">
-                                <Text fontSize={{ base: 'sm', md: 'md' }}   >Home</Text>
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-
-                            <BreadcrumbItem>
-                                <BreadcrumbLink
-                                    onClick={(e) => {
-                                    e.preventDefault();
-                                    navigate(`/e-learning/${courseSlug}`, {
-                                        state: { courseId: courseId },
-                                    });
-                                    }}
-                                    fontSize={{ base: 'xs', md: 'md' }}
-                                    >
-                                    {quizData.quiz_section_origin}
-                                </BreadcrumbLink>
-                            </BreadcrumbItem>
-
-                            <BreadcrumbItem>
-                                <Text fontSize={{ base: 'sm', md: 'md' }}>{quizData.quiz_title}</Text>
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                        <Flex alignItems="center" justifyContent="space-between" mb={4} width={"250px"}>
-                            {/* {quizIndex == 0 ? (
-                                <Box
-                                    as="button"
-                                    display="flex"
-                                    alignItems="center"
-                                    onClick={() => navigate(`/e-learning/${courseDetail.course_id}/${subsectionList[subsectionList.length-1].subsection_id}?section=${sectionIndex}`)}
-                                    >
-                                    <ChevronLeftIcon boxSize={5}/>
-                                    <Text fontWeight="bold">Sebelumnya</Text>
-                                </Box>
-                            ) : (
-                                <Box
-                                as="button"
-                                display="flex"
-                                alignItems="center"
-                                onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex-1].quiz_id}/start?section=${sectionIndex}`)}
-                                >
-                                <ChevronLeftIcon boxSize={5}/>
-                                <Text fontWeight="bold">Sebelumnya</Text>
-                                </Box>
-                            )}
-                            {renderNextButton()} */}
-                            {/* {quizIndex == quizList.length -1? (
-                                <Box as='span'>
-                                </Box>
-                            ) : (
-                                <Box
-                                as="button"
-                                display="flex"
-                                alignItems="center"
-                                onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)}
-                                >
-                                <Text fontWeight="bold">Berikutnya</Text>
-                                <ChevronRightIcon boxSize={5} />
-                                </Box>
-                            )} */}
-                        </Flex>
-                    </Flex>
-                    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-                        <Text fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold">Quiz {quizData.quiz_title}</Text>
-
-                        {quizData.details[currentQuestionId].question_img ?
-                        (
-                            <VStack px={{base: '30px', md: ''}} mb={5}>
-                                <Box justifyContent='center' display={'flex'} pt='20px' pb='20px'>
-                                    {quizData.details[currentQuestionId].question_img && (
-                                        <Image src={quizData.details[currentQuestionId].question_img} alt={`Image for question ${currentQuestionId + 1}`} w={{base: '100%', md: '30%'}}/>
-                                    )}
-                                </Box>
-                                <Box>
-                                    <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
-                                    <RadioGroup
-                                        value={answers[currentQuestionId]?.selected || ""} 
-                                        onChange={(value) => handleAnswerChange(currentQuestionId, value)}
-                                    >
-                                        <Stack direction="column" pt={2}>
-                                            {Object.keys(quizData.details[currentQuestionId].answers).map((key) => (
-                                                <Radio key={key} value={key}>
-                                                    {quizData.details[currentQuestionId].answers[key].answer_text}
-                                                </Radio>
-                                            ))}
-                                        </Stack>
-                                    </RadioGroup>
-                                </Box>
-                            </VStack>
-                        ) 
-                        : 
-                        (
-                            <Flex direction='column' px={{base: '30px', md: ''}}>
-                                <Box pt={'20px'} pb={'20px'}>
-                                    <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
-                                    <RadioGroup
-                                        value={answers[currentQuestionId]?.selected || ""} 
-                                        onChange={(value) => handleAnswerChange(currentQuestionId, value)}
-                                    >
-                                        <Stack direction="column" pt={2}>
-                                            {Object.keys(quizData.details[currentQuestionId].answers).map((key) => (
-                                                <Radio key={key} value={key} py={1}>
-                                                    {quizData.details[currentQuestionId].answers[key].answer_text}
-                                                </Radio>
-                                            ))}
-                                        </Stack>
-                                    </RadioGroup>
-                                </Box>
-                            </Flex>
-                        )}
-
-
-                        
-                        <Flex justifyContent="space-between" mt={5}>
-                            <Button
-                            leftIcon={<ChevronLeftIcon />}
-                            isDisabled={currentQuestion === 0}
-                            onClick={handlePrevious}
-                            mr={{base: 20, md: 40}}
-                            size={{ base: "sm", md: "md" }}
-                            >
-                            Previous
-                            </Button>
-                            {currentQuestion === questionIdList.length - 1 ? (
-                            <Button
-                                rightIcon={<ChevronRightIcon />}
-                                onClick={onOpen}
-                                ml={{base: 20, md: 40}}
-                                size={{ base: "sm", md: "md" }}
-                            >
-                                Submit
-                            </Button>
-                            ) : (
-                            <Button
-                                rightIcon={<ChevronRightIcon />}
-                                onClick={handleNext}
-                                ml={{base: 20, md: 40}}
-                                size={{ base: "sm", md: "md" }}
-                            >
-                                Next
-                            </Button>
-                            )}
-                        </Flex>
-                    </Box>
-                    </Flex>
-                    {/* Sidebar */}
-                    {sidebarOpen && (
-                        <Box
-                        position="absolute"
-                        top={0}
-                        right={0}
-                        width={{ base: "50%", md: "25%" }}
-                        height="100%"
-                        bg="#F5F5F5"
-                        boxShadow="xl"
-                        zIndex="99"
-                        overflowY="auto"
-                        >
-                        <VStack align="stretch" spacing={2} w={"100%"}>
-                            <Flex direction="row" justifyContent="space-between">
-                            <Text fontSize="lg" p={4} fontWeight="bold">Course Content</Text>
-                            <IconButton
-                                icon={<CloseIcon/>}
-                                size="md"
-                                m={2}
-                                backgroundColor={'#F5F5F5'}
-                                onClick={() => setSidebarOpen(!sidebarOpen)}
-                            />
-                            </Flex>
-                            {/* Isi konten sidebar */}
-                            <Accordion allowMultiple w="100%">
-                            {courseDetail.sections.map((section, idxSection) => (
-                            <AccordionItem key={section.section_id}>
-                                <AccordionButton>
-                                <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
-                                    {section.section_name}
-                                </Box>
-                                <AccordionIcon />
-                                </AccordionButton>
-                                <AccordionPanel>
-                                <Divider/>
-                                {section.subsections.map((subsection, index) => (
-                                    <React.Fragment key={subsection.subsection_id}>
-                                        <Box>
-                                            <Box
-                                                as="button"
-                                                width="100%"
-                                                p={2}
-                                                onClick={() =>
-                                                    navigate(`/e-learning/${courseDetail.course_id}/${subsection.subsection_id}?section=${idxSection}`)
-                                                }
-                                                _hover={{ bg: "#EBEBEB" }}
-                                                textAlign="left"
-                                            >
-                                                <Text color="black">{subsection.subsection_name}</Text>
-                                            </Box>
-                                            <Divider mt={'0'} />
-                                        </Box>                                   
-                                    </React.Fragment>
-                                ))}
-
-                                {section.quizzes && section.quizzes.length > 0 && (
-                                    <>
-                                    {section.quizzes.map((quiz, index) => (
-                                        <React.Fragment key={quiz.quiz_id}>
-                                            {quiz.quiz_title == quizData.quiz_title ? (
-                                                <Box>
-                                                    <Box
-                                                        as="button"
-                                                        width="100%"
-                                                        p={2}
-                                                        backgroundColor={'#EBEBEB'}
-                                                        onClick={() =>
-                                                        navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
-                                                            state: { courseId: courseId }
-                                                        })
-                                                        }
-                                                        _hover={{ bg: "#EBEBEB" }}
-                                                        textAlign="left"
-                                                    >
-                                                        <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
-                                                    </Box>
-                                                    <Divider mt={'0'} />
-                                                </Box>
-                                            ):(
-                                                <Box>
-                                                    <Box
-                                                        as="button"
-                                                        width="100%"
-                                                        p={2}
-                                                        onClick={() =>
-                                                        navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
-                                                            state: { courseId: courseId }
-                                                        })
-                                                        }
-                                                        _hover={{ bg: "#EBEBEB" }}
-                                                        textAlign="left"
-                                                    >
-                                                        <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
-                                                    </Box>
-                                                    <Divider mt={'0'} />
-                                                </Box>
-                                            )}
-                                            
-                                        </React.Fragment>
-                                    ))}
-                                    </>
-                                )}
-                                </AccordionPanel>
-                            </AccordionItem>
-                            ))}
-                            </Accordion>
-                        </VStack>
+    if (loading) {
+        return (
+                    <Layout>
+                        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                            <Spinner size="xl" />
                         </Box>
-                    )}
-
-                    {/* Button Sidebar */}
-                    <Box
-                        position="absolute"
-                        top="20%"
-                        right={sidebarOpen? {base: "50%", md: "25%"}: "0"}
-                        height={10}
-                        transform="translateY(-50%)"
-                        zIndex="1000"
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                        display="flex"
-                        alignItems="center"
-                        bg="gray.700"
-                        color="white"
-                        borderRadius="md"
-                        p={isHovered ? "0 12px" : "0"}
-                        transition="width 0.3s ease, padding 0.3s ease"
-                        width={sidebarOpen ? "30px" : isHovered ? "160px" : "30px"}
-                        cursor="pointer"
-                        justifyContent={sidebarOpen ? 'center' : isHovered ? '' : 'center'}
-                    >
-                    {sidebarOpen? (<ChevronRightIcon />):(<ChevronLeftIcon />)}
-                    {isHovered && !sidebarOpen && (
-                        <Text ml={2} fontSize="md" whiteSpace="nowrap">
-                        Course Content
-                        </Text>
-                    )}
-                    </Box>
-                    
-                </Flex>
-
-                {/* AlertDialog for confirmation */}
-                <AlertDialog
-                    isOpen={isOpen}
-                    leastDestructiveRef={cancelRef}
-                    onClose={onClose}
-                >
-                    <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                        Confirm Submission
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                        Are you sure you want to submit the quiz?
-                        </AlertDialogBody>
-
-                        <AlertDialogFooter>
-                        <Button ref={cancelRef} onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button colorScheme="blue" bgColor={'#004BAD'} onClick={handleSubmit} ml={3}>
-                            Submit
-                        </Button>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                    </AlertDialogOverlay>
-                </AlertDialog>
-            </Box>
-        )
-    : 
-        (
-            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                <Spinner size="xl" />
-            </Box>
-        )
+                    </Layout>
+                );
     }
-  </Layout>
-);
+
+    return (
+        <Layout>
+            { quizAvail && courseAvail ?
+                (
+                    <Box position="relative" height="auto" pb={5}>
+                        <Flex direction="row" justifyContent="space-between"  overflow="hidden">
+                            <Flex direction="column" width={sidebarOpen ? "75%" : "100%"} transition="width 0.3s ease">
+                            <Flex
+                                justifyContent="space-between"
+                                p={{ base: 3, md: 5 }}
+                            >
+                                <Breadcrumb separator={<ChevronRightIcon color="gray.500" />} mb={4}>
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink href="/mycourses" display="flex" alignItems="center">
+                                        <Text fontSize={{ base: 'sm', md: 'md' }}   >Home</Text>
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink
+                                            onClick={(e) => {
+                                            e.preventDefault();
+                                            navigate(`/e-learning/${courseSlug}`, {
+                                                state: { courseId: courseId },
+                                            });
+                                            }}
+                                            fontSize={{ base: 'xs', md: 'md' }}
+                                            >
+                                            {quizData.quiz_section_origin}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+
+                                    <BreadcrumbItem>
+                                        <Text fontSize={{ base: 'sm', md: 'md' }}>{quizData.quiz_title}</Text>
+                                    </BreadcrumbItem>
+                                </Breadcrumb>
+                                <Flex alignItems="center" justifyContent="space-between" mb={4} width={"250px"}>
+                                    {/* {quizIndex == 0 ? (
+                                        <Box
+                                            as="button"
+                                            display="flex"
+                                            alignItems="center"
+                                            onClick={() => navigate(`/e-learning/${courseDetail.course_id}/${subsectionList[subsectionList.length-1].subsection_id}?section=${sectionIndex}`)}
+                                            >
+                                            <ChevronLeftIcon boxSize={5}/>
+                                            <Text fontWeight="bold">Sebelumnya</Text>
+                                        </Box>
+                                    ) : (
+                                        <Box
+                                        as="button"
+                                        display="flex"
+                                        alignItems="center"
+                                        onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex-1].quiz_id}/start?section=${sectionIndex}`)}
+                                        >
+                                        <ChevronLeftIcon boxSize={5}/>
+                                        <Text fontWeight="bold">Sebelumnya</Text>
+                                        </Box>
+                                    )}
+                                    {renderNextButton()} */}
+                                    {/* {quizIndex == quizList.length -1? (
+                                        <Box as='span'>
+                                        </Box>
+                                    ) : (
+                                        <Box
+                                        as="button"
+                                        display="flex"
+                                        alignItems="center"
+                                        onClick={() => navigate(`/e-learning/${courseId}/quiz/${quizList[quizIndex+1].quiz_id}/start?section=${sectionIndex}`)}
+                                        >
+                                        <Text fontWeight="bold">Berikutnya</Text>
+                                        <ChevronRightIcon boxSize={5} />
+                                        </Box>
+                                    )} */}
+                                </Flex>
+                            </Flex>
+                            <Box display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                                <Text fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold">Quiz {quizData.quiz_title}</Text>
+
+                                {quizData.details[currentQuestionId].question_img ?
+                                (
+                                    <VStack px={{base: '30px', md: ''}} mb={5}>
+                                        <Box justifyContent='center' display={'flex'} pt='20px' pb='20px'>
+                                            {quizData.details[currentQuestionId].question_img && (
+                                                <Image src={quizData.details[currentQuestionId].question_img} alt={`Image for question ${currentQuestionId + 1}`} w={{base: '100%', md: '30%'}}/>
+                                            )}
+                                        </Box>
+                                        <Box>
+                                            <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
+                                            <RadioGroup
+                                                value={answers[currentQuestionId]?.selected || ""} 
+                                                onChange={(value) => handleAnswerChange(currentQuestionId, value)}
+                                            >
+                                                <Stack direction="column" pt={2}>
+                                                    {Object.keys(quizData.details[currentQuestionId].answers).map((key) => (
+                                                        <Radio key={key} value={key}>
+                                                            {quizData.details[currentQuestionId].answers[key].answer_text}
+                                                        </Radio>
+                                                    ))}
+                                                </Stack>
+                                            </RadioGroup>
+                                        </Box>
+                                    </VStack>
+                                ) 
+                                : 
+                                (
+                                    <Flex direction='column' px={{base: '30px', md: ''}}>
+                                        <Box pt={'20px'} pb={'20px'}>
+                                            <Text>{currentQuestion + 1}. {quizData.details[currentQuestionId].question_text}</Text>
+                                            <RadioGroup
+                                                value={answers[currentQuestionId]?.selected || ""} 
+                                                onChange={(value) => handleAnswerChange(currentQuestionId, value)}
+                                            >
+                                                <Stack direction="column" pt={2}>
+                                                    {Object.keys(quizData.details[currentQuestionId].answers).map((key) => (
+                                                        <Radio key={key} value={key} py={1}>
+                                                            {quizData.details[currentQuestionId].answers[key].answer_text}
+                                                        </Radio>
+                                                    ))}
+                                                </Stack>
+                                            </RadioGroup>
+                                        </Box>
+                                    </Flex>
+                                )}
+
+
+                                
+                                <Flex justifyContent="space-between" mt={5}>
+                                    <Button
+                                    leftIcon={<ChevronLeftIcon />}
+                                    isDisabled={currentQuestion === 0}
+                                    onClick={handlePrevious}
+                                    mr={{base: 20, md: 40}}
+                                    size={{ base: "sm", md: "md" }}
+                                    >
+                                    Previous
+                                    </Button>
+                                    {currentQuestion === questionIdList.length - 1 ? (
+                                    <Button
+                                        rightIcon={<ChevronRightIcon />}
+                                        onClick={onOpen}
+                                        ml={{base: 20, md: 40}}
+                                        size={{ base: "sm", md: "md" }}
+                                    >
+                                        Submit
+                                    </Button>
+                                    ) : (
+                                    <Button
+                                        rightIcon={<ChevronRightIcon />}
+                                        onClick={handleNext}
+                                        
+                                        ml={{base: 20, md: 40}}
+                                        size={{ base: "sm", md: "md" }}
+                                    >
+                                        Next
+                                    </Button>
+                                    )}
+                                </Flex>
+                            </Box>
+                            </Flex>
+                            {/* Sidebar */}
+                            {sidebarOpen && (
+                                <Box
+                                position="absolute"
+                                top={0}
+                                right={0}
+                                width={{ base: "50%", md: "25%" }}
+                                height="100%"
+                                bg="#F5F5F5"
+                                boxShadow="xl"
+                                zIndex="99"
+                                overflowY="auto"
+                                >
+                                <VStack align="stretch" spacing={2} w={"100%"}>
+                                    <Flex direction="row" justifyContent="space-between">
+                                    <Text fontSize="lg" p={4} fontWeight="bold">Course Content</Text>
+                                    <IconButton
+                                        icon={<CloseIcon/>}
+                                        size="md"
+                                        m={2}
+                                        backgroundColor={'#F5F5F5'}
+                                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                                    />
+                                    </Flex>
+                                    {/* Isi konten sidebar */}
+                                    <Accordion allowMultiple w="100%">
+                                    {courseDetail.sections.map((section, idxSection) => (
+                                    <AccordionItem key={section.section_id}>
+                                        <AccordionButton>
+                                        <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
+                                            {section.section_name}
+                                        </Box>
+                                        <AccordionIcon />
+                                        </AccordionButton>
+                                        <AccordionPanel>
+                                        <Divider/>
+                                        {section.subsections.map((subsection, index) => (
+                                            <React.Fragment key={subsection.subsection_id}>
+                                            <Box>
+                                                <Box
+                                                    as="button"
+                                                    width="100%"
+                                                    p={2}
+                                                    onClick={() =>
+                                                    navigate(`/e-learning/${courseSlug}/${generateSlug(subsection.subsection_name)}?section=${idxSection}`, {
+                                                        state: { courseId: courseId, subsectionId: subsection.subsection_id },
+                                                    })
+                                                    }
+                                                    _hover={{ bg: "#EBEBEB" }}
+                                                    textAlign="left"
+                                                >
+                                                    <Text color="black">{subsection.subsection_name}</Text>
+                                                </Box>
+                                                <Divider mt={'0'} />
+                                            </Box>
+                                            
+                                            </React.Fragment>
+                                        ))}
+
+                                        {section.quizzes && section.quizzes.length > 0 && (
+                                            <>
+                                            {section.quizzes.map((quiz, index) => (
+                                                <React.Fragment key={quiz.quiz_id}>
+                                                    {quiz.quiz_title == quizData.quiz_title ? (
+                                                        <Box>
+                                                            <Box
+                                                                as="button"
+                                                                width="100%"
+                                                                p={2}
+                                                                backgroundColor={'#EBEBEB'}
+                                                                onClick={() =>
+                                                                navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
+                                                                    state: { courseId: courseId }
+                                                                })
+                                                                }
+                                                                _hover={{ bg: "#EBEBEB" }}
+                                                                textAlign="left"
+                                                            >
+                                                                <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
+                                                            </Box>
+                                                            <Divider mt={'0'} />
+                                                        </Box>
+                                                    ):(
+                                                        <Box>
+                                                            <Box
+                                                                as="button"
+                                                                width="100%"
+                                                                p={2}
+                                                                onClick={() =>
+                                                                navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
+                                                                    state: { courseId: courseId }
+                                                                })
+                                                                }
+                                                                _hover={{ bg: "#EBEBEB" }}
+                                                                textAlign="left"
+                                                            >
+                                                                <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
+                                                            </Box>
+                                                            <Divider mt={'0'} />
+                                                        </Box>
+                                                    )}
+                                                    
+                                                </React.Fragment>
+                                            ))}
+                                            </>
+                                        )}
+                                        </AccordionPanel>
+                                    </AccordionItem>
+                                    ))}
+                                    </Accordion>
+                                </VStack>
+                                </Box>
+                            )}
+
+                            {/* Button Sidebar */}
+                            <Box
+                                position="absolute"
+                                top="20%"
+                                right={sidebarOpen? {base: "50%", md: "25%"}: "0"}
+                                height={10}
+                                transform="translateY(-50%)"
+                                zIndex="1000"
+                                onMouseEnter={() => setIsHovered(true)}
+                                onMouseLeave={() => setIsHovered(false)}
+                                onClick={() => setSidebarOpen(!sidebarOpen)}
+                                display="flex"
+                                alignItems="center"
+                                bg="gray.700"
+                                color="white"
+                                borderRadius="md"
+                                p={isHovered ? "0 12px" : "0"}
+                                transition="width 0.3s ease, padding 0.3s ease"
+                                width={sidebarOpen ? "30px" : isHovered ? "160px" : "30px"}
+                                cursor="pointer"
+                                justifyContent={sidebarOpen ? 'center' : isHovered ? '' : 'center'}
+                            >
+                            {sidebarOpen? (<ChevronRightIcon />):(<ChevronLeftIcon />)}
+                            {isHovered && !sidebarOpen && (
+                                <Text ml={2} fontSize="md" whiteSpace="nowrap">
+                                Course Content
+                                </Text>
+                            )}
+                            </Box>
+                            
+                        </Flex>
+
+                        {/* AlertDialog for confirmation */}
+                        <AlertDialog
+                            isOpen={isOpen}
+                            leastDestructiveRef={cancelRef}
+                            onClose={onClose}
+                        >
+                            <AlertDialogOverlay>
+                            <AlertDialogContent>
+                                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                                Confirm Submission
+                                </AlertDialogHeader>
+
+                                <AlertDialogBody>
+                                Are you sure you want to submit the quiz?
+                                </AlertDialogBody>
+
+                                <AlertDialogFooter>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                    Cancel
+                                </Button>
+                                <Button colorScheme="blue" bgColor={'#004BAD'} onClick={handleSubmit} ml={3}>
+                                    Submit
+                                </Button>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
+                    </Box>
+                )
+            : 
+                (
+                    <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                        <Spinner size="xl" />
+                    </Box>
+                )
+            }
+        </Layout>
+    );
 }
 
 export default CourseQuiz;

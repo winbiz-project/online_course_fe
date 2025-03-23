@@ -25,6 +25,7 @@ const Review = () => {
     const [hasReviewed, setHasReviewed] = useState(null);
     const [reviewRating, setReviewRating] = useState(0);
     const [reviewComment, setReviewComment] = useState("");
+    const [enrollment_and_completion, setEnrollment_and_completion] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const fetchReviews = async () => {
@@ -48,9 +49,37 @@ const Review = () => {
       }
     };
 
+    const fetchEnrollmentAndCompletion = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/course/check_enrollment_and_completion`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: user.email,
+            courseid: courseId,
+          }),
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    
+        const data = await response.json();
+        setEnrollment_and_completion(data.response);
+      } catch (error) {
+        console.error("Error checking enrollment and completion:", error);
+      }
+    };
+
     useEffect(() => {
       fetchReviews();
-    }, []);
+      
+      if (user) {
+        fetchEnrollmentAndCompletion();
+      }
+    }, [user, courseId]); 
   
     const averageRating = (
       reviews.reduce((sum, review) => sum + parseFloat(review.review_rating), 0) /
@@ -206,7 +235,7 @@ const Review = () => {
                 {courseName}
               </Text>
               <Flex justifyContent="flex-end" mb="4">
-                {hasReviewed !== null && (
+                {(hasReviewed || enrollment_and_completion) && (
                   <Button colorScheme="blue" onClick={onOpen}>
                     {hasReviewed ? "Show Your Review" : "Review Course"}
                   </Button>

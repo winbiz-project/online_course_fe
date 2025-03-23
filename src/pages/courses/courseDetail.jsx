@@ -16,6 +16,7 @@ const CourseDetailPage = () => {
   const { courseSlug } = useParams();
   const { user } = useContext(AuthContext);
   const [ loading, setLoading ] = useState(true);
+  const [ loading2, setLoading2 ] = useState(true);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [courseDetail, setCourseDetail] = useState({});
   const [userProgressVid, setUserProgressVid] = useState([]);
@@ -49,9 +50,12 @@ const CourseDetailPage = () => {
       }
       const data = await response.json();
       setIsEnrolled(data.response);
+      
     } catch (error) {
       console.error('Error:', error);
       }
+    }else{
+      setLoading2(false);
     }
   };
 
@@ -66,8 +70,8 @@ const CourseDetailPage = () => {
         showConfirmButton: false,
         showCloseButton: true,
       });
-      navigate("/auth/login"); // Arahkan ke halaman login
-      return; // Hentikan eksekusi lebih lanjut
+      navigate("/auth/login");
+      return;
     }
     setLoading(true);
     try {
@@ -135,12 +139,16 @@ const CourseDetailPage = () => {
           
           if (totalProgressPercentage === 100) {
             getCertificateURL();
+          } else {
+            setLoading2(false);
           }
         }
   
       } catch (error) {
         console.error(`Could not get user progress: ${error}`);
       }
+    }else{
+      setLoading2(false);
     }
   }
 
@@ -149,6 +157,7 @@ const CourseDetailPage = () => {
       const response = await fetch(`${baseUrl}/certificate/get_course_certificate/${courseId}/${user.user_id}`);
       const data = await response.json();
       setCertificateData(data.certificate_details);
+      setLoading2(false);
     } catch (error) {
       console.error(`Could not get certificate URL: ${error}`);
     }
@@ -189,7 +198,7 @@ const CourseDetailPage = () => {
     fetchData();
   }, [courseId, isEnrolled]);
 
-  if (loading) {
+  if (loading || loading2) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
         <Spinner size="xl" />
