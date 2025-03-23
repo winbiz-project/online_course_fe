@@ -11,6 +11,8 @@ const Certificate = () => {
     const { uniqueIdCertificate } = useParams();
     const [certificateDetails, setCertificateDetails] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [loading2, setLoading2] = useState(true);
+    const [quizAvgResult, setQuizAvgResult] = useState(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const link = window.location.href;
     const toast = useToast();
@@ -45,11 +47,24 @@ const Certificate = () => {
         }
     };
 
+    const getQuizAvgResult = async () => {
+        try {
+            const response = await fetch(`${baseUrl}/quiz/get_quiz_average_result_by_uniquecertificateid/${uniqueIdCertificate}`);
+            const data = await response.json();
+            setQuizAvgResult(data.average_score);
+            setLoading2(false);
+        } catch (error) {
+            console.error(`Could not get quiz average result: ${error}`);
+            setLoading2(false);
+        }
+    }
+
     useEffect(() => {
         getCertificateURL();
+        getQuizAvgResult();
     }, []);
 
-    if (loading) {
+    if (loading || loading2) {
         return (
             <Layout>
                 <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -66,6 +81,11 @@ const Certificate = () => {
                     <Text fontSize="2xl" fontWeight="bold" mb={5}>
                         Certificate of Completion
                     </Text>
+                    {quizAvgResult > 75 && (
+                        <Text fontSize="x-large" fontWeight="bold" color="green.500" mb={5}>
+                            This person have passed with an outstanding score!
+                        </Text>
+                    )}
                     <Box
                         display="inline-block"
                         maxWidth="800px"

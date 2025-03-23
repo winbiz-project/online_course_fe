@@ -2,7 +2,7 @@ import { Flex, Text, SimpleGrid } from "@chakra-ui/react";
 import CardTestimony from "../card/testimony";
 import unsplash from "@/assets/images/unsplash.png"
 import LogoBCA from "@/assets/images/logo_bca.png";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, IconButton } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,60 +10,33 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
-
+import config from "@/config";
 import SwiperCore from "swiper";
 
 SwiperCore.use([Navigation, Pagination]);
 
 const Testimony = () => {
   
-  const [reviews, setReviews] = useState([
-    {
-      review_id: 1,
-      review_text:
-        "This course was very insightful and inspirational! The materials I've learned here will definitely help me understand Python better.",
-      review_rating: "4.0",
-      review_published: true,
-      review_user: "Alia",
-      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
-    },
-    {
-      review_id: 2,
-      review_text:
-        "Good course! The content is well-structured and the examples are easy to follow.",
-      review_rating: "5.0",
-      review_published: true,
-      review_user: "David",
-      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
-    },
-    {
-      review_id: 3,
-      review_text:
-        "Decent course, but some sections could use more detail. Overall, it was helpful!",
-      review_rating: "3.0",
-      review_published: true,
-      review_user: "Sophia",
-      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
-    },
-    {
-      review_id: 4,
-      review_text:
-        "Amazing course! I learned a lot and feel confident about Python now.",
-      review_rating: "5.0",
-      review_published: true,
-      review_user: "Liam",
-      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
-    },
-    {
-      review_id: 5,
-      review_text:
-        "The course was okay, but I expected more practical examples.",
-      review_rating: "3.0",
-      review_published: true,
-      review_user: "Emma",
-      course_origin: "100 Days of Code: The Complete Python Pro Bootcamp"
+  const [reviews, setReviews] = useState([]);
+  const baseUrl = config.apiBaseUrl;
+
+  const fetchPublishedReviews = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/course/get_all_published_review`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setReviews(data);
+      
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
     }
-  ]);
+  };
+
+  useEffect(() => {
+    fetchPublishedReviews();
+  }, []);
 
   const renderGrid = (columns) => (
     <SimpleGrid
@@ -82,6 +55,13 @@ const Testimony = () => {
   const [swiperInstance, setSwiperInstance] = useState(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (reviews.length !==0 ){
   return (
@@ -104,7 +84,9 @@ const Testimony = () => {
         renderGrid(1)
       ): reviews.length === 2 && window.innerWidth > 640 ? (
         renderGrid(2)
-      ) : reviews.length > 2 && reviews.length <= 4 && window.innerWidth > 768 ? (
+      ) : reviews.length > 2 && reviews.length <= 4 && window.innerWidth > 600 ? (
+        renderGrid(2)
+      ) : reviews.length > 2 && reviews.length <= 4 && window.innerWidth > 950 ? (
         renderGrid(reviews.length)
       ) : (
         <Box w='100%'  mt='5' p={4} display='flex' flexDirection='row' alignItems="center">

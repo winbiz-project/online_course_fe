@@ -209,24 +209,26 @@ const StartQuiz = () => {
                                     {/* Isi konten sidebar */}
                                     <Accordion allowMultiple w="100%">
                                     {courseDetail.sections.map((section, idxSection) => (
-                                    <AccordionItem key={section.section_id}>
-                                        <AccordionButton>
-                                        <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
-                                            {section.section_name}
-                                        </Box>
-                                        <AccordionIcon />
-                                        </AccordionButton>
-                                        <AccordionPanel>
-                                        <Divider/>
-                                        {section.subsections.map((subsection, index) => (
-                                            <React.Fragment key={subsection.subsection_id}>
+                                        <AccordionItem key={section.section_id}>
+                                            <AccordionButton>
+                                            <Box flex="1" textAlign="left" fontWeight={'bold'} fontSize={'xl'}>
+                                                {section.section_name}
+                                            </Box>
+                                            <AccordionIcon />
+                                            </AccordionButton>
+                                            <AccordionPanel>
+                                            <Divider/>
+                                            {section.subsections.map((subsection, index) => (
+                                                <React.Fragment key={subsection.subsection_id}>
                                                 <Box>
                                                     <Box
                                                         as="button"
                                                         width="100%"
                                                         p={2}
                                                         onClick={() =>
-                                                            navigate(`/e-learning/${courseDetail.course_id}/${subsection.subsection_id}?section=${idxSection}`)
+                                                        navigate(`/e-learning/${courseSlug}/${generateSlug(subsection.subsection_name)}?section=${idxSection}`, {
+                                                            state: { courseId: courseId, subsectionId: subsection.subsection_id },
+                                                        })
                                                         }
                                                         _hover={{ bg: "#EBEBEB" }}
                                                         textAlign="left"
@@ -234,60 +236,62 @@ const StartQuiz = () => {
                                                         <Text color="black">{subsection.subsection_name}</Text>
                                                     </Box>
                                                     <Divider mt={'0'} />
-                                                </Box>                                   
-                                            </React.Fragment>
-                                        ))}
-
-                                        {section.quizzes && section.quizzes.length > 0 && (
-                                            <>
-                                            {section.quizzes.map((quiz, index) => (
-                                                <React.Fragment key={quiz.quiz_id}>
-                                                    {quiz.quiz_title == quizData.quiz_title ? (
-                                                        <Box>
-                                                            <Box
-                                                                as="button"
-                                                                width="100%"
-                                                                p={2}
-                                                                backgroundColor={'#EBEBEB'}
-                                                                onClick={() =>
-                                                                navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
-                                                                    state: { courseId: courseId }
-                                                                })
-                                                                }
-                                                                _hover={{ bg: "#EBEBEB" }}
-                                                                textAlign="left"
-                                                            >
-                                                                <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
-                                                            </Box>
-                                                            <Divider mt={'0'} />
-                                                        </Box>
-                                                    ):(
-                                                        <Box>
-                                                            <Box
-                                                                as="button"
-                                                                width="100%"
-                                                                p={2}
-                                                                onClick={() =>
-                                                                navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
-                                                                    state: { courseId: courseId }
-                                                                })
-                                                                }
-                                                                _hover={{ bg: "#EBEBEB" }}
-                                                                textAlign="left"
-                                                            >
-                                                                <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
-                                                            </Box>
-                                                            <Divider mt={'0'} />
-                                                        </Box>
-                                                    )}
-                                                    
+                                                </Box>
+                                                
                                                 </React.Fragment>
                                             ))}
-                                            </>
-                                        )}
-                                        </AccordionPanel>
-                                    </AccordionItem>
-                                    ))}
+
+                                            {section.quizzes && section.quizzes.length > 0 && (
+                                                <>
+                                                {section.quizzes.map((quiz, index) => (
+                                                    <React.Fragment key={quiz.quiz_id}>
+                                                        {quiz.quiz_title == quizData.quiz_title ? (
+                                                            <Box>
+                                                                <Box
+                                                                    as="button"
+                                                                    width="100%"
+                                                                    p={2}
+                                                                    backgroundColor={'#EBEBEB'}
+                                                                    onClick={() =>
+                                                                    navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
+                                                                        state: { courseId: courseId }
+                                                                    })
+                                                                    }
+                                                                    _hover={{ bg: "#EBEBEB" }}
+                                                                    textAlign="left"
+                                                                >
+                                                                    <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
+                                                                </Box>
+                                                                <Divider mt={'0'} />
+                                                            </Box>
+                                                        ):(
+                                                            <Box>
+                                                                <Box
+                                                                    as="button"
+                                                                    width="100%"
+                                                                    p={2}
+                                                                    onClick={() =>
+                                                                    navigate(`/e-learning/${courseSlug}/quiz/${quiz.quiz_id}/start?section=${idxSection}`,{
+                                                                        state: { courseId: courseId }
+                                                                    })
+                                                                    }
+                                                                    _hover={{ bg: "#EBEBEB" }}
+                                                                    textAlign="left"
+                                                                >
+                                                                    <Text color="black">{'[Quiz]'} {quiz.quiz_title}</Text>
+                                                                </Box>
+                                                                <Divider mt={'0'} />
+                                                            </Box>
+                                                        )}
+                                                        
+                                                    </React.Fragment>
+                                                ))}
+                                                </>
+                                            )}
+                                            </AccordionPanel>
+                                        </AccordionItem>
+                                        ))}
+                                    
                                     </Accordion>
                                 </VStack>
                                 </Box>
