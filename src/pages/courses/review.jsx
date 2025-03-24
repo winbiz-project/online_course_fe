@@ -90,9 +90,9 @@ const Review = () => {
       setVisibleReviews((prev) => Math.min(prev + 2, reviews.length));
     };
 
-    const addReview = () => {
+    const addReview = async () => {
       try {
-        const response = fetch(`${baseUrl}/course/add_rating_course`, {
+        const response = await fetch(`${baseUrl}/course/add_rating_course`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -119,7 +119,7 @@ const Review = () => {
 
     const createCertificate = async () => {
       try {
-        const response = await fetch(`${baseUrl}/course/create_certificate`, {
+        const response = await fetch(`${baseUrl}/certificate/generate_and_save_certificate`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -128,6 +128,7 @@ const Review = () => {
             email: user.email,
             course_id: courseId,
           }),
+
         });
       } catch (error) {
         console.error("Error creating certificate:", error);

@@ -137,44 +137,43 @@ export const AuthProvider = ({ children }) => {
     }
 
     const logoutUser = async (navigate) => {
-        const refreshToken = localStorage.getItem('refreshToken');
-        const parsedRefreshToken = JSON.parse(refreshToken);
+        try{
+            const refreshToken = localStorage.getItem('refreshToken');
+            const parsedRefreshToken = JSON.parse(refreshToken);
 
-        const response = await axios.post(`${baseUrl}/logout`, {
-            refresh_token: parsedRefreshToken,
-        });
+            if (parsedRefreshToken){
+                const response = await axios.post(`${baseUrl}/logout`, {
+                    refresh_token: parsedRefreshToken,
+                });
 
-        setAuthTokens(null)
-        setRefreshToken(null)
-        setUser(null)
-        localStorage.removeItem("authTokens")
-        localStorage.removeItem("refreshToken")
-        if (localStorage.getItem('isAdmin')) {
-            localStorage.removeItem('isAdmin');
-        }
-        navigate("/auth/login")
-        swal.fire({
-            title: "You have been logged out...",
-            icon: "success",
-            toast: true,
-            timer: 6000,
-            position: 'top-right',
-            timerProgressBar: true,
-            showConfirmButton: false,
-            showCloseButton: true,
-        })
-    
-        if(response.status !== 200){
-            console.log(response.status);
-            console.log("there was a server issue");
+                if(response.status !== 200){
+                    console.log(response.status);
+                    console.log("there was a server issue");
+                }
+            }
+
+        }catch(error){
+            console.log(error);
+        }finally{
+            setAuthTokens(null)
+            setRefreshToken(null)
+            setUser(null)
+            localStorage.removeItem("authTokens")
+            localStorage.removeItem("refreshToken")
+            if (localStorage.getItem('isAdmin')) {
+                localStorage.removeItem('isAdmin');
+            }
+
+            navigate("/auth/login")
             swal.fire({
-                title: "An Error Occured " + response.status,
-                icon: "error",
+                title: "You have been logged out...",
+                icon: "success",
                 toast: true,
                 timer: 6000,
                 position: 'top-right',
                 timerProgressBar: true,
                 showConfirmButton: false,
+                showCloseButton: true,
             })
         }
     }
