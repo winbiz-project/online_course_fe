@@ -80,7 +80,7 @@ const MyCourses = () => {
                                                                 <Text fontSize="sm" color="gray.500" ml={2}>({course.course_rating})</Text>
                                                             </Flex>
                                                             <Text fontSize="sm" color="gray.500" mt={2}>
-                                                                Progress: {course.progress_percentage}%
+                                                                Progress: {Math.round(course.progress_percentage)}%
                                                             </Text>
                                                             <Progress
                                                                 value={course.progress_percentage}
