@@ -234,6 +234,11 @@ const Navbar = () => {
                     <Button as='a' href="https://kursuseksporonline.id/blog/" colorScheme="white" target="_blank" rel="noopener noreferrer" variant="link" mx={2}>
                         Blog
                     </Button>
+                    {user && (
+                        <Button as={Link} to="/mycourses" colorScheme="white" variant="link" mx={2} isActive={location.pathname === '/mycourses'}>
+                            My Courses
+                        </Button>
+                    )}
                 </Box>
                 {user ? (
                     <Menu>
@@ -241,7 +246,7 @@ const Navbar = () => {
                             Hello, {user.name}
                         </MenuButton>
                         <MenuList minW="120px" zIndex={20}>
-                            <MenuItem color={'black'} as={Link} to="/mycourses">My Courses</MenuItem>
+                            {/* <MenuItem color={'black'} as={Link} to="/mycourses">My Courses</MenuItem> */}
                             <MenuItem color={'black'} onClick={handleLogout}>Logout</MenuItem>
                         </MenuList>
                     </Menu>

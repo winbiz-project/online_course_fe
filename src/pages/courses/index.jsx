@@ -4,12 +4,14 @@ import Stars from 'react-stars';
 import axios from 'axios';
 import {
   Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Input, Wrap, WrapItem, Spinner, VStack, HStack, Checkbox,
-  Flex, Text, Image, Button, Container, Divider, InputGroup, InputRightElement, IconButton, Menu, MenuButton, MenuList, MenuItem
+  Flex, Text, Image, Button, Container, Divider, InputGroup, InputRightElement, IconButton, Menu, MenuButton, MenuList, MenuItem,
+  Skeleton
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 import config from "@/config";
 import generateSlug from "@/routes/generateslug";
+import { px } from "framer-motion";
 
 const Courses = () => {
   const baseUrl = config.apiBaseUrl;
@@ -20,6 +22,7 @@ const Courses = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [filterCourses, setFilterCourses] = useState(courses);
   const [loading, setLoading ] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [page, setPage] = useState(1); // Current page
   const limit = 5; // Number of items per page
@@ -75,7 +78,15 @@ const Courses = () => {
   , []);
 
   const getDefaultImage = (photo) => {
-    return photo ? photo : '/src/assets/images/no-image.png';
+    if (!photo) {
+      return '/src/assets/images/no-image.png';
+    }
+  
+    if (photo.startsWith('http')) {
+      return photo;
+    }
+  
+    return '/src/assets/images/no-image.png';
   };
   
   const [searchTerm, setSearchTerm] = useState("");
@@ -253,7 +264,12 @@ const Courses = () => {
                       alignItems="center"
                       wrap="wrap"
                     >
-                      <Box width={["100%", "35%"]}>
+                      <Box width={["100%", "35%"]} position={"relative"}>
+                        {
+                          !isLoaded && (
+                            <Skeleton height="256px" width="100%" borderRadius={8} startColor="gray.300" endColor="gray.100"/>
+                          )
+                        }
                         <Image
                           src={getDefaultImage(course.course_photo)}
                           alt={course.course_name}
@@ -261,6 +277,9 @@ const Courses = () => {
                           h={64}
                           objectFit="fill"
                           borderRadius={8}
+                          onLoad={() => setIsLoaded(true)}
+                          opacity={isLoaded ? 1 : 0}
+                          transition="opacity 0.5s ease-in-out"
                         />
                       </Box>
                       <Box width={["100%", "60%"]}>
