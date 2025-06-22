@@ -170,7 +170,7 @@ return (
           fontSize="20px"
           _placeholder={{ color: "#8A8A8A", fontWeight: "500" }}
           borderColor="#7091F5"
-          placeholder="Username"
+          placeholder="Full Name"
           onKeyDown={handleKeyDown}
         />
         <InputGroup width={inputWidth}>

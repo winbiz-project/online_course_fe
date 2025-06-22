@@ -267,7 +267,7 @@ const Courses = () => {
                       <Box width={["100%", "35%"]} position={"relative"}>
                         {
                           !isLoaded && (
-                            <Skeleton height="256px" width="100%" borderRadius={8} startColor="gray.300" endColor="gray.100"/>
+                            <Skeleton borderRadius={8} startColor="gray.300" endColor="gray.100"/>
                           )
                         }
                         <Image

@@ -194,7 +194,7 @@ export const AuthProvider = ({ children }) => {
             setUser(jwtDecode(authTokens))
         }
         setLoading(false)
-    }, [authTokens, loading])
+    }, [loading])
 
 
     return (
