@@ -20,7 +20,6 @@ const ProfileSidebar = ({ activeSection, onSectionChange }) => {
       </Heading>
 
       <VStack align="stretch" spacing={4}>
-        {/* My Profile Section */}
         <Box>
           <Button
             leftIcon={<FaUser />}
@@ -79,12 +78,6 @@ const ProfileSidebar = ({ activeSection, onSectionChange }) => {
             </Button>
           )}
         </Box>
-
-        {/* Anda bisa menambahkan item navigasi lain di sini */}
-        {/* <Divider />
-        <Button leftIcon={<FaBook />} variant="ghost" justifyContent="flex-start" width="full">
-          My Courses
-        </Button> */}
 
       </VStack>
     </Box>

@@ -29,7 +29,7 @@ const CardTestimony = ({ review }) => {
     review_user,
     review_rating,
     review_text,
-    user_plan_status, // "basic", "miniclass", "masterclass"
+    review_user_status, // "basic", "miniclass", "masterclass"
     user_profile_picture, // URL gambar profil (opsional)
   } = review;
 
@@ -57,11 +57,10 @@ const CardTestimony = ({ review }) => {
     return (
       <Tag
         size="sm"
-        ml={2}
         px={1.5}
         py={0.5}
         borderRadius="sm"
-        fontSize={{ base: "0.6em", md: "0.7em" }}
+        fontSize={{ base: "0.5em", sm: "0.6em", md: "0.7em" }}
         fontWeight="bold"
         textTransform="uppercase"
         bg={tagBg}
@@ -71,6 +70,8 @@ const CardTestimony = ({ review }) => {
         display="inline-flex"
         alignItems="center"
         justifyContent="center"
+        whiteSpace="nowrap" // Menjaga teks tidak wrap ke bawah
+        flexShrink={0} // Mencegah badge menyusut terlalu banyak
       >
         {text}
       </Tag>
@@ -82,7 +83,7 @@ const CardTestimony = ({ review }) => {
   let avatarInitialColor = "black";
   let avatarBgColor = "transparent";
 
-  if (user_plan_status === "miniclass") {
+  if (review_user_status === "miniclass") {
     avatarContainerProps = {
       position: "relative",
       width: "50px",
@@ -119,7 +120,7 @@ const CardTestimony = ({ review }) => {
       }
     };
     avatarInitialColor = "black";
-  } else if (user_plan_status === "masterclass") {
+  } else if (review_user_status === "masterclass") {
     avatarContainerProps = {
       position: "relative",
       width: "50px",
@@ -158,33 +159,32 @@ const CardTestimony = ({ review }) => {
     avatarInitialColor = "black";
   }
 
-  // ==============================================================
   // Border dan Background untuk keseluruhan Card Testimony
-  // ==============================================================
   let cardBgAndBorderProps = {
     backgroundColor: "white", // Default background putih untuk semua card
     borderWidth: "1px", // Default border untuk semua card
     borderColor: "gray.200", // Default warna border
     boxShadow: "lg", // Default shadow untuk semua card
+    borderRadius: "lg", // Pastikan borderRadius tetap ada
   };
 
-  if (user_plan_status === "miniclass") {
+  if (review_user_status === "miniclass") {
     cardBgAndBorderProps = {
-      border: "2px solid transparent", // Border transparan sebagai placeholder
+      border: "2px solid transparent",
       bgImage: "linear-gradient(white, white), linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 50%, #808080 100%)", // Gradien silver
       bgOrigin: "border-box",
       bgClip: "padding-box, border-box",
-      boxShadow: "0px 4px 10px rgba(0,0,0,0.15)", // Sedikit shadow untuk card
-      borderRadius: "lg", // Pastikan borderRadius tetap ada
+      boxShadow: "0px 4px 10px rgba(0,0,0,0.15)",
+      borderRadius: "lg",
     };
-  } else if (user_plan_status === "masterclass") {
+  } else if (review_user_status === "masterclass") {
     cardBgAndBorderProps = {
       border: "2px solid transparent",
       bgImage: "linear-gradient(white, white), linear-gradient(135deg, #FFD700 0%, #DAA520 50%, #B8860B 100%)", // Gradien emas
       bgOrigin: "border-box",
       bgClip: "padding-box, border-box",
-      boxShadow: "0px 4px 15px rgba(0,0,0,0.25)", // Shadow lebih menonjol
-      borderRadius: "lg", // Pastikan borderRadius tetap ada
+      boxShadow: "0px 4px 15px rgba(0,0,0,0.25)",
+      borderRadius: "lg",
     };
   }
 
@@ -195,14 +195,12 @@ const CardTestimony = ({ review }) => {
         key={review_id}
         mb="6"
         p="4"
-        // Atur borderRadius di sini, agar selalu ada
         minHeight="250px"
-        maxW="400px"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
         height="100%"
-        {...cardBgAndBorderProps} // Terapkan props border & background di sini
+        {...cardBgAndBorderProps}
       >
         {/* Judul Course */}
         <Flex mb="4">
@@ -211,44 +209,60 @@ const CardTestimony = ({ review }) => {
           </Text>
         </Flex>
 
-        {/* Flexbox untuk Avatar Tag, Nama, Bintang, dan Badge */}
         <Flex alignItems="center" mb="2">
           {/* Container untuk Tag Background dan Avatar/Inisial */}
-          {(user_plan_status === "miniclass" || user_plan_status === "masterclass") ? (
-            <Box {...avatarContainerProps} mr="2">
+          {(review_user_status === "miniclass" || review_user_status === "masterclass") ? (
+            <Box {...avatarContainerProps} mr="2" flexShrink={0}>
               <Avatar
                 name={review_user}
-                size="sm" // Ukuran Avatar, sesuaikan agar pas di tengah tag
-                src={user_profile_picture} // Jika ada URL gambar
+                size="sm"
+                src={user_profile_picture}
                 bg={avatarBgColor}
                 color={avatarInitialColor}
                 children={<Text fontSize="xl" fontWeight="bold">{review_user.charAt(0)}</Text>}
               />
             </Box>
           ) : (
-            // Fallback jika status basic atau tidak ada plan (avatar default)
-            <Avatar name={review_user} size="sm" mr="2" src={user_profile_picture} />
+            <Avatar name={review_user} size="sm" mr="2" flexShrink={0} />
           )}
 
-          <Text fontWeight="bold">{review_user}</Text>
-          
-          <HStack ml="4" spacing={0.5}>
-            {/* Rating Bintang */}
-            {[...Array(5)].map((_, i) => (
-              <Icon
-                key={i}
-                as={StarIcon}
-                boxSize={3}
-                color={
-                  i < Math.round(parseFloat(review_rating))
-                    ? "yellow.400"
-                    : "gray.300"
-                }
-              />
-            ))}
-            {/* Badge Status Plan */}
-            {renderPlanBadge(user_plan_status)}
-          </HStack>
+          {/* Wrapper untuk Nama, Bintang, dan Badge */}
+          <Flex
+            flexDirection="column" // Nama selalu di baris atas, bintang/badge di bawah
+            alignItems="flex-start"
+            flexGrow={1}
+            minWidth="0"
+          >
+            <Text fontWeight="bold" flexShrink={0} noOfLines={1} mb={0.5}> {/* Tambah mb untuk jarak ke bawah */}
+              {review_user}
+            </Text>
+            
+            {/* Container untuk Bintang dan Badge */}
+            <Flex
+              flexDirection={{ base: 'column', sm: 'row' }} // Bintang dan badge stack di base, side-by-side di sm+
+              alignItems={{ base: 'flex-start', sm: 'center' }} // Rata kiri untuk tumpukan kolom, tengah untuk row
+              flexWrap="wrap" // Izinkan wrapping jika gabungan lebar terlalu banyak
+              gap={{ base: 0, sm: 2 }} // <-- Tambah gap di sini, berlaku dari sm ke atas
+            >
+              <HStack spacing={0.5} flexShrink={0}> {/* Hapus mr={{ base: 0, sm: 2 }} */}
+                {/* Rating Bintang */}
+                {[...Array(5)].map((_, i) => (
+                  <Icon
+                    key={i}
+                    as={StarIcon}
+                    boxSize={3}
+                    color={
+                      i < Math.round(parseFloat(review_rating))
+                        ? "yellow.400"
+                        : "gray.300"
+                    }
+                  />
+                ))}
+              </HStack>
+              {/* Badge Status Plan */}
+              {renderPlanBadge(review_user_status)}
+            </Flex>
+          </Flex>
         </Flex>
 
         <Box flex="1">
@@ -278,7 +292,7 @@ const CardTestimony = ({ review }) => {
           <ModalBody>
             <Flex alignItems="center" mb="4">
               {/* Avatar Tag di Modal */}
-              {(user_plan_status === "miniclass" || user_plan_status === "masterclass") ? (
+              {(review_user_status === "miniclass" || review_user_status === "masterclass") ? (
                 <Box {...avatarContainerProps} w="60px" h="70px" mr="3">
                   <Avatar
                     name={review_user}
@@ -294,21 +308,23 @@ const CardTestimony = ({ review }) => {
               )}
               <Box ml="3">
                 <Text fontWeight="bold">{review_user}</Text>
-                <HStack spacing={0.5}>
-                  {[...Array(5)].map((_, i) => (
-                    <Icon
-                      key={i}
-                      as={StarIcon}
-                      boxSize={4}
-                      color={
-                        i < Math.round(parseFloat(review_rating))
-                          ? "yellow.400"
-                          : "gray.300"
-                      }
-                    />
-                  ))}
-                  {renderPlanBadge(user_plan_status)}
-                </HStack>
+                <Flex flexDirection={{ base: 'column', sm: 'row' }} alignItems={{ base: 'flex-start', sm: 'center' }} flexWrap="wrap" gap={{ base: 0, sm: 2 }}>
+                  <HStack spacing={0.5}>
+                    {[...Array(5)].map((_, i) => (
+                      <Icon
+                        key={i}
+                        as={StarIcon}
+                        boxSize={4}
+                        color={
+                          i < Math.round(parseFloat(review_rating))
+                            ? "yellow.400"
+                            : "gray.300"
+                        }
+                      />
+                    ))}
+                  </HStack>
+                  {renderPlanBadge(review_user_status)}
+                </Flex>
               </Box>
             </Flex>
             <Text>{review_text}</Text>
