@@ -1,19 +1,23 @@
 // components/profile/ProfileSidebar.jsx
 import React from 'react';
 import { Box, VStack, Button, Text, Heading, Divider } from '@chakra-ui/react';
-import { FaUser, FaChartLine } from 'react-icons/fa'; // Contoh ikon
+import { FaUser, FaChartLine, FaEdit, FaLock } from 'react-icons/fa'; // Import ikon baru
 
 const ProfileSidebar = ({ activeSection, onSectionChange }) => {
+  const isProfileSectionActive = activeSection === 'profile' ||
+                                 activeSection === 'edit-profile' ||
+                                 activeSection === 'change-password'; 
+
   return (
     <Box
-      width={{ base: 'full', md: '250px' }} // Lebar penuh di mobile, 250px di desktop
-      minH="calc(100vh - 120px)" // Tinggi minimal (sesuaikan dengan tinggi header & footer)
+      width={{ base: 'full', md: '250px' }}
+      minH={{base: 'auto', md: 'calc(100vh - 120px)'}}
       bg="white"
       p={6}
       borderRadius="lg"
       boxShadow="md"
-      mr={{ base: 0, md: 6 }} // Margin kanan di desktop
-      mb={{ base: 6, md: 0 }} // Margin bawah di mobile
+      mr={{ base: 0, md: 6 }}
+      mb={{ base: 6, md: 0 }}
     >
       <Heading as="h3" size="md" mb={6} color="gray.700">
         Profil Saya
@@ -26,31 +30,47 @@ const ProfileSidebar = ({ activeSection, onSectionChange }) => {
             variant="ghost"
             justifyContent="flex-start"
             width="full"
-            colorScheme={activeSection === 'profile' ? 'blue' : 'gray'}
+            colorScheme={isProfileSectionActive ? 'blue' : 'gray'}
             onClick={() => onSectionChange('profile')}
             p={3}
             _hover={{ bg: 'blue.50', color: 'blue.700' }}
           >
             My Profile
           </Button>
-          {activeSection === 'profile' && (
-            <Button
-              size="sm"
-              colorScheme="blue"
-              variant="outline"
-              mt={2}
-              ml={8} // Indentasi tombol edit
-              width="calc(100% - 64px)" // Sesuaikan lebar tombol edit
-              onClick={() => alert('Tombol Edit Profile ditekan!')} // Placeholder action
-            >
-              Edit Profile
-            </Button>
+
+          {isProfileSectionActive && (
+            <>
+              <Button
+                size="sm"
+                colorScheme="blue"
+                variant={activeSection === 'edit-profile' ? 'solid' : 'outline'}
+                mt={2}
+                ml={8}
+                width="calc(100% - 64px)"
+                onClick={() => onSectionChange('edit-profile')}
+                leftIcon={<FaEdit />}
+              >
+                Edit Profile
+              </Button>
+
+              <Button
+                size="sm"
+                colorScheme="red" 
+                variant={activeSection === 'change-password' ? 'solid' : 'outline'}
+                mt={2}
+                ml={8}
+                width="calc(100% - 64px)"
+                onClick={() => onSectionChange('change-password')}
+                leftIcon={<FaLock />}
+              >
+                Ganti Password
+              </Button>
+            </>
           )}
         </Box>
 
-        <Divider /> {/* Pemisah antar bagian */}
+        <Divider />
 
-        {/* My Status Section */}
         <Box>
           <Button
             leftIcon={<FaChartLine />}
@@ -64,19 +84,6 @@ const ProfileSidebar = ({ activeSection, onSectionChange }) => {
           >
             My Status
           </Button>
-          {activeSection === 'status' && (
-            <Button
-              size="sm"
-              colorScheme="teal" // Warna berbeda untuk status
-              variant="outline"
-              mt={2}
-              ml={8}
-              width="calc(100% - 64px)"
-              onClick={() => alert('Tombol My Status ditekan!')} // Placeholder action
-            >
-              Lihat Status
-            </Button>
-          )}
         </Box>
 
       </VStack>
