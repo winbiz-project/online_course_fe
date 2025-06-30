@@ -32,6 +32,7 @@ import ForgetPassword from "@/pages/auth/forgetpassword";
 import ResetPassword from "@/pages/auth/resetpassword";
 import AboutUs from "@/pages/aboutUs";
 import Certificate from "@/pages/courses/certificate";
+import MyProfilePage from "@/pages/userProfile/myprofile";
 
 
 export default function Router() {
@@ -102,6 +103,13 @@ export default function Router() {
       element: <PrivateRoute />,
       children: [
         { path: "", element: <MyCourses />}
+      ]
+    },
+    {
+      path: "/myprofile",
+      element: <PrivateRoute />,
+      children: [
+        { path: "", element: <MyProfilePage /> }  
       ]
     },
     {
