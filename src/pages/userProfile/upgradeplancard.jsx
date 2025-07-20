@@ -22,6 +22,7 @@ const UpgradePlanCard = ({
   buttonVariant = 'solid',
   onSubscribe, // Ini akan menjadi fungsi yang memicu window.open
   illustrationIcon, // Icon untuk ilustrasi di pojok kanan atas
+  textColor = 'black', // Warna teks default
 }) => {
   return (
     <Box
@@ -30,7 +31,7 @@ const UpgradePlanCard = ({
       boxShadow="xl"
       textAlign="center"
       bgGradient={`linear(to-br, ${bgColorGradient[0]}, ${bgColorGradient[1]})`}
-      color="white" // Teks putih untuk kontras dengan background gelap
+      color={textColor}
       width={{ base: '90%', sm: '80%', md: '45%', lg: '300px' }} // Lebar responsif
       minH="450px" // Tinggi minimum kartu
       display="flex"
@@ -64,7 +65,7 @@ const UpgradePlanCard = ({
         <VStack align="flex-start" spacing={2} my={4} textAlign="left">
           {perks.map((perk, index) => (
             <HStack key={index} align="flex-start">
-              <Icon as={FaCheckCircle} color="green.300" boxSize={4} mt={1} />
+              <Icon as={FaCheckCircle} color="green.100" boxSize={4} mt={1} />
               <Text fontSize="sm">{perk}</Text>
             </HStack>
           ))}
@@ -78,6 +79,7 @@ const UpgradePlanCard = ({
         width="full"
         mt={4} // Margin top jika konten kurang
         onClick={onSubscribe} // <-- Ini akan memanggil fungsi window.open dari parent
+        color={textColor}
       >
         {buttonText}
       </Button>

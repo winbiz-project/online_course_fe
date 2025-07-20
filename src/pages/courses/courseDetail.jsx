@@ -187,6 +187,38 @@ const CourseDetailPage = () => {
     }
   };
 
+  const handleFree = async () => {
+    setLoading(true); 
+    try {
+      const response = await fetch(`${baseUrl}/course/assign_course`, {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.email,
+          courseid: courseId,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Course assigned successfully (FREE)!');
+        // Refresh halaman setelah berhasil
+        window.location.reload();
+      } else {
+        // Tangani error jika response tidak OK
+        const errorData = await response.json(); // Coba parse error response
+        console.error('Failed to assign course:', response.status, errorData);
+        alert(`Gagal mendaftar kursus: ${errorData.message || 'Terjadi kesalahan'}`);
+      }
+    } catch (error) {
+      console.error('Error assigning course:', error);
+      alert('Terjadi kesalahan jaringan atau server.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchData = async () => {
     await Promise.all([getCourseDetail(), checkEnrollment()]);
     await getUserProgress();
@@ -248,12 +280,29 @@ const CourseDetailPage = () => {
 
               {!isEnrolled && (
                 <>
-                  <Text fontSize="2xl" fontWeight="bold" textAlign="left">
-                    Price: Rp{courseDetail.course_price.toLocaleString('id-ID')}
-                  </Text>
-                  <Button bg="#3498DB" color="white" size="lg" onClick={handlePurchase}>
-                    Enroll Now
-                  </Button>
+                  {user && user.status === 'masterclass' ? (
+                    <><HStack spacing={2} align="baseline">
+                      <Text fontSize="2xl" fontWeight="bold" textDecoration="line-through" color="gray.500">
+                        Rp{courseDetail.course_price.toLocaleString('id-ID')}
+                      </Text>
+                      <Text fontSize="2xl" fontWeight="extrabold" color="green.400"> {/* Ukuran sama agar sejajar */}
+                        FREE
+                      </Text>
+                      </HStack>
+                      <Button bg="#3498DB" color="white" size="lg" onClick={handleFree}>
+                        Enroll Now (FREE)
+                      </Button></>
+                  ) : (
+                    // Kondisi default jika user BUKAN 'masterclass'
+                    <>
+                      <Text fontSize="2xl" fontWeight="bold" textAlign="left">
+                        Price: Rp{courseDetail.course_price.toLocaleString('id-ID')}
+                      </Text>
+                      <Button bg="#3498DB" color="white" size="lg" onClick={handlePurchase}>
+                        Enroll Now
+                      </Button>
+                    </>
+                  )}
                 </>
               )}
             </VStack>

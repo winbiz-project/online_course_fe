@@ -168,11 +168,12 @@ const MyStatusContent = () => {
                 <UpgradePlanCard
                   planName="Miniclass"
                   perks={miniclassPerks}
-                  bgColorGradient={['#6A0DAD', '#8A2BE2']} // Ungu
+                  bgColorGradient={['#C0C0C0', '#A8A8A8']}
                   buttonText="Upgrade ke Miniclass"
-                  buttonColorScheme="purple"
+                  buttonColorScheme="gray"
                   onSubscribe={() => window.open(whatsappLink, '_blank')} // Langsung ke WhatsApp
-                  illustrationIcon={FaGraduationCap} // Icon untuk Miniclass
+                  illustrationIcon={FaGraduationCap} 
+                  textColor="black" // Teks hitam untuk kontras dengan background terang
                 />
               )}
 
@@ -181,11 +182,12 @@ const MyStatusContent = () => {
                 <UpgradePlanCard
                   planName="Masterclass"
                   perks={masterclassPerks}
-                  bgColorGradient={['#E65239', '#FF4E50']} // Oranye/Merah
+                  bgColorGradient={['#DAA520', '#B8860B']} // Oranye/Merah
                   buttonText="Upgrade ke Masterclass"
-                  buttonColorScheme="red"
+                  buttonColorScheme="yellow"  
                   onSubscribe={() => window.open(whatsappLink, '_blank')} // Langsung ke WhatsApp
-                  illustrationIcon={FaCrown} // Icon untuk Masterclass
+                  illustrationIcon={FaCrown} 
+                  textColor="black" 
                 />
               )}
             </Flex>
