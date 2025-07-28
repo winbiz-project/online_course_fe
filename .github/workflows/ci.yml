@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master
+      - testprod
   pull_request:
     branches:
-      - master
+      - testprod
 
 jobs:
   dockerize:
@@ -27,7 +27,7 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        password: ${{ secrets.TOKEN_PROD }}
 
     - name: Build and Push Docker Image
       run: |
@@ -41,10 +41,10 @@ jobs:
     - name: Update Container in the Server
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.SERVER_IP_ADDRESS }}
+        host: ${{ secrets.SERVER_IP_ADDRESS_2 }}
         username: ${{ secrets.SERVER_DEPLOYMENT_USER }}
-        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
-        port: ${{ secrets.SERVER_SSH_PORT }}
+        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY_2 }}
+        port: ${{ secrets.SERVER_SSH_PORT_2 }}
         script: |
           docker pull ghcr.io/${{ github.repository_owner }}/${{ github.repository }}:master
           docker stop client || true
