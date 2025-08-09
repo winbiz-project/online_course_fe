@@ -35,9 +35,11 @@ const CourseDetailPage = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setCourseDetail(data.response);
+      return data.response;
+
     } catch (error) {
       console.error(`Could not get courses: ${error}`);
+      return false;
     }
   };
 
@@ -49,11 +51,13 @@ const CourseDetailPage = () => {
         throw new Error('Failed to check enrollment status');
       }
       const data = await response.json();
-      setIsEnrolled(data.response);
+      
+      return data.response;
       
     } catch (error) {
       console.error('Error:', error);
-      }
+      return false;
+    }
     }else{
       setLoading2(false);
     }
@@ -105,8 +109,8 @@ const CourseDetailPage = () => {
     }
   };
 
-  const getUserProgress = async () => {
-    if(user && isEnrolled) {
+  const getUserProgress = async (courseDetailData, isUserEnrolled) => {
+    if (user && isUserEnrolled) {
       try {
         const response = await fetch(`${baseUrl}/course/get_user_progress`, {
           method: 'POST',
@@ -129,9 +133,9 @@ const CourseDetailPage = () => {
         const completedQuizzes = data.completed_quizzes.map(quiz => quiz.quiz_id);
         setUserProgressQuiz(completedQuizzes);
 
-        if (courseDetail?.sections) {
-          const totalSubsections = courseDetail.sections.reduce((acc, section) => acc + section.subsections.length, 0) || 0;
-          const totalQuizzes = courseDetail.sections.reduce((acc, section) => acc + section.quizzes.length, 0) || 0;
+        if (courseDetailData?.sections) {
+          const totalSubsections = courseDetailData.sections.reduce((acc, section) => acc + section.subsections.length, 0) || 0;
+          const totalQuizzes = courseDetailData.sections.reduce((acc, section) => acc + section.quizzes.length, 0) || 0;
           const totalItems = totalSubsections + totalQuizzes;
           const totalProgressPercentage = totalItems > 0 ? Math.round(((completedSubsections.length + completedQuizzes.length) / totalItems) * 100) : 0;
 
@@ -220,15 +224,28 @@ const CourseDetailPage = () => {
   };
 
   const fetchData = async () => {
-    await Promise.all([getCourseDetail(), checkEnrollment()]);
-    await getUserProgress();
+    try {
+        const courseDetailData = await getCourseDetail();
+        setCourseDetail(courseDetailData);
 
-    setLoading(false);
+        const enrollmentStatus = await checkEnrollment();
+        setIsEnrolled(enrollmentStatus);
+
+        if (enrollmentStatus && courseDetailData) {
+          await getUserProgress(courseDetailData, enrollmentStatus);
+        } else {
+            setLoading2(false);
+        }
+    } catch (error) {
+        console.error('Error in fetchData:', error);
+    } finally {
+        setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchData();
-  }, [courseId, isEnrolled]);
+  }, [courseId, user]);
 
   if (loading || loading2) {
     return (
